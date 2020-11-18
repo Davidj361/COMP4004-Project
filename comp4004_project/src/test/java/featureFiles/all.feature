@@ -1,16 +1,19 @@
 # First placement scenarios
+Feature: Testing for use cases
+  Testing all use cases so far
 
-Scenario First placement - success
+Scenario: First placement - success
 Given First tile has not been placed
-and Player puts tiles on table
+And Player puts tiles on table
 When Tiles add up to 30 or more
 Then First tiles can be placed
 Scenario: First placement - fail
 Given First tile has not been placed
-and Player puts tiles on table
+And Player puts tiles on table
 When Tiles add up to less than 30
 Then First tiles cannot be placed
-Draw Tile scenarios
+
+#Draw Tile scenarios
 Scenario: Draw Tile - Draw Tile
 Given Round is in effect
 When Player selects ‘Draw Tile’
@@ -24,7 +27,8 @@ And Player has not placed any tiles on the board
 Then Tile is given to player from the deck
 And Player’s rack is updated
 And Players turn ends
-End Game scenarios
+
+#End Game scenarios
 
 Scenario: End Game
 Given Round is in effect
@@ -117,7 +121,7 @@ And User clicks "Finish Turn"
 And User ends a turn
 
 Scenario: Play Turn - places multiple tiles but it is an invalid placement, tiles return to rack, then finishes turn
-Given: Round is still in effect
+Given Round is still in effect
 When Player starts their turn
 And User chooses multiple tiles from rack
 And User transfers the chosen tiles onto board
@@ -127,7 +131,7 @@ And User clicks "Finish Turn"
 And User ends a turn
 
 Scenario: Play Turn - places multiple tiles but it is an invalid placement, tiles return to rack, places other tiles and forms a run, then finishes turn
-Given: Round is still in effect
+Given Round is still in effect
 When Player starts their turn
 And User chooses multiple tiles from rack
 And User transfers the chosen tiles onto board
@@ -141,7 +145,7 @@ And User clicks "Finish Turn"
 And User ends a turn
 
 Scenario: Play Turn - places multiple tiles but it is an invalid placement, tiles return to rack, places other tiles and forms a group, then finishes turn
-Given: Round is still in effect
+Given Round is still in effect
 When Player starts their turn
 And User chooses multiple tiles from rack
 And User transfers the chosen tiles onto board
