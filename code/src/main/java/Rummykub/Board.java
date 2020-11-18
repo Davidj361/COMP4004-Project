@@ -1,2 +1,4 @@
-public class board {
+package Rummykub;
+
+public class Board {
 }

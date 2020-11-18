@@ -1,13 +1,15 @@
-public class Tile implements Comparable<Tile>{
-    private int value;
-    private String color;
+package Rummykub;
+
+public class Tile implements Comparable<Tile> {
     public static enum Colors {GR, RE, BK, BL};
+    Colors color;
+    private int value;
     private String state = " ";
 
     //each tile
     public Tile(int value, Colors color) {
         this.value = value;
-        this.color = Color.value();
+        this.color = color;
     }
 
     //Get tile value
@@ -16,26 +18,14 @@ public class Tile implements Comparable<Tile>{
     }
 
     //get tile color
-    public String getColor() {
+    public Colors getColor() {
         return this.color;
     }
 
 //Check all tiles colours and values
     @Override
     public String toString() {
-        String color = "";
-        if (this.color.toString() == "RE"){
-            color = "RE";
-        }else if (this.color.toString() == "BL"){
-            color = "BL";
-        }else if (this.color.toString() == "GR"){
-            color = "GR";
-        }else{
-            color = "BK";
-        }
-
-        return String.format(this.state+ "  " + this.value + "   " + color + "}");
-
+        return String.format(this.state+ "  " + this.value + "   " + this.color.name() + "}");
     }
 
     //Compare tiles with each other 8will be used for checking if tiles are allowed to be placed

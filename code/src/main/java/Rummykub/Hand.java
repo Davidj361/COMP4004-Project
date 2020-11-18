@@ -1,27 +1,28 @@
+package Rummykub;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class hand{
-    protected ArrayList<tile> Tiles;
+public class Hand{
+    protected ArrayList<Tile> tiles;
 
-    public hand(ArrayList<tile> Tiles) {
-        this.Tiles = new ArrayList<tile>(Tiles);
+    public Hand(ArrayList<Tile> tiles) {
+        this.tiles = new ArrayList<Tile>(tiles);
     }
 
     //get number of tiles in hand
     public int getSize() {
-        return Tiles.size();
+        return tiles.size();
     }
 
     //add Tile to players hand
-    public void addTile(tile Tile) {
-        this.Tiles.add(Tile);
+    public void addTile(Tile tile) {
+        this.tiles.add(tile);
     }
 
     //check to see if players hand is empty
     public boolean isEmpty() {
-        if (Tiles.size() < 1) {
+        if (tiles.size() < 1) {
             return true;
         }
         return false;
@@ -29,15 +30,15 @@ public class hand{
 
     //sort tiles in players hand
     public void sortTiles() {
-        Collections.sort(Tiles);
+        Collections.sort(tiles);
     }
 
     //send players hand to string *used for output of players hand*
     @Override
     public String toString() {
             String string = "";
-            for (int i = 0; i < Tiles.size(); i++) {
-            string += Tiles.get(i).toString();
+            for (int i = 0; i < tiles.size(); i++) {
+                string += tiles.get(i).toString();
             }
             return string;
     }

@@ -1,4 +1,4 @@
-package Rummykub.comp4004_project;
+package Rummykub;
 
 /**
  * Hello world!
