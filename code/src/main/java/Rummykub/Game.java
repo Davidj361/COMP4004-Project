@@ -1,11 +1,13 @@
+package Rummykub;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
     private boolean gameRunning = false;
     int turnIndex = 0;
-    public deck Deck;
-    private board Board;
+    public Deck deck;
+    private Board board;
     Scanner scanner = new Scanner(System.in);
 
     public Game() {
@@ -14,17 +16,17 @@ public class Game {
     //private ArrayList<Player> players = new ArrayList<Player>();
     public void startGame() {
         gameRunning = true;
-        Deck = new deck();
-        Deck.shuffleTiles();
-        Board = new board();
+        deck = new Deck();
+        deck.shuffleTiles();
+        board = new Board();
 
 
         // Add all players
         for (int i = 0; i < 3; i++) {
-            ArrayList<tile> hand = new ArrayList<tile>();
+            ArrayList<Tile> hand = new ArrayList<Tile>();
             //Deal 14 tiles to each player
             for (int j = 0; j < 14; j++) {
-                hand.add(Deck.dealTile());
+                hand.add(deck.dealTile());
             }
             //Player p = new Player(hand, "NAME");
             //players.add(p);
@@ -39,6 +41,7 @@ public class Game {
 
     }
     //Check to see if any player has no tiles left in their hand
+    /*
     public boolean RoundOver() {
         for (int i = 0; i < 3; i++) {
             if (players.emptyHand()) {
@@ -47,4 +50,5 @@ public class Game {
         }
         return false;
     }
+     */
 }

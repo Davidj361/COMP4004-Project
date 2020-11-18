@@ -1,40 +1,34 @@
+package Rummykub;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import static mypackage.Tile.Colors.*;
+import static Rummykub.Tile.Colors;
 
-public class deck{
-    private int size;
+public class Deck{
     private ArrayList<Tile> totalDeck;
-    public static enum colors {GR, RE, BK, BL};
-
 
     //Create full deck of all tiles
-    public deck() {
+    public Deck() {
         totalDeck = new ArrayList<Tile>();
         for (int j = 0; j < 4; j++) {
             for (int x = 0; x < 2; x++){
                 for (int i = 1; i < 14; i++) {
-                    Tile Tile = new Tile(i, Colors.values()[j]);
-                    totalDeck.add(Tile);
-
+                    Tile tile = new Tile(i, Colors.values()[j]);
+                    totalDeck.add(tile);
                 }
             }
-
-
         }
         //Shuffle all tiles
         this.shuffleTiles();
     }
 
     //get the full deck
-    public ArrayList<Tile> gettotalDeck(){
+    public ArrayList<Tile> getTotalDeck(){
         return totalDeck;
     }
 
-    //get the tiles left in the deck
-    public int getTotalTilesInDeck() {
-        size = totalDeck.size();
-        return size;
+    public int size() {
+        return totalDeck.size();
     }
 
     //remove tile from deck
