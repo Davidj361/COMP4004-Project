@@ -3,6 +3,8 @@ package Rummykub;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Rummykub.Tile.Colors;
+
 public class Game {
     private boolean gameRunning = false;
     int turnIndex = 0;
@@ -17,7 +19,6 @@ public class Game {
     public void startGame() {
         gameRunning = true;
         deck = new Deck();
-        deck.shuffleTiles();
         board = new Board();
 
 
@@ -33,12 +34,59 @@ public class Game {
         }
     }
 
-    public void checkRun( ArrayList<Tile> run) {
-
+    public boolean isRun(ArrayList<Tile> run) {
+    	Colors color = run.get(0).getColor();
+    	int value = run.get(0).getValue() - 1;
+    	
+    	for (Tile t : run) {
+    		if (t.getColor() != color)
+    			return false;
+    		
+    		if (t.getValue() == value + 1)
+    			value++;
+    		else
+    			return false;
+    	}
+    	return true;
     }
 
-    public void checkGroup( ArrayList<Tile> group ) {
-
+    public boolean isGroup(ArrayList<Tile> group) {
+    	boolean red = false;
+    	boolean blue = false;
+    	boolean yellow = false;
+    	boolean black = false;
+    	int value = group.get(0).getValue();
+    	
+    	for (Tile t : group) {
+    		if (t.getValue() != value)
+    			return false;
+    		
+    		if (t.getColor() == Colors.RE) {
+    			if (!red)
+    				red = true;
+    			else
+    				return false;
+    		}
+    		else if (t.getColor() == Colors.BL) {
+    			if (!blue)
+    				blue = true;
+    			else
+    				return false;
+    		}
+    		else if (t.getColor() == Colors.YE) {
+    			if (!yellow)
+    				yellow = true;
+    			else
+    				return false;
+    		}
+    		else {
+    			if (!black)
+    				black = true;
+    			else
+    				return false;
+    		}
+    	}
+    	return true;
     }
     //Check to see if any player has no tiles left in their hand
     /* Commented out because players not yet implemented
