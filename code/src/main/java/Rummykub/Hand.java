@@ -33,6 +33,14 @@ public class Hand{
         Collections.sort(tiles);
     }
 
+    public int sumOfTiles() {
+        int count = 0;
+        for (Tile t: tiles) {
+            count += t.getValue();
+        }
+        return count;
+    }
+
     //send players hand to string *used for output of players hand*
     @Override
     public String toString() {

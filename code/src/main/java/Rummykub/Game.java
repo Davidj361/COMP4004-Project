@@ -10,6 +10,7 @@ public class Game {
     int turnIndex = 0;
     public Deck deck;
     private Board board;
+    private Hand hand;
     Scanner scanner = new Scanner(System.in);
 
     public Game() {
@@ -50,6 +51,17 @@ public class Game {
     	return true;
     }
 
+	public void placeTile ( Player player, ArrayList<Tile> tiles) {
+		if (player.getFirstPlacement()) {
+			//board.putTiles(tiles)
+		}
+		else {
+			if (hand.sumOfTiles() >= 30) {
+				player.setFirstPlacement();
+				//board.putTiles(tiles);
+			}
+		}
+	}
     public boolean isGroup(ArrayList<Tile> group) {
     	boolean red = false;
     	boolean blue = false;
