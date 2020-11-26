@@ -21,10 +21,7 @@ public class Board {
 		board.get(row).addAll(tiles);
 		Collections.sort(board.get(row), new Comparator<Tile>() {
 			@Override
-			public int compare(Tile tile2, Tile tile1)
-			{
-				return  tile1.getValue().compareTo(tile2.getValue());
-			}
+			public int compare(Tile tile2, Tile tile1){return  Integer.compare(tile1.getValue(), tile2.getValue());}
 		});
 	}
 
@@ -44,10 +41,30 @@ public class Board {
 		board.get(row1).addAll(combine);
 		Collections.sort(board.get(row1), new Comparator<Tile>() {
 			@Override
-			public int compare(Tile tile2, Tile tile1)
-			{
-				return  tile1.getValue().compareTo(tile2.getValue());
-			}
+			public int compare(Tile tile2, Tile tile1){return  Integer.compare(tile1.getValue(), tile2.getValue());}
 		});
+	}
+
+	public String printBoard() {
+		String printBoard = "";
+		int size = 0;
+		for (int i = 0; i < board.size(); i++) {
+			if(i < 10) {
+				printBoard += "0" + Integer.toString(i) + "|  ";
+			}else {
+				printBoard += Integer.toString(i) + "|  ";
+			}
+			if (board.get(i).size() > size){
+				size = board.get(i).size();
+			}
+			for (int j = 0; j < board.get(i).size(); j++) {
+				printBoard += board.get(i).get(j).toString() + "  ";
+			}
+			printBoard += "\n";
+		}
+		for(int i = 0; i < ((size * 9) + 1); i++) {
+			printBoard+="-";
+		}
+		return printBoard;
 	}
 }
