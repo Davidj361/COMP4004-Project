@@ -41,6 +41,19 @@ public class Hand{
         return count;
     }
 
+    //check if a tile is on hand
+    public boolean hasTile(Tile t) {
+        for (Tile myT: tiles) {
+            if (myT.compareTo(t) == 0)
+                return true;
+        }
+        return false;
+    }
+
+    public void putTile(Tile t) {
+        tiles.remove(t);
+    }
+
     //send players hand to string *used for output of players hand*
     @Override
     public String toString() {

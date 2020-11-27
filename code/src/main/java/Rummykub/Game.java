@@ -10,8 +10,8 @@ public class Game {
     int turnIndex = 0;
     public Deck deck;
     private Board board;
-    private Hand hand;
     Scanner scanner = new Scanner(System.in);
+	private static enum Actions {display, pick, finalize, undo, take, split};
 
     public Game() {
     }
@@ -30,6 +30,7 @@ public class Game {
             for (int j = 0; j < 14; j++) {
                 hand.add(deck.dealTile());
             }
+            // TODO: add player to players arraylist
             //Player p = new Player(hand, "NAME");
             //players.add(p);
         }
@@ -51,17 +52,6 @@ public class Game {
     	return true;
     }
 
-	public void placeTile ( Player player, ArrayList<Tile> tiles) {
-		if (player.getFirstPlacement()) {
-			//board.putTiles(tiles)
-		}
-		else {
-			if (hand.sumOfTiles() >= 30) {
-				player.setFirstPlacement();
-				//board.putTiles(tiles);
-			}
-		}
-	}
     public boolean isGroup(ArrayList<Tile> group) {
     	boolean red = false;
     	boolean blue = false;
@@ -100,6 +90,56 @@ public class Game {
     	}
     	return true;
     }
+
+    // returns true if player's hand is empty
+    public boolean isGameOver(Player p) {
+    	if (p.getTileNumber() == 0)
+    		return true;
+    	return false;
+	}
+
+	// player draws a tile
+	public void drawTile(Player p) {
+    	p.drawTile(deck);
+	}
+
+	public void placeTiles (Player player, ArrayList<Tile> tiles) {
+		if (player.getFirstPlacement()) {
+			//board.putTiles(tiles)
+		}
+		/**
+		else {
+			if (hand.sumOfTiles() >= 30) {
+				player.setFirstPlacement();
+				//board.putTiles(tiles);
+			}
+		}
+		 **/
+	}
+
+	public Board placeTiles(Player p, Board b, ArrayList<Tile> tiles, int pos) {
+    	if (p.hasTiles(tiles)) {
+    		p.putTiles(tiles);
+    		//TODO: need to implement locating tiles on board functionality
+    		//b.locateTiles(tiles, pos);
+		}
+		return board;
+	}
+
+	public void finishTurn(Player p) {
+		p.nextRound();
+	}
+
+	public void playTurn(Player p) {
+    	Board temp = new Board();
+
+    	// TODO: Game play based on user command
+
+		//if (temp.validityCheck())
+		//	board = temp;
+	}
+
+
     //Check to see if any player has no tiles left in their hand
     /* Commented out because players not yet implemented
     public boolean RoundOver() {
