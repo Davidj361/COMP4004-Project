@@ -41,16 +41,7 @@ public class Hand{
         return count;
     }
 
-    //check if a tile is on hand
-    public boolean hasTile(Tile t) {
-        for (Tile myT: tiles) {
-            if (myT.compareTo(t) == 0)
-                return true;
-        }
-        return false;
-    }
-
-    public void putTile(Tile t) {
+    public void putTile(int t) {
         tiles.remove(t);
     }
 
