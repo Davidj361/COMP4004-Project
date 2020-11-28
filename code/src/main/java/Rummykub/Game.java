@@ -1,6 +1,10 @@
 package Rummykub;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import Rummykub.Tile.Colors;
@@ -10,10 +14,10 @@ public class Game {
     private boolean gameRunning = false;
     int turn = 0;
     public Deck deck;
-    private Board board;
+    private Board board, origBoard;
     Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
-    private Hand hand;
+    private Hand origHand;
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	int numPlayers; // Needed for testing both offline and online
@@ -59,13 +63,13 @@ public class Game {
 		// TODO Have players enter their name and assign that in Client class through networking
 		for (int i = 0; i < numPlayers; i++)
 			players.add(new Player(Integer.toString(i + 1)));
+		gameRunning = true;
+		deck = new Deck();
+		board = new Board();
 	}
 
     public void startGame() {
-        gameRunning = true;
-        deck = new Deck();
-        board = new Board();
-
+		// reset() Should already be called beforehand
         // Add all players
         for (int i = 0; i < 3; i++) {
             ArrayList<Tile> hand = new ArrayList<Tile>();
@@ -182,7 +186,6 @@ public class Game {
 		//	board = temp;
 	}
 
-
     //Check to see if any player has no tiles left in their hand
 	// TODO Implement
     /* Commented out because players not yet implemented
@@ -241,7 +244,7 @@ public class Game {
 					break;
 			}
 		} else { // No arguments to commands
-			args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
 					placeTiles(args);
@@ -266,7 +269,12 @@ public class Game {
 	// Print from the help from a file
 	// TODO Have a help file and read from it
 	private void help() {
-		print("WIP help");
+		File fHelp = new File("resources/help.txt");
+		BufferedReader br = new BufferedReader(new FileReader(fHelp));
+		String str;
+		while ((str = br.readLine()) != null) {
+			System.out.println(str);
+		}
 	}
 
 	// Reverts the player's hand and the board to the original state
