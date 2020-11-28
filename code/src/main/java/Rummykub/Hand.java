@@ -55,13 +55,17 @@ public class Hand{
     }
 
     //send players hand to string *used for output of players hand*
-    @Override
-    public String toString() {
+    public String printHand() {
             String string = "";
             for (int i = 0; i < tiles.size(); i++) {
                 string += tiles.get(i).toString();
             }
             return string;
+    }
+
+    public void moveTiles(int tileIndex, int newTileIndex){
+        tiles.add(newTileIndex, tiles.remove(tileIndex));
+
     }
 }
 

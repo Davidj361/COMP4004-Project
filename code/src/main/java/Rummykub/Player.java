@@ -17,6 +17,8 @@ public class Player {
         return name;
     }
 
+    public void printHand() { hand.printHand(); }
+
     public boolean getFirstPlacement() {
         return firstPlacement;
     }

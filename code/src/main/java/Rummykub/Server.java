@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 
 public class Server extends Thread implements AutoCloseable {
 
-    final static int maxClients = 2;
+    final static int maxClients = 3;
     static int port = 27015;
     ServerSocket socket;
-    int clientsConnected = 0;
-    ClientHandler[] clients = new ClientHandler[maxClients];
+    private ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game;
     boolean testing;
 
@@ -44,14 +44,13 @@ public class Server extends Thread implements AutoCloseable {
     }
 
     public boolean accept() throws IOException {
-        if (!isOpen() || clientsConnected == maxClients)
+        if (!isOpen() || clients.size() == maxClients)
             return false;
         Socket s = socket.accept();
         if (socket != null && s != null) {
-            clients[clientsConnected] = new ClientHandler(this, s, clientsConnected, testing);
-            clients[clientsConnected].start();
-            print("Host: Client " + clientsConnected + " connected.\n");
-            clientsConnected++;
+            clients.add(new ClientHandler(this, s, clients.size()-1, testing));
+            clients.get(clients.size()-1).start();
+            print("Host: Client " + (clients.size()-1) + " connected.\n");
             return true;
         }
         return false;
@@ -71,13 +70,12 @@ public class Server extends Thread implements AutoCloseable {
 
     private boolean stopHost(boolean force) throws IOException {
         if (force || isOpen()) {
-            for (int i=0; i<clientsConnected; i++) {
-                if (clients[i] != null)
-                    clients[i].close();
+            for (ClientHandler c : clients) {
+                if (c != null)
+                    c.close();
             }
             socket.close();
             socket = null;
-            clientsConnected = 0;
             return true;
         }
         return false;
@@ -92,20 +90,20 @@ public class Server extends Thread implements AutoCloseable {
     }
 
     public boolean send(final int iClient, String str) throws IOException {
-        if (clients[iClient] == null)
+        if (clients.get(iClient) == null)
             throw new IllegalStateException();
-        return clients[iClient].send(str);
+        return clients.get(iClient).send(str);
     }
 
     public String read(final int iClient) throws IOException {
-        if (clients[iClient] == null)
+        if (clients.get(iClient) == null)
             throw new IllegalStateException();
-        return clients[iClient].read();
+        return clients.get(iClient).read();
     }
 
     public void print(String str) {
         System.out.print(str);
-        for (int i=0; i<clientsConnected; i++) {
+        for (int i=0; i<clients.size(); i++) {
             try {
                 send(i, str);
             } catch (Exception e) {
@@ -120,8 +118,6 @@ public class Server extends Thread implements AutoCloseable {
 			clients[i].reset();
 	}
 	*/
-
-    /* Working with Game class from Pirates
 
     // When the host asks for a command
     public boolean command(String str) throws IOException {
@@ -148,6 +144,9 @@ public class Server extends Thread implements AutoCloseable {
             return false;
         return game.command(player, str);
     }
-    */
+
+    public int getNumClients() {
+        return clients.size();
+    }
 
 }
