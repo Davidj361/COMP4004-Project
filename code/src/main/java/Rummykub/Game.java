@@ -150,37 +150,14 @@ public class Game {
     	p.drawTile(deck);
 	}
 
-	public void placeTiles (Player player, ArrayList<Tile> tiles) { // DUPLICATE FUNCTION NAME
-		if (player.getFirstPlacement()) {
-			//board.putTiles(tiles)
-		}
-		/**
-		else {
-			if (hand.sumOfTiles() >= 30) {
-				player.setFirstPlacement();
-				//board.putTiles(tiles);
-			}
-		}
-		 **/
-	}
-
-	public Board placeTiles(Player p, Board b, ArrayList<Tile> tiles, int pos) {
-    	if (p.hasTiles(tiles)) {
-    		p.putTiles(tiles);
-    		//TODO: need to implement locating tiles on board functionality
-    		//b.locateTiles(tiles, pos);
-		}
-		return board;
-	}
-
 	public void finishTurn(Player p) {
-		p.nextRound();
+		p.nextTurn();
 	}
 
 	public void playTurn(Player p) {
-    	Board temp = new Board();
+		Board temp = new Board();
 
-    	// TODO: Game play based on user command
+		// TODO: Game play based on user command
 
 		//if (temp.validityCheck())
 		//	board = temp;
@@ -221,6 +198,7 @@ public class Game {
 	}
 
 	public boolean command(int player, String input) {
+		Player curPlayer = players.get(curPlayer());
 		if (!playerTurn(player))
 			return false;
 
@@ -234,7 +212,7 @@ public class Game {
 					board.printBoard();
 					break;
 				case "dh": // display player's hand
-					players.get(player).printHand();
+					curPlayer.printHand();
 					break;
 				case "u": // undo
 					undo();
@@ -247,7 +225,7 @@ public class Game {
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
-					placeTiles(args);
+					placeTiles(args, curPlayer);
 					break;
 				case "g": // giving tiles to a row on the board
 					giveTiles(args);
@@ -288,13 +266,17 @@ public class Game {
 
 	// Places tiles from active player's hand to the board
 	// “p 1 3 4 7”
-	private boolean placeTiles(String[] sArr) {
+	private boolean placeTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place
 		if (sArr.length < 1)
 			return false;
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		if (player.hasTiles(tilesIdx)) {
+			player.putTiles(tilesIdx);
+			//TODO: putting on board by index
+		}
 		// TODO Call place tiles from hand onto board
 		return true;
 	}
