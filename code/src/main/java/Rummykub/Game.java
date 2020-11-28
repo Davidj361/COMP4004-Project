@@ -7,7 +7,7 @@ import Rummykub.Tile.Colors;
 
 public class Game {
     private boolean gameRunning = false;
-    int turnIndex = 0;
+    int turn = 0;
     public Deck deck;
     private Board board;
     Scanner scanner = new Scanner(System.in);
