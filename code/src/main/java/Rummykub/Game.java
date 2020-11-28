@@ -1,8 +1,6 @@
 package Rummykub;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -197,10 +195,10 @@ public class Game {
 			System.out.print(str);
 	}
 
-	public boolean command(int player, String input) {
-		Player curPlayer = players.get(curPlayer());
+	public boolean command(int player, String input) throws IOException {
 		if (!playerTurn(player))
 			return false;
+		Player curPlayer = players.get(curPlayer());
 
 		String[] sArr = input.split(" ");
 		if (input.length() > 1) { // Commands with input arguments
@@ -215,9 +213,10 @@ public class Game {
 					curPlayer.printHand();
 					break;
 				case "u": // undo
-					undo();
+					undo(curPlayer);
 					break;
 				case "e": // end turn
+					// TODO Need to implement ending turn and validating board & current player's hand
 					endTurn();
 					break;
 			}
@@ -228,12 +227,15 @@ public class Game {
 					placeTiles(args, curPlayer);
 					break;
 				case "g": // giving tiles to a row on the board
+					// TODO Implement
 					giveTiles(args);
 					break;
 				case "m": // moving tiles from one row to another on the board
+					// TODO Implement
 					moveTiles(args);
 					break;
 				case "s": // splitting rows on the board
+					// TODO Implement
 					splitRow(args);
 					break;
 			}
@@ -246,20 +248,20 @@ public class Game {
 
 	// Print from the help from a file
 	// TODO Have a help file and read from it
-	private void help() {
+	private void help() throws IOException {
 		File fHelp = new File("resources/help.txt");
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
 		String str;
 		while ((str = br.readLine()) != null) {
-			System.out.println(str);
+			print(str);
 		}
 	}
 
 	// Reverts the player's hand and the board to the original state
 	// as when the turn started
 	// TODO Get origHand and origBoard initialized at every start of a turn
-	private boolean undo() {
-		hand = origHand;
+	private boolean undo(Player curPlayer) {
+		curPlayer.setHand(origHand);
 		board = origBoard;
 		return true;
 	}
@@ -273,10 +275,12 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		/* TODO Implement hasTiles
 		if (player.hasTiles(tilesIdx)) {
 			player.putTiles(tilesIdx);
 			//TODO: putting on board by index
 		}
+		 */
 		// TODO Call place tiles from hand onto board
 		return true;
 	}
