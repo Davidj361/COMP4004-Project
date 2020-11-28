@@ -111,4 +111,42 @@ public class Game {
         return false;
     }
      */
+
+	public boolean command(int player, String input) {
+		if (!playerTurn(player))
+			return false;
+
+		//if (input.equals("quit"))
+		if (input.charAt(0) == 'h') // help text
+			help();
+		else if (input.charAt(0) == 'd') // display the board
+			displayBoard();
+		else if (input.charAt(0) == 'h') // display the board
+			displayHand();
+		else if (input.charAt(0) == 'u') // undo
+			undo();
+		else if (input.charAt(0) == 'e') // end turn
+			endTurn();
+		else if (input.length() > 1) { // Commands with input
+			if (input.charAt(0) == 'p') { // placing tiles from hand onto the board
+				place(input);
+			} else if (input.charAt(0) == 'g') { // giving tiles to a row on the board
+				give(input);
+			} else if (input.charAt(0) == 'm') { // moving tiles from one row to another on the board
+				move(input);
+			} else if (input.charAt(0) == 's') { // splitting rows on the board
+				split(input);
+			}
+		}
+		return true;
+	}
+
+	public boolean help() {
+	}
+
+	public boolean displayBoard() {
+	}
+
+	public boolean di() {
+	}
 }
