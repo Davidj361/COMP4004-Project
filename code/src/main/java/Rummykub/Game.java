@@ -6,22 +6,64 @@ import java.util.Scanner;
 import Rummykub.Tile.Colors;
 
 public class Game {
+	private Server server;
     private boolean gameRunning = false;
-    int turnIndex = 0;
+    int turn = 0;
     public Deck deck;
     private Board board;
     private Hand hand;
+	// players and clients indices should match
+	// i.e. client[0] -> player[0]
+	int numPlayers; // Needed for testing both offline and online
+	private ArrayList<Player> players = new ArrayList<Player>();
     Scanner scanner = new Scanner(System.in);
+    private boolean testing; // A useful flag for code when testing
 
-    public Game() {
-    }
 
-    //private ArrayList<Player> players = new ArrayList<Player>();
+	// Constructors
+	public Game() {
+		this(false);
+	}
+	// Single player
+	public Game(boolean b) {
+		testing = b;
+		numPlayers = 1;
+		reset();
+	}
+	public Game(int i) {
+		this(i, false);
+	}
+	// Multiplayer with dummy players
+	public Game(int i, boolean b) {
+		testing = b;
+		numPlayers = i;
+		reset();
+	}
+	public Game(Server s) {
+		this(s, false);
+	}
+	// Multiplayer and networked
+	public Game(Server s, boolean b) {
+		testing = b;
+		server = s;
+		server.game = this;
+		numPlayers = server.getNumClients();
+		reset();
+	}
+
+
+	// TODO Reset all variables
+	// Useful for testing and restarting the game
+	public void reset() {
+		// TODO Have players enter their name and assign that in Client class through networking
+		for (int i = 0; i < numPlayers; i++)
+			players.add(new Player(Integer.toString(i + 1)));
+	}
+
     public void startGame() {
         gameRunning = true;
         deck = new Deck();
         board = new Board();
-
 
         // Add all players
         for (int i = 0; i < 3; i++) {
@@ -100,7 +142,9 @@ public class Game {
     	}
     	return true;
     }
+
     //Check to see if any player has no tiles left in their hand
+	// TODO Implement
     /* Commented out because players not yet implemented
     public boolean RoundOver() {
         for (int i = 0; i < 3; i++) {
@@ -111,4 +155,143 @@ public class Game {
         return false;
     }
      */
+
+	// Get who's the current player this turn for indexing purposes
+	public int curPlayer() {
+		return ((turn-1) % players.size());
+	}
+	public String curPlayerName() {
+		return players.get(curPlayer()).getName();
+	}
+
+	// Is it this player's turn?
+	public boolean playerTurn(int player) {
+		return (curPlayer() == player);
+	}
+
+	// Prints the same string to all players
+	public void print(String str) {
+		if (server != null)
+			server.print(str);
+		else
+			System.out.print(str);
+	}
+
+	public boolean command(int player, String input) {
+		if (!playerTurn(player))
+			return false;
+
+		String[] sArr = input.split(" ");
+		if (input.length() > 1) { // Commands with input arguments
+			switch(sArr[0]) {
+				case "h": // display player's hand
+					help();
+					break;
+				case "db": // display the board
+					board.printBoard();
+					break;
+				case "dh": // display player's hand
+					players.get(player).printHand();
+					break;
+				case "u": // undo
+					undo();
+					break;
+				case "e": // end turn
+					endTurn();
+					break;
+			}
+		} else { // No arguments to commands
+			args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			switch(sArr[0]) {
+				case "p": // placing tiles from hand onto the board
+					placeTiles(args);
+					break;
+				case "g": // giving tiles to a row on the board
+					giveTiles(args);
+					break;
+				case "m": // moving tiles from one row to another on the board
+					moveTiles(args);
+					break;
+				case "s": // splitting rows on the board
+					splitRow(args);
+					break;
+			}
+		}
+		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	// Functions used by command(..)
+
+	// Print from the help from a file
+	// TODO Have a help file and read from it
+	private void help() {
+		print("WIP help");
+	}
+
+	// Reverts the player's hand and the board to the original state
+	// as when the turn started
+	// TODO Get origHand and origBoard initialized at every start of a turn
+	private boolean undo() {
+		hand = origHand;
+		board = origBoard;
+		return true;
+	}
+
+	// Places tiles from active player's hand to the board
+	// “p 1 3 4 7”
+	private boolean placeTiles(String[] sArr) {
+		// Needs at least 1 tile to place
+		if (sArr.length < 1)
+			return false;
+		int[] tilesIdx = new int[sArr.length];
+		for (int i=0; i<sArr.length; i++)
+			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		// TODO Call place tiles from hand onto board
+		return true;
+	}
+
+	// Give tiles from your hand onto a row on the board
+	// “g 1 2 3”
+	private boolean giveTiles(String[] sArr) {
+		// Needs at least 1 tile to place and dstRow
+		if (sArr.length < 2)
+			return false;
+		int dstRow = Integer.parseInt(sArr[0]);
+		int[] tilesIdx = new int[sArr.length-1];
+		for (int i=1; i<sArr.length; i++)
+			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		// TODO Call give on board
+		return true;
+	}
+
+	// Move tiles from one row on the board to another row on the board
+	// “m 1 2 5 6”
+	private boolean moveTiles(String[] sArr) {
+		// Needs at least 1 tile to place and dstRow & srcRow
+		if (sArr.length < 3)
+			return false;
+		int srcRow = Integer.parseInt(sArr[0]);
+		int dstRow = Integer.parseInt(sArr[1]);
+		int[] tilesIdx = new int[sArr.length-2];
+		for (int i=2; i<sArr.length; i++)
+			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		// TODO Call move on board
+		return true;
+	}
+
+	// Split a row on the board into 2 rows
+	// “s 1 4”
+	private boolean splitRow(String[] sArr) {
+		// Needs a split index and srcRow
+		if (sArr.length != 2)
+			return false;
+		int srcRow = Integer.parseInt(sArr[0]);
+		int splitIdx = Integer.parseInt(sArr[1]);
+		// TODO Call split on board
+		return true;
+	}
+
+	// Functions used by command(..)
+	//////////////////////////////////////////////////////////////////////
 }
