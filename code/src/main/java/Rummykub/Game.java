@@ -195,7 +195,7 @@ public class Game {
 	}
 
 	public boolean command(int player, String input) {
-		Player curPlayer = players.get(player);
+		Player curPlayer = players.get(curPlayer());
 		if (!playerTurn(player))
 			return false;
 
