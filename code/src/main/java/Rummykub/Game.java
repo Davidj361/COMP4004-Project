@@ -148,8 +148,9 @@ public class Game {
     	p.drawTile(deck);
 	}
 
-	public void finishTurn(Player p) {
+	public void endTurn(Player p) {
 		p.nextTurn();
+		turn++;
 	}
 
 	public void playTurn(Player p) {
@@ -217,7 +218,7 @@ public class Game {
 					break;
 				case "e": // end turn
 					// TODO Need to implement ending turn and validating board & current player's hand
-					endTurn();
+					endTurn(curPlayer);
 					break;
 			}
 		} else { // No arguments to commands
