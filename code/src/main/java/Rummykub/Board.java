@@ -67,4 +67,32 @@ public class Board {
 		}
 		return printBoard;
 	}
+
+
+	public boolean checkBoard() {
+		for (int i = 0; i < board.size(); i++) {
+			int type = 0;
+			int valueCorrect = 0;
+			for (int j = 0; j < board.get(i).size() - 1; j++) {
+				if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && board.get(i).get(0).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
+					valueCorrect++;
+					type = 1;
+				} else {
+					if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() && board.get(i).get(j).getColor() != board.get(i).get(j+1).getColor() && (type == 0 || type == 2)){
+						valueCorrect++;
+						type = 2;
+					}
+				}
+			}
+			if(valueCorrect != board.get(i).size()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
+
+
 }
