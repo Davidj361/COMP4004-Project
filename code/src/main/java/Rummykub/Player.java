@@ -4,13 +4,13 @@ package Rummykub;
 import java.util.ArrayList;
 
 public class Player {
-    private int round;
+    private int turn;
     private String name;
     private boolean firstPlacement = false;
     private Hand hand;
     public Player (String n) {
         name = n;
-        round = 1;
+        turn = 1;
     }
 
     public String getName () {
@@ -31,30 +31,17 @@ public class Player {
         return hand.getSize();
     }
 
-    public void nextRound() {
-        round++;
+    public void nextTurn() {
+        turn++;
     }
 
     public void drawTile(Deck d) {
         hand.addTile(d.dealTile());
     }
 
-    /**
-     * This function checks if player has the tiles
-     * @param tiles to be found on hand
-     * @return true if player has all the tiles
-     */
-    public boolean hasTiles(ArrayList<Tile> tiles) {
-        for (Tile t: tiles) {
-            if (!hand.hasTile(t))
-                return false;
-        }
-        return true;
-    }
-
     // player loses tiles from hand
-    public void putTiles(ArrayList<Tile> tiles) {
-        for (Tile t: tiles) {
+    public void putTiles(int[] tilesIndex) {
+        for (int t: tilesIndex) {
             hand.putTile(t);
         }
     }
