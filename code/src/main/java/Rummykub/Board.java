@@ -8,7 +8,6 @@ public class Board {
 	protected ArrayList<ArrayList<Tile>> board = new ArrayList<ArrayList<Tile>>();
 
 	public Board() {
-
 	}
 
 	//Add a new set to the board

@@ -39,6 +39,8 @@ public class Player {
         hand.addTile(d.dealTile());
     }
 
+    public void setHand(Hand h) { hand = h; }
+
     // player loses tiles from hand
     public void putTiles(int[] tilesIndex) {
         for (int t: tilesIndex) {

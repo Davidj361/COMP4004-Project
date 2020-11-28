@@ -1,6 +1,8 @@
 package Rummykub;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import Rummykub.Tile.Colors;
@@ -10,10 +12,10 @@ public class Game {
     private boolean gameRunning = false;
     int turn = 0;
     public Deck deck;
-    private Board board;
+    private Board board, origBoard;
     Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
-    private Hand hand;
+    private Hand origHand;
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	int numPlayers; // Needed for testing both offline and online
@@ -59,13 +61,13 @@ public class Game {
 		// TODO Have players enter their name and assign that in Client class through networking
 		for (int i = 0; i < numPlayers; i++)
 			players.add(new Player(Integer.toString(i + 1)));
+		gameRunning = true;
+		deck = new Deck();
+		board = new Board();
 	}
 
     public void startGame() {
-        gameRunning = true;
-        deck = new Deck();
-        board = new Board();
-
+		// reset() Should already be called beforehand
         // Add all players
         for (int i = 0; i < 3; i++) {
             ArrayList<Tile> hand = new ArrayList<Tile>();
@@ -159,7 +161,6 @@ public class Game {
 		//	board = temp;
 	}
 
-
     //Check to see if any player has no tiles left in their hand
 	// TODO Implement
     /* Commented out because players not yet implemented
@@ -194,10 +195,10 @@ public class Game {
 			System.out.print(str);
 	}
 
-	public boolean command(int player, String input) {
-		Player curPlayer = players.get(curPlayer());
+	public boolean command(int player, String input) throws IOException {
 		if (!playerTurn(player))
 			return false;
+		Player curPlayer = players.get(curPlayer());
 
 		String[] sArr = input.split(" ");
 		if (input.length() > 1) { // Commands with input arguments
@@ -212,25 +213,29 @@ public class Game {
 					curPlayer.printHand();
 					break;
 				case "u": // undo
-					undo();
+					undo(curPlayer);
 					break;
 				case "e": // end turn
+					// TODO Need to implement ending turn and validating board & current player's hand
 					endTurn();
 					break;
 			}
 		} else { // No arguments to commands
-			args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
 					placeTiles(args, curPlayer);
 					break;
 				case "g": // giving tiles to a row on the board
+					// TODO Implement
 					giveTiles(args);
 					break;
 				case "m": // moving tiles from one row to another on the board
+					// TODO Implement
 					moveTiles(args);
 					break;
 				case "s": // splitting rows on the board
+					// TODO Implement
 					splitRow(args);
 					break;
 			}
@@ -243,15 +248,20 @@ public class Game {
 
 	// Print from the help from a file
 	// TODO Have a help file and read from it
-	private void help() {
-		print("WIP help");
+	private void help() throws IOException {
+		File fHelp = new File("resources/help.txt");
+		BufferedReader br = new BufferedReader(new FileReader(fHelp));
+		String str;
+		while ((str = br.readLine()) != null) {
+			print(str);
+		}
 	}
 
 	// Reverts the player's hand and the board to the original state
 	// as when the turn started
 	// TODO Get origHand and origBoard initialized at every start of a turn
-	private boolean undo() {
-		hand = origHand;
+	private boolean undo(Player curPlayer) {
+		curPlayer.setHand(origHand);
 		board = origBoard;
 		return true;
 	}
@@ -265,10 +275,12 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
+		/* TODO Implement hasTiles
 		if (player.hasTiles(tilesIdx)) {
 			player.putTiles(tilesIdx);
 			//TODO: putting on board by index
 		}
+		 */
 		// TODO Call place tiles from hand onto board
 		return true;
 	}
