@@ -54,7 +54,6 @@ public class Game {
 		reset();
 	}
 
-
 	// TODO Reset all variables
 	// Useful for testing and restarting the game
 	public void reset() {
@@ -136,6 +135,32 @@ public class Game {
     	return true;
     }
 
+    public Player getWinner(ArrayList<Player> players) {
+		Player temp = players.get(0);
+		for (int i = 0; i < players.size(); i ++ ) {
+			if (players.get(i).getTileNumber() == 0) {
+				temp = players.get(i);
+			}
+		}
+		return temp;
+	}
+
+	public void scorePoints(ArrayList<Player> players) {
+		Player winner = getWinner(players);
+		int scoreForWinner = 0;
+		for (int i = 0; i < players.size(); i ++) {
+			if(players.get(i) != winner) {
+				scoreForWinner += players.get(i).sumOfTiles();
+				int score = -1 * players.get(i).sumOfTiles();
+				players.get(i).setScore(score);
+			}
+		}
+		for (int i = 0; i < players.size(); i ++) {
+			if(players.get(i) == winner) {
+				winner.setScore(scoreForWinner);
+			}
+		}
+	}
     // returns true if player's hand is empty
     public boolean isGameOver(Player p) {
     	if (p.getTileNumber() == 0)
