@@ -183,8 +183,5 @@ public class Server extends Thread implements AutoCloseable {
             command(input);
             Thread.sleep(10);
         }
-        Player p = game.getWinner();
-        System.out.println("Winner: " + p.getName());
-        System.out.println("Score: " + p.getScore());
     }
 }

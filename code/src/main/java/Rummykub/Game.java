@@ -140,13 +140,17 @@ public class Game {
     }
 
     public Player getWinner() {
-		Player temp = players.get(0);
+		Player p = null;
 		for (int i = 0; i < players.size(); i ++ ) {
 			if (players.get(i).getTileNumber() == 0) {
-				temp = players.get(i);
+				p = players.get(i);
 			}
 		}
-		return temp;
+		if (p != null) {
+			print("Winner: " + p.getName());
+			print("Score: " + p.getScore());
+		}
+		return p;
 	}
 
 	public void scorePoints(ArrayList<Player> players) {
@@ -177,7 +181,7 @@ public class Game {
 	public void drawTile(Player p) { // DUPLICATE FUNCTION NAME
     	p.drawTile(deck);
 	}
-	
+
 	public void endTurn() {
 		//Nothing done on board in this turn, then draw
 		if (board.boardCompare(origBoard) == 0) {
