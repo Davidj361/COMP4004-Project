@@ -10,15 +10,15 @@ import Rummykub.Tile.Colors;
 public class Game {
 	private Server server;
     private boolean gameRunning = false;
-    int turn = 0;
+    private int turn = 0;
     public Deck deck;
     private Board board, origBoard;
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
     private Hand origHand;
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
-	int numPlayers; // Needed for testing both offline and online
+	private int numPlayers; // Needed for testing both offline and online
 	private ArrayList<Player> players = new ArrayList<Player>();
     private boolean testing; // A useful flag for code when testing
 
@@ -135,7 +135,7 @@ public class Game {
     	return true;
     }
 
-    public Player getWinner(ArrayList<Player> players) {
+    public Player getWinner() {
 		Player temp = players.get(0);
 		for (int i = 0; i < players.size(); i ++ ) {
 			if (players.get(i).getTileNumber() == 0) {
@@ -161,9 +161,10 @@ public class Game {
 			}
 		}
 	}
+
     // returns true if player's hand is empty
-    public boolean isGameOver(Player p) {
-    	if (p.getTileNumber() == 0)
+    public boolean isGameOver() {
+    	if (players.get(curPlayer()).getTileNumber() == 0)
     		return true;
     	return false;
 	}
@@ -173,18 +174,21 @@ public class Game {
     	p.drawTile(deck);
 	}
 
-	public void endTurn(Player p) {
-		p.nextTurn();
+	public void endTurn() {
+		//Nothing done on board in this turn, then draw
+		if (board.boardCompare(origBoard) == 0) {
+			drawTile(players.get(curPlayer()));
+		}
+		else {
+			origBoard = board;  //update original board to finalize
+			players.get(curPlayer()).updateHand();  //update original hand to finalize
+		}
+		players.get(curPlayer()).nextTurn();
 		turn++;
 	}
 
-	public void playTurn(Player p) {
-		Board temp = new Board();
+	public void startTurn() {
 
-		// TODO: Game play based on user command
-
-		//if (temp.validityCheck())
-		//	board = temp;
 	}
 
     //Check to see if any player has no tiles left in their hand
@@ -229,7 +233,7 @@ public class Game {
 		String[] sArr = input.split(" ");
 		if (input.length() > 1) { // Commands with input arguments
 			switch(sArr[0]) {
-				case "h": // display player's hand
+				case "h": // display help message
 					help();
 					break;
 				case "db": // display the board
@@ -243,7 +247,7 @@ public class Game {
 					break;
 				case "e": // end turn
 					// TODO Need to implement ending turn and validating board & current player's hand
-					endTurn(curPlayer);
+					endTurn();
 					break;
 			}
 		} else { // No arguments to commands
@@ -298,17 +302,23 @@ public class Game {
 		// Needs at least 1 tile to place
 		if (sArr.length < 1)
 			return false;
+		// Integer index of tiles on hand
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
-		/* TODO Implement hasTiles
 		if (player.hasTiles(tilesIdx)) {
-			player.putTiles(tilesIdx);
-			//TODO: putting on board by index
+			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			board.addSet(playerTiles);
+			if (!board.checkBoard()) {
+				//TODO: error message printing: invalid placement
+				board = origBoard;
+				player.resetHand();
+				return false;
+			}
+			return true;
 		}
-		 */
-		// TODO Call place tiles from hand onto board
-		return true;
+		//TODO: error message: no such tiles
+		return false;
 	}
 
 	// Give tiles from your hand onto a row on the board
