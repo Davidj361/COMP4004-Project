@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Server extends Thread implements AutoCloseable {
@@ -175,4 +176,15 @@ public class Server extends Thread implements AutoCloseable {
         return names;
     }
 
+    public void gameLoop() throws IOException, InterruptedException {
+        while(!game.isGameOver()) {
+            System.out.println("Enter your action");
+            String input = scanner.nextLine().toLowerCase();
+            command(input);
+            Thread.sleep(10);
+        }
+        Player p = game.getWinner();
+        System.out.println("Winner: " + p.getName());
+        System.out.println("Score: " + p.getScore());
+    }
 }

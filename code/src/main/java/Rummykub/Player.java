@@ -9,7 +9,7 @@ public class Player {
     private int score; //score for current round
     private int totalScore;
     private boolean firstPlacement = false;
-    private Hand hand;
+    private Hand hand, origHand;
     public Player (String n) {
         name = n;
         turn = 1;
@@ -62,11 +62,30 @@ public class Player {
     public int sumOfTiles () {
         return hand.sumOfTiles();
     }
-    // player loses tiles from hand
-    public void putTiles(int[] tilesIndex) {
-        for (int t: tilesIndex) {
-            hand.putTile(t);
+
+    public boolean hasTiles(int[] tilesIndex) {
+        for (int index: tilesIndex) {
+            if (!hand.hasTile(index))
+                return false;
         }
+        return true;
+    }
+
+    // player put tiles from hand
+    public ArrayList<Tile> putTiles(int[] tilesIndex) {
+        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+        for (int i=tilesIndex.length-1; i>=0; i--) {
+            tileSet.add(hand.putTile(tilesIndex[i]));
+        }
+        return tileSet;
+    }
+
+    public void resetHand() {
+        hand = origHand;
+    }
+
+    public void updateHand() {
+        origHand = hand;
     }
 }
 

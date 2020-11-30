@@ -70,12 +70,7 @@ public class App {
             // Check ready up then start
             game.start();
 
-            // Command loop
-            while (true) {
-                String input = scanner.nextLine().toLowerCase();
-                server.command(input);
-                Thread.sleep(10);
-            }
+            server.gameLoop();
         }
     }
 

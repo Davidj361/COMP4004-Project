@@ -41,8 +41,14 @@ public class Hand{
         return count;
     }
 
-    public void putTile(int t) {
-        tiles.remove(t);
+    public boolean hasTile(int index) {
+        if (tiles.size() > index && tiles.get(index) != null)
+            return true;
+        return false;
+    }
+
+    public Tile putTile(int t) {
+        return tiles.remove(t);
     }
 
     //send players hand to string *used for output of players hand*
