@@ -175,13 +175,5 @@ public class Server extends Thread implements AutoCloseable {
             names.add(h.getPlayerName());
         return names;
     }
-
-    public void gameLoop() throws IOException, InterruptedException {
-        while(!game.isGameOver()) {
-            System.out.println("Enter your action");
-            String input = scanner.nextLine().toLowerCase();
-            command(input);
-            Thread.sleep(10);
-        }
-    }
+    
 }

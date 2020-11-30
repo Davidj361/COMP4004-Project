@@ -21,7 +21,6 @@ public class App {
             String hostOrConnect = scanner.nextLine().toLowerCase();
             if (hostOrConnect.equals("1")) {
                 state = 1;
-
                 host(name);
             } else if (hostOrConnect.equals("2")) {
                 state = 2;
@@ -39,7 +38,7 @@ public class App {
         }
     }
 
-    static private void host(String name) throws IOException, InterruptedException {
+    private static void host(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What port number do you want to host game on?");
         int port = scanner.nextInt();
@@ -69,12 +68,15 @@ public class App {
             Game game = new Game(server);
             // Check ready up then start
             game.start();
-
-            server.gameLoop();
+            while (true) {
+                String input = scanner.nextLine().toLowerCase();
+                server.command(input);
+                Thread.sleep(10);
+            }
         }
     }
 
-    static private void client(String name) throws UnknownHostException, IOException, InterruptedException {
+    private static void client(String name) throws UnknownHostException, IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your IP address?");
         String ip = scanner.nextLine().toLowerCase();
@@ -87,7 +89,6 @@ public class App {
                 return;
             }
             client.start();
-            // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 client.send(input);
