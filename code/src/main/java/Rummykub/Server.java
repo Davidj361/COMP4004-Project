@@ -1,6 +1,7 @@
 package Rummykub;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -164,6 +165,14 @@ public class Server extends Thread implements AutoCloseable {
 
     public int getMaxClients() {
         return maxClients;
+    }
+
+    public ArrayList<String> getNames() {
+        ArrayList<String> names = new ArrayList<String>();
+        names.add(name);
+        for (ClientHandler h: clients)
+            names.add(h.getPlayerName());
+        return names;
     }
 
 }

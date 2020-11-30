@@ -110,4 +110,6 @@ public class Client extends Thread implements AutoCloseable {
             is.read();
     }
 
+    public String getPlayerName() { return name; }
+
 }

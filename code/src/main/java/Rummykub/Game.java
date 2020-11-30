@@ -58,8 +58,12 @@ public class Game {
 	// Useful for testing and restarting the game
 	public void reset() {
 		// TODO Have players enter their name and assign that in Client class through networking
+		/*
 		for (int i = 0; i < numPlayers; i++)
 			players.add(new Player(Integer.toString(i + 1)));
+		*/
+		for (String name: server.getNames())
+			players.add(new Player(name));
 		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
