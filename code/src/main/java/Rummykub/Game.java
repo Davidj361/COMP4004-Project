@@ -154,7 +154,7 @@ public class Game {
 	}
 
 	public void scorePoints(ArrayList<Player> players) {
-		Player winner = getWinner(players);
+		Player winner = getWinner();
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
 			if(players.get(i) != winner) {
@@ -184,10 +184,9 @@ public class Game {
 
 	public void endTurn() {
 		//Nothing done on board in this turn, then draw
-		if (board.boardCompare(origBoard) == 0) {
+		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
 			drawTile(players.get(curPlayer()));
-		}
-		else {
+		} else {
 			origBoard = board;  //update original board to finalize
 			players.get(curPlayer()).updateHand();  //update original hand to finalize
 		}

@@ -175,5 +175,5 @@ public class Server extends Thread implements AutoCloseable {
             names.add(h.getPlayerName());
         return names;
     }
-    
+
 }
