@@ -72,11 +72,7 @@ public class App {
             Game game = new Game(server);
             game.launch();
 
-            while (true) {
-                String input = scanner.nextLine().toLowerCase();
-                server.command(input);
-                Thread.sleep(10);
-            }
+            server.gameLoop();
         }
     }
 

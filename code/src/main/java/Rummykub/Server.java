@@ -5,10 +5,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Server extends Thread implements AutoCloseable {
-
+    Scanner scanner = new Scanner(System.in);
     final static int maxClients = 3;
     static int port = 27015;
     ServerSocket socket;
@@ -149,4 +150,15 @@ public class Server extends Thread implements AutoCloseable {
         return clients.size();
     }
 
+    public void gameLoop() throws IOException, InterruptedException {
+        while(!game.isGameOver()) {
+            System.out.println("Enter your action");
+            String input = scanner.nextLine().toLowerCase();
+            command(input);
+            Thread.sleep(10);
+        }
+        Player p = game.getWinner();
+        System.out.println("Winner: " + p.getName());
+        System.out.println("Score: " + p.getScore());
+    }
 }
