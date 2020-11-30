@@ -39,8 +39,8 @@ public class ServerTester extends MyTestCase {
             server.start();
 
             assertTrue(server.isOpen());
-            assertTrue(server.socket.isBound());
-            assertFalse(server.socket.isClosed());
+            assertTrue(server.isBound());
+            assertFalse(server.isClosed());
 
             assertTrue(server.stopHost());
             assertTrue(server.host());
@@ -55,20 +55,20 @@ public class ServerTester extends MyTestCase {
             assertTrue(server.host());
             server.start();
             Client[] clients = new Client[2];
-            for (int i = 0; i < Server.maxClients; i++) {
+            for (int i = 0; i < server.getMaxClients(); i++) {
                 clients[i] = new Client();
                 assertTrue(clients[i].connect());
             }
-            while (server.clientsConnected != Server.maxClients)
+            while (server.getNumClients() != server.getMaxClients())
                 //noinspection BusyWait
                 Thread.sleep(10);
-            assertEquals(server.clientsConnected, Server.maxClients);
+            assertEquals(server.getNumClients(), server.getMaxClients());
 
             // Are the server's client sockets still open/connected to server when stopped?
             assertTrue(server.stopHost());
-            for (int i=0; i<server.clientsConnected; i++) {
-                assertFalse(server.clients[i].isConnected());
-                assertTrue(server.clients[i].isClosed());
+            for (int i=0; i<server.getNumClients(); i++) {
+                assertFalse(server.clients.get(i).isConnected());
+                assertTrue(server.clients.get(i).isClosed());
             }
         }
     }

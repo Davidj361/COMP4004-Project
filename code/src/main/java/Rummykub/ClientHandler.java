@@ -12,6 +12,7 @@ public class ClientHandler extends Thread {
     final private Server server;
     private Socket socket;
     final private int clientId;
+    private String name;
     boolean testing;
 
     ClientHandler(Server s, Socket ss, int i) throws IOException {
@@ -93,6 +94,8 @@ public class ClientHandler extends Thread {
     public boolean isClosed() {
         return socket.isClosed();
     }
+
+    public String getPlayerName() { return name; }
 
 }
 

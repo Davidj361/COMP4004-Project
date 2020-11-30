@@ -99,8 +99,9 @@ public class Board {
 		return true;
 	}
 
-
-
-
-
+	// Return true if b is the same as this board, otherwise false
+	// TODO Implement this function
+	public boolean compare(Board b) {
+		return false;
+	}
 }

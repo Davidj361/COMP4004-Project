@@ -58,14 +58,18 @@ public class Game {
 	// Useful for testing and restarting the game
 	public void reset() {
 		// TODO Have players enter their name and assign that in Client class through networking
+		/*
 		for (int i = 0; i < numPlayers; i++)
 			players.add(new Player(Integer.toString(i + 1)));
+		*/
+		for (String name: server.getNames())
+			players.add(new Player(name));
 		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
 	}
 
-    public void startGame() {
+    public void start() {
 		// reset() Should already be called beforehand
         // Add all players
         for (int i = 0; i < 3; i++) {
@@ -136,17 +140,21 @@ public class Game {
     }
 
     public Player getWinner() {
-		Player temp = players.get(0);
+		Player p = null;
 		for (int i = 0; i < players.size(); i ++ ) {
 			if (players.get(i).getTileNumber() == 0) {
-				temp = players.get(i);
+				p = players.get(i);
 			}
 		}
-		return temp;
+		if (p != null) {
+			print("Winner: " + p.getName());
+			print("Score: " + p.getScore());
+		}
+		return p;
 	}
 
 	public void scorePoints(ArrayList<Player> players) {
-		Player winner = getWinner(players);
+		Player winner = getWinner();
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
 			if(players.get(i) != winner) {
@@ -176,10 +184,9 @@ public class Game {
 
 	public void endTurn() {
 		//Nothing done on board in this turn, then draw
-		if (board.boardCompare(origBoard) == 0) {
+		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
 			drawTile(players.get(curPlayer()));
-		}
-		else {
+		} else {
 			origBoard = board;  //update original board to finalize
 			players.get(curPlayer()).updateHand();  //update original hand to finalize
 		}

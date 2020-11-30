@@ -8,41 +8,23 @@ public class App {
     private boolean readyUp = false;
 
     public static void main (String [] args) throws IOException, InterruptedException {
+        System.out.println("Welcome to Rummikub!");
+        // Print intro.txt
         Scanner scanner = new Scanner(System.in);
-        String ipAddress = "";
-        int port;
-        int numberOfPlayers;
-        String hostOrConnect = "";
 
-        System.out.println("What is you name?");
-        String name = scanner.nextLine().toLowerCase();
-        while (true) {
+        System.out.println("What is your player name?");
+        String name = scanner.nextLine();
+        int state = 0;
+        while (state == 0) {
             System.out.println("Would you like to host a new game or connect to a host?");
             System.out.println("1: Host, 2: Connect");
-            hostOrConnect = scanner.nextLine().toLowerCase();
-            if (hostOrConnect.compareTo("1") == 0) {
-                System.out.println("What port number do you want to host game on?");
-                port = scanner.nextInt();
-                while (true) {
-                    System.out.println("How many players would you like to have in your game");
-                    System.out.println("Note: A Game can have a minimum of 2 players and maximum of 4 players");
-                    numberOfPlayers = scanner.nextInt();
-                    if (numberOfPlayers < 2 || numberOfPlayers > 4) {
-                        System.out.println("Invalid input. number of players must be between 2 and 4");
-                    }
-                    else {
-                        break;
-                    }
-                }
-                host();
-                break;
-            } else if (hostOrConnect.compareTo("2") == 0) {
-                System.out.println("What is your IP address?");
-                ipAddress = scanner.nextLine().toLowerCase();
-                System.out.println("What port number do you want to connect to?");
-                port = scanner.nextInt();
-                client();
-                break;
+            String hostOrConnect = scanner.nextLine().toLowerCase();
+            if (hostOrConnect.equals("1")) {
+                state = 1;
+                host(name);
+            } else if (hostOrConnect.equals("2")) {
+                state = 2;
+                client(name);
             } else {
                 System.out.println("invalid input");
             }
@@ -56,35 +38,56 @@ public class App {
         }
     }
 
-    static private void host() throws IOException, InterruptedException {
-        try (Server server = new Server()) {
+    private static void host(String name) throws IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What port number do you want to host game on?");
+        int port = scanner.nextInt();
+        int numberOfPlayers;
+        while (true) {
+            System.out.println("How many players would you like to have in your game?");
+            System.out.println("Note: A Game can have a minimum of 2 players and maximum of 4 players");
+           numberOfPlayers = scanner.nextInt();
+            if (numberOfPlayers < 2 || numberOfPlayers > 4) {
+                System.out.println("Invalid input. number of players must be between 2 and 4");
+            }
+            else
+                break;
+        }
+
+        try (Server server = new Server(name, port, numberOfPlayers)) {
             // Setup network
             if (!server.host()) {
                 System.out.println("Could not host.");
                 return;
             }
-            @SuppressWarnings("resource")
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             server.start();
-            while (server.clientsConnected != Server.maxClients)
+            while (server.getNumClients() != server.getMaxClients())
                 Thread.sleep(10);
 
             Game game = new Game(server);
-            game.launch();
-
-            server.gameLoop();
+            // Check ready up then start
+            game.start();
+            while (true) {
+                String input = scanner.nextLine().toLowerCase();
+                server.command(input);
+                Thread.sleep(10);
+            }
         }
     }
 
-    static private void client() throws UnknownHostException, IOException, InterruptedException {
+    private static void client(String name) throws UnknownHostException, IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What is your IP address?");
+        String ip = scanner.nextLine().toLowerCase();
+        System.out.println("What port number do you want to connect to?");
+        int port = scanner.nextInt();
         // Setup network
-        try (Client client = new Client()) {
+        try (Client client = new Client(name, ip, port)) {
             if (!client.connect()) {
                 System.out.println("Could not connect.");
                 return;
             }
-            @SuppressWarnings("resource")
-            Scanner scanner = new Scanner(System.in);
             client.start();
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
@@ -94,5 +97,5 @@ public class App {
         }
     }
 
-    }
+}
 
