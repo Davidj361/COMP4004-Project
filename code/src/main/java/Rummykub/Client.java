@@ -11,8 +11,17 @@ import java.net.UnknownHostException;
 public class Client extends Thread implements AutoCloseable {
 
     String hostName = "127.0.0.1";
-    static int port = 27015;
+    int port = 27015;
+    String name;
     Socket socket;
+
+    Client() {}
+
+    Client(String name, String hostName, int port) {
+        this.name = name;
+        this.hostName = hostName;
+        this.port = port;
+    }
 
     public void run() {
         System.out.println("Client Running");
@@ -41,7 +50,7 @@ public class Client extends Thread implements AutoCloseable {
         }
     }
 
-    public boolean connect() throws UnknownHostException, IOException {
+    public boolean connect() throws IOException {
         if (!isOpen()) {
             try {
                 socket = new Socket(hostName, port);

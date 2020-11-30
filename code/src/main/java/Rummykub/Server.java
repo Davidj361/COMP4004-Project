@@ -9,10 +9,11 @@ import java.util.ArrayList;
 
 public class Server extends Thread implements AutoCloseable {
 
-    final static int maxClients = 3;
-    static int port = 27015;
-    ServerSocket socket;
-    private ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
+    private int maxClients = 4;
+    private int port = 27015;
+    private String name = "unnamed";
+    private ServerSocket socket;
+    ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game;
     boolean testing;
 
@@ -21,6 +22,15 @@ public class Server extends Thread implements AutoCloseable {
     }
     Server(boolean b) {
         testing = b;
+    }
+    Server(String name, int port, int numPlayers) {
+        this(name, port, numPlayers, false);
+    }
+    Server(String name, int port, int numPlayers, boolean b) {
+        this.name = name;
+        this.port = port;
+        this.maxClients = numPlayers;
+        this.testing = b;
     }
 
     public void run() {
@@ -89,6 +99,9 @@ public class Server extends Thread implements AutoCloseable {
         stopHost();
     }
 
+    public boolean isBound() { return socket.isBound(); }
+    public boolean isClosed() { return socket.isClosed(); }
+
     public boolean send(final int iClient, String str) throws IOException {
         if (clients.get(iClient) == null)
             throw new IllegalStateException();
@@ -139,7 +152,7 @@ public class Server extends Thread implements AutoCloseable {
     }
 
 
-    private boolean commHelper(int player, String str) {
+    private boolean commHelper(int player, String str) throws IOException {
         if (!game.playerTurn(player))
             return false;
         return game.command(player, str);
@@ -147,6 +160,10 @@ public class Server extends Thread implements AutoCloseable {
 
     public int getNumClients() {
         return clients.size();
+    }
+
+    public int getMaxClients() {
+        return maxClients;
     }
 
 }

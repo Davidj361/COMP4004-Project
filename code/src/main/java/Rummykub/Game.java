@@ -65,7 +65,7 @@ public class Game {
 		board = new Board();
 	}
 
-    public void startGame() {
+    public void start() {
 		// reset() Should already be called beforehand
         // Add all players
         for (int i = 0; i < 3; i++) {
@@ -174,6 +174,7 @@ public class Game {
 	}
 
 	public void endTurn(Player p) {
+		// Check if everything is valid
 		p.nextTurn();
 		turn++;
 	}
