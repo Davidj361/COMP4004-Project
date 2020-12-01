@@ -112,4 +112,8 @@ public class Client extends Thread implements AutoCloseable {
 
     public String getPlayerName() { return name; }
 
+    public void sendName() throws IOException {
+        send("Name: "+name);
+    }
+
 }

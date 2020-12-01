@@ -68,6 +68,7 @@ public class App {
             Game game = new Game(server);
             // Check ready up then start
             game.start();
+            // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 server.command(input);
@@ -89,6 +90,8 @@ public class App {
                 return;
             }
             client.start();
+            client.sendName(); // Tell the server the client's name
+            // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 client.send(input);

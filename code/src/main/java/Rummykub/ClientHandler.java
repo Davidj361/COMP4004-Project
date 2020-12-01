@@ -12,7 +12,7 @@ public class ClientHandler extends Thread {
     final private Server server;
     private Socket socket;
     final private int clientId;
-    private String name;
+    private String name = "unnamed";
     boolean testing;
 
     ClientHandler(Server s, Socket ss, int i) throws IOException {
@@ -33,12 +33,12 @@ public class ClientHandler extends Thread {
             try {
                 String str = read();
                 if (str != null) {
+                    if (str.equals("unnamed"))
+                        name = str;
                     if (testing)
                         System.out.println(str);
-                    /* Game class from pirates
                     else
                         server.command(clientId, str);
-                     */
                 }
             }
             catch (SocketException e) {
