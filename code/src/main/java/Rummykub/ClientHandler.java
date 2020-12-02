@@ -33,7 +33,6 @@ public class ClientHandler extends Thread {
             try {
                 String str = read();
                 if (str != null) {
-                    System.out.println("hi");
                     if (str.contains("Name: ")) {
                         name = str.substring(6); // Length of "Name: "
                         server.print("Client " + clientId + " is named as: " + name+"\n");
@@ -92,10 +91,14 @@ public class ClientHandler extends Thread {
     }
 
     public boolean isConnected() {
+        if (socket == null)
+            return false;
         return socket.isConnected();
     }
 
     public boolean isClosed() {
+        if (socket == null)
+            return true;
         return socket.isClosed();
     }
 

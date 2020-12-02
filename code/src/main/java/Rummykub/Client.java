@@ -11,13 +11,18 @@ public class Client extends Thread implements AutoCloseable {
     int port = 27015;
     String name;
     Socket socket;
+    boolean testing = false;
+    String lastResponse = "";
 
     Client() {}
-
     Client(String name, String hostName, int port) {
+        this(name, hostName, port, false);
+    }
+    Client(String name, String hostName, int port, boolean b) {
         this.name = name;
         this.hostName = hostName;
         this.port = port;
+        testing = b;
     }
 
     public void run() {
@@ -25,8 +30,11 @@ public class Client extends Thread implements AutoCloseable {
         while (isOpen()) {
             try {
                 String str = read();
-                if (str != null)
+                if (str != null && str != "") {
+                    if (testing)
+                        lastResponse = str;
                     System.out.print(str);
+                }
             } catch (SocketException e) {
                 // Server closed
                 try {
@@ -87,7 +95,7 @@ public class Client extends Thread implements AutoCloseable {
     public boolean send(String str) throws IOException {
         if (!isOpen() || socket == null)
             return false;
-        System.out.println("send command");
+        System.out.print("client send: ");
         System.out.println(str);
         ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
         dOut.writeUTF(str);

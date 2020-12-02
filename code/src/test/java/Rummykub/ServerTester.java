@@ -73,4 +73,38 @@ public class ServerTester extends MyTestCase {
         }
     }
 
+    // Check command loop
+    @Test
+    public void testCommandLoop()  throws IOException, InterruptedException {
+        // Server(String name, int port, int numPlayers, boolean b)
+        try (Server server = new Server("testCommandLoop", 27015, 2)) {
+            assertTrue(server.host());
+            server.start();
+            // Client(name, ip, port, testing)
+            Client client = new Client("the client", "localhost", 27015, true);
+            assertTrue(client.connect());
+            client.start();
+            client.sendName();
+
+            while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
+                Thread.sleep(10);
+            assertEquals(server.getNumClients(), server.getMaxClients());
+            Game game = new Game(server);
+            client.send("asdf");
+
+            String recv = "";
+            while (!recv.equals("It is not your turn yet.")) {
+                recv = client.lastResponse;
+                Thread.sleep(10);
+            }
+
+            // Are the server's client sockets still open/connected to server when stopped?
+            assertTrue(server.stopHost());
+            for (int i=0; i<server.getNumClients(); i++) {
+                assertFalse(server.clients.get(i).isConnected());
+                assertTrue(server.clients.get(i).isClosed());
+            }
+        }
+    }
+
 }

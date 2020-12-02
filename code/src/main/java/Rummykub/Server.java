@@ -17,7 +17,6 @@ public class Server extends Thread implements AutoCloseable {
     private ServerSocket socket;
     ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game = null;
-    private boolean ready = false;
     boolean testing;
 
     Server() {
@@ -189,7 +188,5 @@ public class Server extends Thread implements AutoCloseable {
         }
         return names;
     }
-
-    public void setReady(boolean b) { ready = b; }
 
 }
