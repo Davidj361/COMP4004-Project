@@ -63,22 +63,11 @@ public class Game {
 		origBoard = board;
 		turn = 1;
 
-		for (int i = 0; i < 3; i++) {
-			ArrayList<Tile> hand = new ArrayList<Tile>();
-			//Deal 14 tiles to each player
-			for (int j = 0; j < 14; j++) {
-				hand.add(deck.dealTile());
-			}
-			// TODO Have players enter their name and assign that in Client class through networking
-		/*
-		for (int i = 0; i < numPlayers; i++)
-			players.add(new Player(Integer.toString(i + 1)));
-		*/
-			for (String name: server.getNames())
-				players.add(new Player(name));
-			// TODO: add player to players arraylist
-			//Player p = new Player(hand, "NAME");
-			//players.add(p);
+		for (String name: server.getNames()) {
+			Player p = new Player(name);
+			Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
+			p.setHand(hand);
+			players.add(p);
 		}
 	}
 

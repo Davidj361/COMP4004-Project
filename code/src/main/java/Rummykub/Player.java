@@ -57,8 +57,6 @@ public class Player {
         hand.addTile(d.dealTile());
     }
 
-    public void setHand(Hand h) { hand = h; }
-
     public int sumOfTiles () {
         return hand.sumOfTiles();
     }
@@ -86,6 +84,10 @@ public class Player {
 
     public void updateHand() {
         origHand = hand;
+    }
+
+    public void setHand(Hand h) {
+        origHand = hand = h;
     }
 }
 
