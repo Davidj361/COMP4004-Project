@@ -12,7 +12,8 @@ public class Game {
     private boolean gameRunning = false;
     private int turn = 0;
     public Deck deck;
-    private Board board, origBoard;
+    private Board board = new Board();
+    private Board origBoard = new Board();
     private Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
     private Hand origHand;
@@ -24,6 +25,7 @@ public class Game {
 
 
 	// Constructors
+	//For testing
 	public Game() {
 		this(false);
 	}
@@ -295,7 +297,7 @@ public class Game {
 
 	// Places tiles from active player's hand to the board
 	// “p 1 3 4 7”
-	private boolean placeTiles(String[] sArr, Player player) {
+	public boolean placeTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place
 		if (sArr.length < 1)
 			return false;

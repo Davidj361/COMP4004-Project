@@ -37,6 +37,8 @@ public class Player {
 
     public void printHand() { hand.printHand(); }
 
+    public boolean getFirstPlacement() { return firstPlacement; }
+
     public void setFirstPlacement() {
         firstPlacement = true;
     }
@@ -62,7 +64,7 @@ public class Player {
         for (int index: tilesIndex) {
             if (!hand.hasTile(index))
                 return false;
-            sum += hand.tiles.get(index).getValue();
+            sum += hand.tiles.get(index - 1).getValue();
         }
         // if first placement, sum of tile values must be at least 30
         if (!firstPlacement && sum<30)
@@ -74,7 +76,7 @@ public class Player {
     public ArrayList<Tile> putTiles(int[] tilesIndex) {
         ArrayList<Tile> tileSet = new ArrayList<Tile>();
         for (int i=tilesIndex.length-1; i>=0; i--) {
-            tileSet.add(hand.putTile(tilesIndex[i]));
+            tileSet.add(hand.putTile(tilesIndex[i] - 1));
         }
         return tileSet;
     }

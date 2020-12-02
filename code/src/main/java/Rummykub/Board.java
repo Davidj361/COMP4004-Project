@@ -77,12 +77,14 @@ public class Board {
 			int type = 0;
 			int valueCorrect = 0;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
+
+
 			if(board.get(i).size() < 3){
 				return false;
 			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
 				colors.add(board.get(i).get(j).color);
-				if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
+				if((board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 || board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() + 1) && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
 					valueCorrect++;
 					type = 1;
 				} else {
