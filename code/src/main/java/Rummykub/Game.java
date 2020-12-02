@@ -73,7 +73,7 @@ public class Game {
 	}
 
 	// Helper function for Game.reset(..)
-	private Player createPlayer(String name) {
+	private void createPlayer(String name) {
 		Player p = new Player(name);
 		Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
 		p.setHand(hand);
@@ -188,9 +188,9 @@ public class Game {
 
 	// Prints the same string to all players
 	public void print(String str) {
-		if (server != null)
+		if (server != null) // Multiplayer mode
 			server.print(str);
-		else
+		else // Single player mode
 			System.out.print(str);
 	}
 

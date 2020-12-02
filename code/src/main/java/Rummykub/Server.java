@@ -17,6 +17,7 @@ public class Server extends Thread implements AutoCloseable {
     private ServerSocket socket;
     ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game;
+    private boolean ready = false;
     boolean testing;
 
     Server() {
@@ -175,5 +176,7 @@ public class Server extends Thread implements AutoCloseable {
             names.add(h.getPlayerName());
         return names;
     }
+
+    public void setReady(boolean b) { ready = b; }
 
 }

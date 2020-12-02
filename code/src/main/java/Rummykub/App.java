@@ -67,6 +67,8 @@ public class App {
             while (server.getNumClients() != server.getMaxClients())
                 Thread.sleep(10);
 
+            // TODO Add ready up functionality
+            server.setReady(true);
             Game game = new Game(server);
             // Check ready up then start
             game.reset();
@@ -80,7 +82,7 @@ public class App {
     }
 
     // Connect to a host and play the game
-    private static void client(String name) throws UnknownHostException, IOException, InterruptedException {
+    private static void client(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your IP address?");
         String ip = scanner.nextLine().toLowerCase();
