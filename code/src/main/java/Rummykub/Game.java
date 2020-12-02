@@ -317,14 +317,15 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			if (!board.checkBoard()) {
-				System.out.println("Invalid placement!");
+				print("Invalid placement!");
 				board = origBoard;
 				player.resetHand();
 				return false;
 			}
+			player.setFirstPlacement();
 			return true;
 		}
-		System.out.println("You cannot put those tiles!");
+		print("You cannot put those tiles!");
 		return false;
 	}
 

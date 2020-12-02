@@ -37,10 +37,6 @@ public class Player {
 
     public void printHand() { hand.printHand(); }
 
-    public boolean getFirstPlacement() {
-        return firstPlacement;
-    }
-
     public void setFirstPlacement() {
         firstPlacement = true;
     }
@@ -71,7 +67,7 @@ public class Player {
             sum += hand.tiles.get(index).getValue();
         }
         // if first placement, sum of tile values must be at least 30
-        if (turn==1 && sum<30)
+        if (!firstPlacement && sum<30)
             return false;
         return true;
     }
