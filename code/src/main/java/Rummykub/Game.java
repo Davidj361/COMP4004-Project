@@ -186,7 +186,7 @@ public class Game {
 	// Valid, no manipulates and drawTile
 	public boolean endTurn() {
 		// Were board manipulations valid?
-		if (!board.valid)
+		if (!board.checkBoard())
 			return false;
 
 		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
@@ -221,6 +221,8 @@ public class Game {
 			System.out.print(str);
 	}
 
+	// The command handler
+	// Parses text given by a client to Server
 	public boolean command(int player, String input) throws IOException {
 		if (!playerTurn(player))
 			return false;

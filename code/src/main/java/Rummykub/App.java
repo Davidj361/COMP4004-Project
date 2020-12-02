@@ -32,12 +32,14 @@ public class App {
 
     }
 
+    // Are all players ready? If so then start the game
     public void readyUp (int numOfPlayers, Server server) {
         if (numOfPlayers == server.getNumClients()) {
             readyUp = true;
         }
     }
 
+    // Host the game and play it at the same time
     private static void host(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What port number do you want to host game on?");
@@ -67,7 +69,7 @@ public class App {
 
             Game game = new Game(server);
             // Check ready up then start
-            game.start();
+            game.reset();
             // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
@@ -77,6 +79,7 @@ public class App {
         }
     }
 
+    // Connect to a host and play the game
     private static void client(String name) throws UnknownHostException, IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your IP address?");
