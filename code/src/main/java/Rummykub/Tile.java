@@ -13,15 +13,16 @@ public class Tile implements Comparable<Tile> {
     }
 
     //Get tile value
-    public int getValue() {
-        return this.value;
-    }
+    public int getValue() { return this.value; }
 
     //get tile color
     public Colors getColor() {
         return this.color;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
 //Check all tiles colours and values
     @Override
     public String toString() {

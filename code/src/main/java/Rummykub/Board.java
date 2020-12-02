@@ -12,12 +12,20 @@ public class Board {
 
 	//Add a new set to the board
 	public void addSet(ArrayList<Tile> set) {
+		set = addJoker(set);
 		board.add(set);
+		Collections.sort(board.get(board.size()-1), new Comparator<Tile>() {
+			@Override
+			public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
+		});
 	}
 
 	//Add specific tiles from hand to board
 	public void addToCurrent(ArrayList<Tile> tiles, int row){
-		board.get(row).addAll(tiles);
+		ArrayList<Tile> checkRow = board.get(row);
+		checkRow.addAll(tiles);
+		checkRow = addJoker(checkRow);
+		board.set(row,checkRow);
 		Collections.sort(board.get(row), new Comparator<Tile>() {
 			@Override
 			public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
@@ -81,33 +89,17 @@ public class Board {
 		for (int i = 0; i < board.size(); i++) {
 			int type = 0;
 			int valueCorrect = 0;
-			int joker = 1000;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
 			if(board.get(i).size() < 3){
 				return false;
 			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
-				if(board.get(i).get(j).getColor() == Tile.Colors.JOKER){
-					if(type == 1){
-						joker = board.get(i).get(j -1 ).getValue() + 1;
-					}
-					if(type == 2){
-						joker = board.get(i).get(j - 1).getValue();
-					}else{
-						if(board.get(i).get(j-1).getValue() == board.get(i).get(j + 1).getValue() - 2){
-							joker = board.get(i).get(j-1).getValue()+1;
-						}else{
-							joker = board.get(i).get(j-1).getValue();
-
-						}
-					}
-				}
 				colors.add(board.get(i).get(j).color);
-				if((joker == board.get(i).get(j + 1).getValue() - 1 || board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1) && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
+				if( board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
 					valueCorrect++;
 					type = 1;
 				} else {
-					if((joker == board.get(i).get(j + 1).getValue() || board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue()) && (!colors.contains(board.get(i).get(j+1).getColor()) && colors.size() < 4) && (type == 0 || type == 2)){
+					if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() && (!colors.contains(board.get(i).get(j+1).getColor()) && colors.size() < 4) && (type == 0 || type == 2)){
 						valueCorrect++;
 						type = 2;
 					}
@@ -124,5 +116,47 @@ public class Board {
 	// TODO Implement this function
 	public boolean compare(Board b) {
 		return false;
+	}
+
+
+	public ArrayList<Tile> addJoker(ArrayList<Tile> row){
+		for(int i = 0; i < row.size(); i++) {
+			if (row.get(i).getColor() == Tile.Colors.JOKER){
+				if(i == 0 &&row.get(1).getValue() == row.get(2).getValue()) {
+						row.get(i).setValue(row.get(i + 1).getValue());
+				}
+				else if (i == 1 && row.get(0).getValue() == row.get(2).getValue()) {
+						row.get(i).setValue(row.get(i + 1).getValue());
+					}
+				else if (i == 2 && row.get(0).getValue() == row.get(1).getValue()) {
+					row.get(i).setValue(row.get(i - 1).getValue());
+				} else {
+					row.remove(i);
+					Collections.sort(row, new Comparator<Tile>() {
+						@Override
+						public int compare(Tile tile1, Tile tile2) {
+							return Integer.compare(tile1.getValue(), tile2.getValue());
+						}
+					});
+					for (int j = 0; j < row.size() - 1; j++) {
+						if (row.get(j).getValue() != row.get(j + 1).getValue() - 1) {
+							Tile tile = new Tile(row.get(j).getValue() + 1, Tile.Colors.JOKER);
+							row.add(tile);
+							return row;
+						}
+					}
+					if (row.get(row.size()).getValue() == 13) {
+						Tile tile = new Tile(row.get(0).getValue() - 1, Tile.Colors.JOKER);
+						row.add(tile);
+						return row;
+					} else {
+						Tile tile = new Tile(row.get(row.size()).getValue() + 1, Tile.Colors.JOKER);
+						row.add(tile);
+						return row;
+					}
+				}
+			}
+		}
+		return row;
 	}
 }
