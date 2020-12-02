@@ -69,6 +69,14 @@ public class Hand{
         tiles.add(newTileIndex, tiles.remove(tileIndex));
 
     }
+
+    public boolean compare(Hand origHand){
+        if(tiles.size() < origHand.getSize()){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
 
 
