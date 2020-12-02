@@ -36,10 +36,10 @@ public class ClientHandler extends Thread {
                     if (str.contains("Name: ")) {
                         name = str.substring(6); // Length of "Name: "
                         server.print("Client " + clientId + " is named as: " + name+"\n");
-                        return;
+                        continue;
                     }
                     if (testing)
-                        System.out.println(str);
+                        server.print(str+"\n");
                     else
                         server.command(clientId, str);
                 }
