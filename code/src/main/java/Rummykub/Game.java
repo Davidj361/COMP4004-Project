@@ -71,6 +71,7 @@ public class Game {
 				createPlayer("player"+i);
 		}
 		print("GAME IS RESET!\n");
+		print("Players size: "+players.size()+"\n");
 	}
 
 	// Helper function for Game.reset(..)

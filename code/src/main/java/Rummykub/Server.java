@@ -147,6 +147,7 @@ public class Server extends Thread implements AutoCloseable {
     // When client asks for a command
     public boolean command(int clientId, String str) throws IOException {
         final int player = clientId+1;
+        print("Received command: "+str+"\n");
         if (!commHelper(player, str)) {
             send(clientId, "It is not your turn yet.\n");
             return false;

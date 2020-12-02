@@ -56,7 +56,7 @@ public class App {
                 break;
         }
 
-        try (Server server = new Server(name, port, numberOfPlayers, true)) {
+        try (Server server = new Server(name, port, numberOfPlayers)) {
             // Setup network
             if (!server.host()) {
                 System.out.println("Could not host.");
@@ -69,14 +69,12 @@ public class App {
 
             // TODO Add ready up functionality
             server.setReady(true);
-            Game game = new Game(server);
             // Check ready up then start
-            game.reset();
+            Game game = new Game(server);
             // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 server.command(input);
-                System.out.println("Command: "+input);
                 Thread.sleep(10);
             }
         }
@@ -99,7 +97,6 @@ public class App {
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 client.send(input);
-                System.out.println("Command: "+input);
                 Thread.sleep(10);
             }
         }
