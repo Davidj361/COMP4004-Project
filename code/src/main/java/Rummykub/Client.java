@@ -96,8 +96,6 @@ public class Client extends Thread implements AutoCloseable {
     public boolean send(String str) throws IOException {
         if (!isOpen() || socket == null || str.equals(""))
             return false;
-        System.out.print("client send: ");
-        System.out.println(str);
         ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
         dOut.writeUTF(str);
         dOut.flush();

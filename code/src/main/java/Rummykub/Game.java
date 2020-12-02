@@ -70,8 +70,6 @@ public class Game {
 			for (int i=0; i<numPlayers; i++)
 				createPlayer("player"+i);
 		}
-		print("GAME IS RESET!\n");
-		print("Players size: "+players.size()+"\n");
 	}
 
 	// Helper function for Game.reset(..)
@@ -204,26 +202,7 @@ public class Game {
 		Player curPlayer = players.get(curPlayer());
 
 		String[] sArr = input.split(" ");
-		if (input.length() > 1) { // Commands with input arguments
-			switch(sArr[0]) {
-				case "h": // display help message
-					help();
-					break;
-				case "db": // display the board
-					board.printBoard();
-					break;
-				case "dh": // display player's hand
-					curPlayer.printHand();
-					break;
-				case "u": // undo
-					undo(curPlayer);
-					break;
-				case "e": // end turn
-					// TODO Need to implement ending turn and validating board & current player's hand
-					endTurn();
-					break;
-			}
-		} else { // No arguments to commands
+		if (sArr.length > 1) { // Commands with input arguments
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
@@ -240,6 +219,25 @@ public class Game {
 				case "s": // splitting rows on the board
 					// TODO Implement
 					splitRow(args);
+					break;
+			}
+		} else { // No arguments to commands
+			switch(sArr[0]) {
+				case "h": // display help message
+					help();
+					break;
+				case "db": // display the board
+					board.printBoard();
+					break;
+				case "dh": // display player's hand
+					curPlayer.printHand();
+					break;
+				case "u": // undo
+					undo(curPlayer);
+					break;
+				case "e": // end turn
+					// TODO Need to implement ending turn and validating board & current player's hand
+					endTurn();
 					break;
 			}
 		}
@@ -280,7 +278,7 @@ public class Game {
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
 		String str;
 		while ((str = br.readLine()) != null) {
-			print(str);
+			print(str+"\n");
 		}
 	}
 
