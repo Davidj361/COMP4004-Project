@@ -27,7 +27,7 @@ public class Game {
 	// Constructors
 	//For testing
 	public Game() {
-//		this(false);
+		this(false);
 	}
 	// Single player
 	public Game(boolean b) {
