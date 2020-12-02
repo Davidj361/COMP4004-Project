@@ -70,10 +70,10 @@ public class Board {
 			}
 			for (int j = 0; j < board.get(i).size(); j++) {
 				if (board.get(i).get(j).getColor() == Tile.Colors.JOKER) {
-					printBoard += board.get(i).get(j).getColor() + "  }";
+					printBoard += board.get(i).get(j).getColor() + "}  ";
 				} else {
 					printBoard += board.get(i).get(j).getValue() + "  ";
-					printBoard += board.get(i).get(j).getColor() + "  }";
+					printBoard += board.get(i).get(j).getColor() + "}  ";
 				}
 			}
 			printBoard += "\n";
@@ -89,13 +89,17 @@ public class Board {
 		for (int i = 0; i < board.size(); i++) {
 			int type = 0;
 			int valueCorrect = 0;
+			Tile.Colors color = null;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
 			if(board.get(i).size() < 3){
 				return false;
 			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
+				if(board.get(i).get(j).getColor() != Tile.Colors.JOKER && color == null){
+					color = board.get(i).get(j).getColor();
+				}
 				colors.add(board.get(i).get(j).color);
-				if( board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
+				if( board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && (board.get(i).get(j).getColor() == Tile.Colors.JOKER || (board.get(i).get(j).getColor() == color && board.get(i).get(j+1).getColor() == color ||  board.get(i).get(j+1).getColor() == Tile.Colors.JOKER)) && (type == 0 || type == 1)) {
 					valueCorrect++;
 					type = 1;
 				} else {
@@ -124,12 +128,15 @@ public class Board {
 			if (row.get(i).getColor() == Tile.Colors.JOKER){
 				if(i == 0 &&row.get(1).getValue() == row.get(2).getValue()) {
 						row.get(i).setValue(row.get(i + 1).getValue());
+						return row;
 				}
 				else if (i == 1 && row.get(0).getValue() == row.get(2).getValue()) {
 						row.get(i).setValue(row.get(i + 1).getValue());
+						return row;
 					}
 				else if (i == 2 && row.get(0).getValue() == row.get(1).getValue()) {
 					row.get(i).setValue(row.get(i - 1).getValue());
+					return row;
 				} else {
 					row.remove(i);
 					Collections.sort(row, new Comparator<Tile>() {
@@ -145,12 +152,12 @@ public class Board {
 							return row;
 						}
 					}
-					if (row.get(row.size()).getValue() == 13) {
+					if (row.get(row.size()-1).getValue() == 13) {
 						Tile tile = new Tile(row.get(0).getValue() - 1, Tile.Colors.JOKER);
 						row.add(tile);
 						return row;
 					} else {
-						Tile tile = new Tile(row.get(row.size()).getValue() + 1, Tile.Colors.JOKER);
+						Tile tile = new Tile(row.get(row.size()-1).getValue() + 1, Tile.Colors.JOKER);
 						row.add(tile);
 						return row;
 					}
