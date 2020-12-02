@@ -84,16 +84,14 @@ public class App {
     // Connect to a host and play the game
     private static void client(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What is your IP address?");
+        System.out.println("What is the IP/hostname that you wish to connect to?");
         String ip = scanner.nextLine().toLowerCase();
         System.out.println("What port number do you want to connect to?");
         int port = scanner.nextInt();
         // Setup network
         try (Client client = new Client(name, ip, port)) {
-            if (!client.connect()) {
-                System.out.println("Could not connect.");
+            if (!client.connect())
                 return;
-            }
             client.start();
             client.sendName(); // Tell the server the client's name
             // Command loop

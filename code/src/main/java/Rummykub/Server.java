@@ -32,7 +32,7 @@ public class Server extends Thread implements AutoCloseable {
     Server(String name, int port, int numPlayers, boolean b) {
         this.name = name;
         this.port = port;
-        this.maxClients = numPlayers;
+        this.maxClients = numPlayers-1; // subtract host
         this.testing = b;
     }
 

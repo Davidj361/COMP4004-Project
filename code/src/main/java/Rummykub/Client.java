@@ -54,7 +54,7 @@ public class Client extends Thread implements AutoCloseable {
         if (!isOpen()) {
             try {
                 socket = new Socket(hostName, port);
-            }catch (SocketException e) {
+            } catch (SocketException e) {
                 System.out.println("Client could not connect.");
                 return false;
             }

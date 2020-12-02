@@ -35,6 +35,7 @@ public class ClientHandler extends Thread {
                 if (str != null) {
                     if (str.contains("Name: ")) {
                         name = str.substring(6); // Length of "Name: "
+                        return;
                     }
                     if (testing)
                         System.out.println(str);
