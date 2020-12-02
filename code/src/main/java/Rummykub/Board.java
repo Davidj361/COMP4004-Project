@@ -61,7 +61,12 @@ public class Board {
 				size = board.get(i).size();
 			}
 			for (int j = 0; j < board.get(i).size(); j++) {
-				printBoard += board.get(i).get(j).toString() + "  ";
+				if (board.get(i).get(j).getColor() == Tile.Colors.JOKER) {
+					printBoard += board.get(i).get(j).getColor() + "  }";
+				} else {
+					printBoard += board.get(i).get(j).getValue() + "  ";
+					printBoard += board.get(i).get(j).getColor() + "  }";
+				}
 			}
 			printBoard += "\n";
 		}
@@ -76,17 +81,33 @@ public class Board {
 		for (int i = 0; i < board.size(); i++) {
 			int type = 0;
 			int valueCorrect = 0;
+			int joker = 1000;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
 			if(board.get(i).size() < 3){
 				return false;
 			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
+				if(board.get(i).get(j).getColor() == Tile.Colors.JOKER){
+					if(type == 1){
+						joker = board.get(i).get(j -1 ).getValue() + 1;
+					}
+					if(type == 2){
+						joker = board.get(i).get(j - 1).getValue();
+					}else{
+						if(board.get(i).get(j-1).getValue() == board.get(i).get(j + 1).getValue() - 2){
+							joker = board.get(i).get(j-1).getValue()+1;
+						}else{
+							joker = board.get(i).get(j-1).getValue();
+
+						}
+					}
+				}
 				colors.add(board.get(i).get(j).color);
-				if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
+				if((joker == board.get(i).get(j + 1).getValue() - 1 || board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1) && board.get(i).get(j).getColor() == board.get(i).get(j+1).getColor() && (type == 0 || type == 1)) {
 					valueCorrect++;
 					type = 1;
 				} else {
-					if(board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() && !colors.contains(board.get(i).get(j+1).getColor()) && (type == 0 || type == 2)){
+					if((joker == board.get(i).get(j + 1).getValue() || board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue()) && (!colors.contains(board.get(i).get(j+1).getColor()) && colors.size() < 4) && (type == 0 || type == 2)){
 						valueCorrect++;
 						type = 2;
 					}

@@ -18,6 +18,9 @@ public class Deck{
                 }
             }
         }
+        Tile joker = new Tile(0, Colors.values()[4]);
+        tiles.add(joker);
+        tiles.add(joker);
         //Shuffle all tiles
         this.shuffleTiles();
     }
