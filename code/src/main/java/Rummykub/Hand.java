@@ -6,6 +6,13 @@ import java.util.Collections;
 public class Hand{
     protected ArrayList<Tile> tiles;
 
+    // Constructor for generating a hand
+    public Hand(Deck deck) {
+        tiles = new ArrayList<Tile>();
+        //Deal 14 tiles to each player
+        for (int j = 0; j < 14; j++)
+            addTile(deck.dealTile());
+    }
     public Hand(ArrayList<Tile> tiles) {
         this.tiles = new ArrayList<Tile>(tiles);
     }
@@ -62,7 +69,6 @@ public class Hand{
 
     public void moveTiles(int tileIndex, int newTileIndex){
         tiles.add(newTileIndex, tiles.remove(tileIndex));
-
     }
 }
 

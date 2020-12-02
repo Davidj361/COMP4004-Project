@@ -8,7 +8,7 @@ public class Player {
     private String name;
     private int score; //score for current round
     private int totalScore;
-    private boolean firstPlacement = false;
+    private boolean firstPlacement = false; // Has player made their first placement?
     private Hand hand, origHand;
     public Player (String n) {
         name = n;
@@ -53,8 +53,6 @@ public class Player {
         hand.addTile(d.dealTile());
     }
 
-    public void setHand(Hand h) { hand = h; }
-
     public int sumOfTiles () {
         return hand.sumOfTiles();
     }
@@ -87,6 +85,10 @@ public class Player {
 
     public void updateHand() {
         origHand = hand;
+    }
+
+    public void setHand(Hand h) {
+        origHand = hand = h;
     }
 }
 

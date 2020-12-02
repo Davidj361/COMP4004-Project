@@ -18,11 +18,11 @@ public class App {
         while (state == 0) {
             System.out.println("Would you like to host a new game or connect to a host?");
             System.out.println("1: Host, 2: Connect");
-            String hostOrConnect = scanner.nextLine().toLowerCase();
-            if (hostOrConnect.equals("1")) {
+            int hostOrConnect = scanner.nextInt();
+            if (hostOrConnect == 1) {
                 state = 1;
                 host(name);
-            } else if (hostOrConnect.equals("2")) {
+            } else if (hostOrConnect == 2) {
                 state = 2;
                 client(name);
             } else {
@@ -32,12 +32,14 @@ public class App {
 
     }
 
+    // Are all players ready? If so then start the game
     public void readyUp (int numOfPlayers, Server server) {
         if (numOfPlayers == server.getNumClients()) {
             readyUp = true;
         }
     }
 
+    // Host the game and play it at the same time
     private static void host(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What port number do you want to host game on?");
@@ -62,12 +64,14 @@ public class App {
             }
             scanner = new Scanner(System.in);
             server.start();
-            while (server.getNumClients() != server.getMaxClients())
+            while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
                 Thread.sleep(10);
 
-            Game game = new Game(server);
+            // TODO Add ready up functionality
+            server.setReady(true);
             // Check ready up then start
-            game.start();
+            Game game = new Game(server);
+            // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 server.command(input);
@@ -76,19 +80,20 @@ public class App {
         }
     }
 
-    private static void client(String name) throws UnknownHostException, IOException, InterruptedException {
+    // Connect to a host and play the game
+    private static void client(String name) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What is your IP address?");
+        System.out.println("What is the IP/hostname that you wish to connect to?");
         String ip = scanner.nextLine().toLowerCase();
         System.out.println("What port number do you want to connect to?");
         int port = scanner.nextInt();
         // Setup network
         try (Client client = new Client(name, ip, port)) {
-            if (!client.connect()) {
-                System.out.println("Could not connect.");
+            if (!client.connect())
                 return;
-            }
             client.start();
+            client.sendName(); // Tell the server the client's name
+            // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();
                 client.send(input);
