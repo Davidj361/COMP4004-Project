@@ -35,28 +35,42 @@ public class Board {
 	//Separates a current set on the board into two sets
 	public void separateSet(int row, int tileNum){
 		ArrayList<Tile> newSet = new ArrayList<Tile>();
-		for (int i = tileNum; i < board.get(row).size(); i++) {
-			newSet.add(board.get(row).get(i));
+		if(row < board.size() && board.get(row).size() > tileNum) {
+			for (int i = tileNum; i < board.get(row).size(); i++) {
+				newSet.add(board.get(row).get(i));
+			}
+			int size = board.get(row).size();
+			for (int i = tileNum; i < size; i++) {
+				board.get(row).remove(tileNum);
+			}
+			board.add(newSet);
 		}
-		int size = board.get(row).size();
-		for(int i = tileNum; i < size; i++){
-			board.get(row).remove(tileNum);
-		}
-		board.add(newSet);
 	}
 
 	//combine two sets that's are currently on the board
-	public void combineCurrent(int row1, int row2){
-		ArrayList<Tile> combine = board.get(row2);
-		board.remove(row2);
-		ArrayList<Tile> checkRow = board.get(row1);
-		checkRow.addAll(combine);
-		checkRow = addJoker(checkRow);
-		board.set(row1,checkRow);
-		Collections.sort(board.get(row1), new Comparator<Tile>() {
-			@Override
-			public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
-		});
+	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tiles){
+		ArrayList<Tile> moving = new ArrayList<Tile>();
+		for(int i = 0; i < tiles.size(); i++){
+			moving.add(board.get(sourceRow).get(tiles.get(i)));
+		}
+		for(int i = 0; i < tiles.size(); i++){
+			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i));
+		}
+		ArrayList<Tile> checkDestination = board.get(destinationRow);
+		checkDestination.addAll(moving);
+		checkDestination = addJoker(checkDestination);
+		board.set(destinationRow,checkDestination);
+		if(board.get(sourceRow).size() == 0) {
+			board.remove(sourceRow);
+		}
+		for(int i = 0; i < board.size(); i++) {
+			Collections.sort(board.get(i), new Comparator<Tile>() {
+				@Override
+				public int compare(Tile tile1, Tile tile2) {
+					return Integer.compare(tile1.getValue(), tile2.getValue());
+				}
+			});
+		}
 	}
 
 	public String printBoard() {
