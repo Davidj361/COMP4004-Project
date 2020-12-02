@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -116,10 +117,11 @@ public class BoardTester extends MyTestCase {
         board.addSet(hand);
         System.out.println(board.printBoard());
         assertTrue(board.checkBoard());
+        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
-        board.combineCurrent(0,1);
-        assertTrue(board.checkBoard());
+        board.combineCurrent(row1,row2, index);
         System.out.println(board.printBoard());
+        assertTrue(board.checkBoard());
     }
 
     @Test
@@ -141,8 +143,9 @@ public class BoardTester extends MyTestCase {
         board.addSet(hand);
         System.out.println(board.printBoard());
         assertTrue(board.checkBoard());
+        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
-        board.combineCurrent(0,1);
+        board.combineCurrent(row1,row2, index);
         assertTrue(board.checkBoard());
         System.out.println(board.printBoard());
     }
@@ -231,8 +234,9 @@ public class BoardTester extends MyTestCase {
         board.addSet(hand);
         System.out.println(board.printBoard());
         assertTrue(board.checkBoard());
+        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
-        board.combineCurrent(0,1);
+        board.combineCurrent(row1,row2,index);
         assertFalse(board.checkBoard());
         System.out.println(board.printBoard());
     }
