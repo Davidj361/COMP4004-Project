@@ -57,32 +57,30 @@ public class Game {
 	// TODO Reset all variables
 	// Useful for testing and restarting the game
 	public void reset() {
-		// TODO Have players enter their name and assign that in Client class through networking
+		gameRunning = true;
+		deck = new Deck();
+		board = new Board();
+		origBoard = board;
+		turn = 1;
+
+		for (int i = 0; i < 3; i++) {
+			ArrayList<Tile> hand = new ArrayList<Tile>();
+			//Deal 14 tiles to each player
+			for (int j = 0; j < 14; j++) {
+				hand.add(deck.dealTile());
+			}
+			// TODO Have players enter their name and assign that in Client class through networking
 		/*
 		for (int i = 0; i < numPlayers; i++)
 			players.add(new Player(Integer.toString(i + 1)));
 		*/
-		for (String name: server.getNames())
-			players.add(new Player(name));
-		gameRunning = true;
-		deck = new Deck();
-		board = new Board();
+			for (String name: server.getNames())
+				players.add(new Player(name));
+			// TODO: add player to players arraylist
+			//Player p = new Player(hand, "NAME");
+			//players.add(p);
+		}
 	}
-
-    public void start() {
-		// reset() Should already be called beforehand
-        // Add all players
-        for (int i = 0; i < 3; i++) {
-            ArrayList<Tile> hand = new ArrayList<Tile>();
-            //Deal 14 tiles to each player
-            for (int j = 0; j < 14; j++) {
-                hand.add(deck.dealTile());
-            }
-            // TODO: add player to players arraylist
-            //Player p = new Player(hand, "NAME");
-            //players.add(p);
-        }
-    }
 
     public boolean isRun(ArrayList<Tile> run) {
     	Colors color = run.get(0).getColor();
@@ -182,34 +180,25 @@ public class Game {
     	p.drawTile(deck);
 	}
 
-	public void endTurn() {
-		//Nothing done on board in this turn, then draw
+	// Should be 3 states to validate
+	// Invalid, unable to endTurn()
+	// Valid, end turn with manipulations to board
+	// Valid, no manipulates and drawTile
+	public boolean endTurn() {
+		// Were board manipulations valid?
+		if (!board.valid)
+			return false;
+
 		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
-			drawTile(players.get(curPlayer()));
-		} else {
-			origBoard = board;  //update original board to finalize
-			players.get(curPlayer()).updateHand();  //update original hand to finalize
+			drawTile(players.get(curPlayer())); // Nothing done on board in this turn, then draw
+		} else { // update the version control variables
+			origBoard = board;  // update original board to finalize
+			players.get(curPlayer()).updateHand();  // update original hand to finalize
 		}
 		players.get(curPlayer()).nextTurn();
 		turn++;
+		return true;
 	}
-
-	public void startTurn() {
-
-	}
-
-    //Check to see if any player has no tiles left in their hand
-	// TODO Implement
-    /* Commented out because players not yet implemented
-    public boolean RoundOver() {
-        for (int i = 0; i < 3; i++) {
-            if (players.emptyHand()) {
-                return true;
-            }
-        }
-        return false;
-    }
-     */
 
 	// Get who's the current player this turn for indexing purposes
 	public int curPlayer() {
@@ -284,7 +273,6 @@ public class Game {
 	// Functions used by command(..)
 
 	// Print from the help from a file
-	// TODO Have a help file and read from it
 	private void help() throws IOException {
 		File fHelp = new File("resources/help.txt");
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
