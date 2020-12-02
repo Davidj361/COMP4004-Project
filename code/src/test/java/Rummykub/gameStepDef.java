@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 public class gameStepDef {
     private ArrayList<Tile> tiles = new ArrayList<Tile>();
     private Game game =new Game();
+    private Player player = new Player("joe");
     @Given("^Tiles are \"([^\"]*)\"$")
     public void tiles_are(String arg1) {
         // Express the Regexp above with the code you wish you had
@@ -75,21 +76,24 @@ public class gameStepDef {
         assertFalse(game.isGroup(tiles));
     }
 
-    @When("player places their first placement")
-    public void player_places_their_first_placement() {
+    @When("player tries placing their first placement")
+    public void player_tries_placing_their_first_placement() {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        String [] index = {"1","2","3"};
+        Hand hand = new Hand(tiles);
+        player.setHand(hand);
+        game.placeTiles(index,player);
     }
 
     @Then("First placement is successful")
     public void first_placement_is_successful() {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(player.getFirstPlacement());
     }
 
     @Then("First placement is NOT successful")
     public void first_placement_is_not_successful() {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertFalse(player.getFirstPlacement());
     }
 }

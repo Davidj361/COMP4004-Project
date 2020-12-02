@@ -42,7 +42,7 @@ public class Hand{
     }
 
     public boolean hasTile(int index) {
-        if (tiles.size() > index && tiles.get(index) != null)
+        if (tiles.size() >= index && tiles.get(index - 1) != null)
             return true;
         return false;
     }
