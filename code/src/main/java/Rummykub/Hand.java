@@ -55,7 +55,12 @@ public class Hand{
     public String printHand() {
             String string = "";
             for (int i = 0; i < tiles.size(); i++) {
-                string += tiles.get(i).toString();
+                if (tiles.get(i).getColor() == Tile.Colors.JOKER) {
+                    string += tiles.get(i).getColor() + "}  ";
+                } else {
+                    string += tiles.get(i).getValue() + "  ";
+                    string += tiles.get(i).getColor() + "}  ";
+                }
             }
             return string;
     }
