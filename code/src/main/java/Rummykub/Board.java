@@ -49,7 +49,10 @@ public class Board {
 	public void combineCurrent(int row1, int row2){
 		ArrayList<Tile> combine = board.get(row2);
 		board.remove(row2);
-		board.get(row1).addAll(combine);
+		ArrayList<Tile> checkRow = board.get(row1);
+		checkRow.addAll(combine);
+		checkRow = addJoker(checkRow);
+		board.set(row1,checkRow);
 		Collections.sort(board.get(row1), new Comparator<Tile>() {
 			@Override
 			public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
@@ -114,12 +117,6 @@ public class Board {
 			}
 		}
 		return true;
-	}
-
-	// Return true if b is the same as this board, otherwise false
-	// TODO Implement this function
-	public boolean compare(Board b) {
-		return false;
 	}
 
 
