@@ -317,14 +317,14 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			if (!board.checkBoard()) {
-				//TODO: error message printing: invalid placement
+				System.out.println("Invalid placement!");
 				board = origBoard;
 				player.resetHand();
 				return false;
 			}
 			return true;
 		}
-		//TODO: error message: no such tiles
+		System.out.println("You cannot put those tiles!");
 		return false;
 	}
 
@@ -339,6 +339,8 @@ public class Game {
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
 		// TODO Call give on board
+		// Use player.putTiles(tilesIdx) function
+		// player.hasTiles(tilesIndex) checks the first placement
 		return true;
 	}
 
