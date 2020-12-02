@@ -70,6 +70,7 @@ public class Client extends Thread implements AutoCloseable {
     }
 
     public boolean disconnect() throws IOException {
+        System.out.println("Disconnected");
         return disconnect(false);
     }
 
@@ -93,7 +94,7 @@ public class Client extends Thread implements AutoCloseable {
 
 
     public boolean send(String str) throws IOException {
-        if (!isOpen() || socket == null)
+        if (!isOpen() || socket == null || str.equals(""))
             return false;
         System.out.print("client send: ");
         System.out.println(str);
@@ -111,7 +112,7 @@ public class Client extends Thread implements AutoCloseable {
             str = dIn.readUTF();
         } catch (EOFException e) { // Server most likely closed
             System.out.println("Error while reading from server. Server most likely closed.");
-            System.out.println("Closing connection..");
+            System.out.println("Closing connection...");
             disconnect();
         }
         return str;
@@ -127,7 +128,9 @@ public class Client extends Thread implements AutoCloseable {
     public String getPlayerName() { return name; }
 
     public void sendName() throws IOException {
-        send("Name: "+name);
+        String out = "Name: "+name; // Needed to avoid double send?
+        out.trim();
+        send(out);
     }
 
 }

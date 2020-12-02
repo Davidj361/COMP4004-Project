@@ -39,7 +39,7 @@ public class ClientHandler extends Thread {
                         continue;
                     }
                     if (testing)
-                        server.print(str+"\n");
+                        System.out.println(str+"\n");
                     else
                         server.command(clientId, str);
                 }

@@ -93,7 +93,7 @@ public class ServerTester extends MyTestCase {
             client.send("asdf");
 
             String recv = "";
-            while (!recv.equals("It is not your turn yet.")) {
+            while (!recv.equals("It is not your turn yet.\n")) {
                 recv = client.lastResponse;
                 Thread.sleep(10);
             }
