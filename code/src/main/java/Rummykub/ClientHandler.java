@@ -33,8 +33,9 @@ public class ClientHandler extends Thread {
             try {
                 String str = read();
                 if (str != null) {
-                    if (str.equals("unnamed"))
-                        name = str;
+                    if (str.contains("Name: ")) {
+                        name = str.substring(6); // Length of "Name: "
+                    }
                     if (testing)
                         System.out.println(str);
                     else
