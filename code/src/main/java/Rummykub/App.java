@@ -18,11 +18,11 @@ public class App {
         while (state == 0) {
             System.out.println("Would you like to host a new game or connect to a host?");
             System.out.println("1: Host, 2: Connect");
-            String hostOrConnect = scanner.nextLine().toLowerCase();
-            if (hostOrConnect.equals("1")) {
+            int hostOrConnect = scanner.nextInt();
+            if (hostOrConnect == 1) {
                 state = 1;
                 host(name);
-            } else if (hostOrConnect.equals("2")) {
+            } else if (hostOrConnect == 2) {
                 state = 2;
                 client(name);
             } else {
@@ -64,7 +64,7 @@ public class App {
             }
             scanner = new Scanner(System.in);
             server.start();
-            while (server.getNumClients() != server.getMaxClients())
+            while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
                 Thread.sleep(10);
 
             // TODO Add ready up functionality

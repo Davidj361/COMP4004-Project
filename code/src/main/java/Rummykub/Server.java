@@ -16,7 +16,7 @@ public class Server extends Thread implements AutoCloseable {
     private String name = "unnamed";
     private ServerSocket socket;
     ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
-    Game game;
+    Game game = null;
     private boolean ready = false;
     boolean testing;
 
@@ -61,7 +61,7 @@ public class Server extends Thread implements AutoCloseable {
             return false;
         Socket s = socket.accept();
         if (socket != null && s != null) {
-            clients.add(new ClientHandler(this, s, clients.size()-1, testing));
+            clients.add(new ClientHandler(this, s, clients.size(), testing));
             clients.get(clients.size()-1).start();
             print("Host: Client " + (clients.size()-1) + " connected.\n");
             return true;
@@ -174,6 +174,18 @@ public class Server extends Thread implements AutoCloseable {
         names.add(name);
         for (ClientHandler h: clients)
             names.add(h.getPlayerName());
+        return names;
+    }
+
+    // Needed because we need to wait for all clients to send their names for checking syncing
+    public ArrayList<String> getNamesSet() {
+        ArrayList<String> names = new ArrayList<String>();
+        names.add(name);
+        for (ClientHandler h: clients) {
+            String name = h.getPlayerName();
+            if (!name.contains("unnamed"))
+                names.add(name);
+        }
         return names;
     }
 
