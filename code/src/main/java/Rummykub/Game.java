@@ -54,21 +54,30 @@ public class Game {
 		reset();
 	}
 
-	// TODO Reset all variables
 	// Useful for testing and restarting the game
 	public void reset() {
 		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
 		origBoard = board;
+		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
 
-		for (String name: server.getNames()) {
-			Player p = new Player(name);
-			Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
-			p.setHand(hand);
-			players.add(p);
+		if (server != null) { // Multiplayer mode
+			for (String name : server.getNames())
+				createPlayer(name);
+		} else { // Single player mode
+			for (int i=0; i<numPlayers; i++)
+				createPlayer("player"+i);
 		}
+	}
+
+	// Helper function for Game.reset(..)
+	private Player createPlayer(String name) {
+		Player p = new Player(name);
+		Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
+		p.setHand(hand);
+		players.add(p);
 	}
 
     public boolean isRun(ArrayList<Tile> run) {
@@ -164,31 +173,6 @@ public class Game {
     	return false;
 	}
 
-	// player draws a tile
-	public void drawTile(Player p) { // DUPLICATE FUNCTION NAME
-    	p.drawTile(deck);
-	}
-
-	// Should be 3 states to validate
-	// Invalid, unable to endTurn()
-	// Valid, end turn with manipulations to board
-	// Valid, no manipulates and drawTile
-	public boolean endTurn() {
-		// Were board manipulations valid?
-		if (!board.checkBoard())
-			return false;
-
-		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
-			drawTile(players.get(curPlayer())); // Nothing done on board in this turn, then draw
-		} else { // update the version control variables
-			origBoard = board;  // update original board to finalize
-			players.get(curPlayer()).updateHand();  // update original hand to finalize
-		}
-		players.get(curPlayer()).nextTurn();
-		turn++;
-		return true;
-	}
-
 	// Get who's the current player this turn for indexing purposes
 	public int curPlayer() {
 		return ((turn-1) % players.size());
@@ -262,6 +246,31 @@ public class Game {
 
 	//////////////////////////////////////////////////////////////////////
 	// Functions used by command(..)
+
+	// player draws a tile
+	public void drawTile(Player p) { // DUPLICATE FUNCTION NAME
+		p.drawTile(deck);
+	}
+
+	// Should be 3 states to validate
+	// Invalid, unable to endTurn()
+	// Valid, end turn with manipulations to board
+	// Valid, no manipulates and drawTile
+	public boolean endTurn() {
+		// Were board manipulations valid?
+		if (!board.checkBoard())
+			return false;
+
+		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
+			drawTile(players.get(curPlayer())); // Nothing done on board in this turn, then draw
+		} else { // update the version control variables
+			origBoard = board;  // update original board to finalize
+			players.get(curPlayer()).updateHand();  // update original hand to finalize
+		}
+		players.get(curPlayer()).nextTurn();
+		turn++;
+		return true;
+	}
 
 	// Print from the help from a file
 	private void help() throws IOException {
