@@ -8,6 +8,7 @@ public class Hand{
 
     // Constructor for generating a hand
     public Hand(Deck deck) {
+        tiles = new ArrayList<Tile>();
         //Deal 14 tiles to each player
         for (int j = 0; j < 14; j++)
             addTile(deck.dealTile());

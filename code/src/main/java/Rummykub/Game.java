@@ -70,6 +70,7 @@ public class Game {
 			for (int i=0; i<numPlayers; i++)
 				createPlayer("player"+i);
 		}
+		print("GAME IS RESET!\n");
 	}
 
 	// Helper function for Game.reset(..)
