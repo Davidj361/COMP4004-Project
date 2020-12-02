@@ -1,9 +1,6 @@
 package Rummykub;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -54,8 +51,9 @@ public class Client extends Thread implements AutoCloseable {
         if (!isOpen()) {
             try {
                 socket = new Socket(hostName, port);
-            }catch (SocketException e) {
+            } catch (SocketException e) {
                 System.out.println("Client could not connect.");
+                return false;
             }
             System.out.println("Client connected!");
             return true;
@@ -89,6 +87,8 @@ public class Client extends Thread implements AutoCloseable {
     public boolean send(String str) throws IOException {
         if (!isOpen() || socket == null)
             return false;
+        System.out.println("send command");
+        System.out.println(str);
         ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
         dOut.writeUTF(str);
         dOut.flush();
@@ -97,9 +97,15 @@ public class Client extends Thread implements AutoCloseable {
 
 
     public String read() throws IOException {
-        String str;
-        ObjectInputStream dIn = new ObjectInputStream(socket.getInputStream());
-        str = dIn.readUTF();
+        String str = "";
+        try {
+            ObjectInputStream dIn = new ObjectInputStream(socket.getInputStream());
+            str = dIn.readUTF();
+        } catch (EOFException e) { // Server most likely closed
+            System.out.println("Error while reading from server. Server most likely closed.");
+            System.out.println("Closing connection..");
+            disconnect();
+        }
         return str;
     }
 
@@ -111,5 +117,9 @@ public class Client extends Thread implements AutoCloseable {
     }
 
     public String getPlayerName() { return name; }
+
+    public void sendName() throws IOException {
+        send("Name: "+name);
+    }
 
 }
