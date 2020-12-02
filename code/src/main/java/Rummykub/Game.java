@@ -178,10 +178,6 @@ public class Game {
     	return false;
 	}
   
-	// player draws a tile
-	public void drawTile(Player p) { // DUPLICATE FUNCTION NAME
-    	p.drawTile(deck);
-	}
 
 	public void endTurn() {
 		//Nothing done on board in this turn, then draw
