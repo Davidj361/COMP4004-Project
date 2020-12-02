@@ -3,6 +3,7 @@ package Rummykub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 import Rummykub.Tile.Colors;
@@ -176,6 +177,23 @@ public class Game {
     		return true;
     	return false;
 	}
+  
+
+	public void endTurn() {
+		//Nothing done on board in this turn, then draw
+		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
+			origBoard = board;  //update original board to finalize
+			players.get(curPlayer()).updateHand();  //update original hand to finalize
+		} else {
+			drawTile(players.get(curPlayer()));
+		}
+		players.get(curPlayer()).nextTurn();
+		turn++;
+	}
+
+	public void startTurn() {
+
+	}
 
 	// Get who's the current player this turn for indexing purposes
 	public int curPlayer() {
@@ -232,16 +250,13 @@ public class Game {
 					placeTiles(args, curPlayer);
 					break;
 				case "g": // giving tiles to a row on the board
-					// TODO Implement
-					giveTiles(args);
+					giveTiles(args, curPlayer);
 					break;
 				case "m": // moving tiles from one row to another on the board
-					// TODO Implement
-					moveTiles(args);
+					moveTiles(args, curPlayer);
 					break;
 				case "s": // splitting rows on the board
-					// TODO Implement
-					splitRow(args);
+					splitRow(args, curPlayer);
 					break;
 			}
 		}
@@ -323,7 +338,7 @@ public class Game {
 
 	// Give tiles from your hand onto a row on the board
 	// “g 1 2 3”
-	private boolean giveTiles(String[] sArr) {
+	private boolean giveTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place and dstRow
 		if (sArr.length < 2)
 			return false;
@@ -331,15 +346,24 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
-		// TODO Call give on board
-		// Use player.putTiles(tilesIdx) function
-		// player.hasTiles(tilesIndex) checks the first placement
-		return true;
+		if (player.hasTiles(tilesIdx)) {
+			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			board.addToCurrent(playerTiles,dstRow);
+			if (!board.checkBoard()) {
+				//TODO: error message printing: invalid placement
+				board = origBoard;
+				player.resetHand();
+				return false;
+			}
+			return true;
+		}
+		//TODO: error message: no such tiles
+		return false;
 	}
 
 	// Move tiles from one row on the board to another row on the board
 	// “m 1 2 5 6”
-	private boolean moveTiles(String[] sArr) {
+	private boolean moveTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place and dstRow & srcRow
 		if (sArr.length < 3)
 			return false;
@@ -348,19 +372,39 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-2];
 		for (int i=2; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
-		// TODO Call move on board
-		return true;
+		if (player.hasTiles(tilesIdx)) {
+			ArrayList<Integer> index = new ArrayList<Integer>();
+			for(int num:tilesIdx){
+				index.add(num);
+			}
+			board.combineCurrent(srcRow,dstRow,index);
+			if (!board.checkBoard()) {
+				//TODO: error message printing: invalid board
+				board = origBoard;
+				player.resetHand();
+				return false;
+			}
+			return true;
+		}
+		//TODO: error message: no such tiles
+		return false;
 	}
 
 	// Split a row on the board into 2 rows
 	// “s 1 4”
-	private boolean splitRow(String[] sArr) {
+	private boolean splitRow(String[] sArr, Player player) {
 		// Needs a split index and srcRow
 		if (sArr.length != 2)
 			return false;
 		int srcRow = Integer.parseInt(sArr[0]);
 		int splitIdx = Integer.parseInt(sArr[1]);
-		// TODO Call split on board
+		board.separateSet(srcRow,splitIdx);
+			if (!board.checkBoard()) {
+				//TODO: error message printing: invalid split
+				board = origBoard;
+				player.resetHand();
+				return false;
+			}
 		return true;
 	}
 

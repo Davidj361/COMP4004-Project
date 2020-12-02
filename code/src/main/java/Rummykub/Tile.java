@@ -1,7 +1,7 @@
 package Rummykub;
 
 public class Tile implements Comparable<Tile> {
-    public static enum Colors {BL, RE, YE, BK};
+    public static enum Colors {BL, RE, YE, BK, JOKER};
     Colors color;
     private int value;
     private String state = " ";
@@ -13,15 +13,16 @@ public class Tile implements Comparable<Tile> {
     }
 
     //Get tile value
-    public int getValue() {
-        return this.value;
-    }
+    public int getValue() { return this.value; }
 
     //get tile color
     public Colors getColor() {
         return this.color;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
 //Check all tiles colours and values
     @Override
     public String toString() {
