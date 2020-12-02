@@ -74,4 +74,22 @@ public class gameStepDef {
         // Write code here that turns the phrase above into concrete actions
         assertFalse(game.isGroup(tiles));
     }
+
+    @When("player places their first placement")
+    public void player_places_their_first_placement() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+
+    @Then("First placement is successful")
+    public void first_placement_is_successful() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+
+    @Then("First placement is NOT successful")
+    public void first_placement_is_not_successful() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
 }
