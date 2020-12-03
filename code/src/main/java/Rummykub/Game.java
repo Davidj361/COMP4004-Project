@@ -236,10 +236,10 @@ public class Game {
 					help();
 					break;
 				case "db": // display the board
-					board.printBoard();
+					println(board.printBoard());
 					break;
 				case "dh": // display player's hand
-					curPlayer.printHand();
+					println(curPlayer.printHand());
 					break;
 				case "u": // undo
 					undo(curPlayer);
