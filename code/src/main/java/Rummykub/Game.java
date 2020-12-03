@@ -175,18 +175,23 @@ public class Game {
     		return true;
     	return false;
 	}
-  
 
-	public void endTurn() {
+	// Should be 3 states to validate
+	// Invalid, unable to endTurn()
+	// Valid, end turn with manipulations to board
+	// Valid, no manipulates and drawTile
+	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
 		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
 			origBoard = board;  //update original board to finalize
 			players.get(curPlayer()).updateHand();  //update original hand to finalize
+			return true;
 		} else {
 			drawTile(players.get(curPlayer()));
 		}
 		players.get(curPlayer()).nextTurn();
 		turn++;
+		return false;
 	}
 
 	public void startTurn() {
@@ -273,25 +278,6 @@ public class Game {
 		p.drawTile(deck);
 	}
 
-	// Should be 3 states to validate
-	// Invalid, unable to endTurn()
-	// Valid, end turn with manipulations to board
-	// Valid, no manipulates and drawTile
-	public boolean endTurn() {
-		// Were board manipulations valid?
-		if (!board.checkBoard())
-			return false;
-
-		if (board.compare(origBoard)) { // TODO FIX IMPLEMENT check if any changes to the board were done
-			drawTile(players.get(curPlayer())); // Nothing done on board in this turn, then draw
-		} else { // update the version control variables
-			origBoard = board;  // update original board to finalize
-			players.get(curPlayer()).updateHand();  // update original hand to finalize
-		}
-		players.get(curPlayer()).nextTurn();
-		turn++;
-		return true;
-	}
 
 	// Print from the help from a file
 	private void help() throws IOException {
