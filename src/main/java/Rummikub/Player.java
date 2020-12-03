@@ -63,11 +63,7 @@ public class Player {
         for (int index: tilesIndex) {
             if (!hand.hasTile(index))
                 return false;
-            sum += hand.tiles.get(index - 1).getValue();
         }
-        // if first placement, sum of tile values must be at least 30
-        if (!firstPlacement && sum<30)
-            return false;
         return true;
     }
 

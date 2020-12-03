@@ -279,9 +279,26 @@ public class Game {
 	// Valid, no manipulates and drawTile
 	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
-		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
-			origBoard = board;  //update original board to finalize
-			players.get(curPlayer()).updateHand();  //update original hand to finalize
+		Player currPlayer = players.get(curPlayer());
+		if (currPlayer.getHand().compare(origHand) && board.checkBoard()) {
+			int sum = currPlayer.getHand().sumOfTilesPlaced(origHand);
+			boolean firstPlacement = currPlayer.getFirstPlacement();
+			if (!firstPlacement && sum<30) {
+				//print error
+				undo(players.get(curPlayer()));
+				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
+				println("Try again");
+				return false;
+			}
+			else if (!firstPlacement && sum > 30) {
+				currPlayer.setFirstPlacement();
+				origBoard = board;  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
+			}
+			else {
+				origBoard = board;  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
+			}
 			return true;
 		} else {
 			drawTile(players.get(curPlayer()));
@@ -319,7 +336,6 @@ public class Game {
 				player.resetHand();
 				return false;
 			}
-			player.setFirstPlacement();
 			return true;
 		}
 		print("You cannot put those tiles!");

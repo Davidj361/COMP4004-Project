@@ -22,6 +22,10 @@ public class Hand{
         return tiles.size();
     }
 
+    public ArrayList<Tile> getTiles () {
+        return tiles;
+    }
+
     //add Tile to players hand
     public void addTile(Tile tile) {
         this.tiles.add(tile);
@@ -82,6 +86,16 @@ public class Hand{
         }else {
             return false;
         }
+    }
+
+    public int sumOfTilesPlaced (Hand origHand) {
+        ArrayList <Tile> tilesPlaced = origHand.getTiles();
+        tilesPlaced.removeAll(tiles);
+        int sum = 0;
+        for (int i = 0; i < tilesPlaced.size(); i++) {
+            sum += tilesPlaced.get(i).getValue();
+        }
+        return sum;
     }
 }
 
