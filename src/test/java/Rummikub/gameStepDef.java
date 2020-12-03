@@ -8,10 +8,12 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+// Glue code for feature files
 public class gameStepDef {
     private ArrayList<Tile> tiles = new ArrayList<Tile>();
-    private Game game =new Game();
+    private Game game = new Game(true); // set testing to true
     private Player player = new Player("joe");
+
     @Given("^Tiles are \"([^\"]*)\"$")
     public void tiles_are(String arg1) {
         // Express the Regexp above with the code you wish you had
