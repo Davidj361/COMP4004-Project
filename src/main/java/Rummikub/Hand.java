@@ -59,17 +59,23 @@ public class Hand{
     }
 
     //send players hand to string *used for output of players hand*
-    public String printHand() {
+    public ArrayList<String> printHand() {
             String string = "";
+            String index = ""; // A string having aligned indexes
+            int size = 0;
             for (int i = 0; i < tiles.size(); i++) {
-                if (tiles.get(i).getColor() == Tile.Colors.JOKER) {
-                    string += tiles.get(i).getColor() + "}  ";
-                } else {
+                if (tiles.get(i).getColor() != Tile.Colors.JOKER) {
                     string += tiles.get(i).getValue() + "  ";
-                    string += tiles.get(i).getColor() + "}  ";
                 }
+                string += tiles.get(i).getColor() + "}  ";
+                int sz = string.length() - size;
+                index += String.format("%-"+sz+"s", "["+i+"]");
+                size = string.length();
             }
-            return string;
+            ArrayList<String> ret = new ArrayList<String>();
+            ret.add(index);
+            ret.add(string);
+            return ret;
     }
 
     public void moveTiles(int tileIndex, int newTileIndex){

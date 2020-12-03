@@ -239,7 +239,10 @@ public class Game {
 					println(board.printBoard());
 					break;
 				case "dh": // display player's hand
-					println(curPlayer.printHand());
+					ArrayList<String> tmp = curPlayer.printHand();
+					// Will print index line then player hand line
+					for (String s: tmp)
+						println(s);
 					break;
 				case "u": // undo
 					undo(curPlayer);
