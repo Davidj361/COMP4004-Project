@@ -87,5 +87,9 @@ public class Player {
     public void setHand(Hand h) {
         origHand = hand = h;
     }
+
+    public Hand getOrigHand () {
+        return origHand;
+    }
 }
 

@@ -17,7 +17,6 @@ public class Game {
     private Board origBoard = new Board();
     private Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
-    private Hand origHand;
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	private int numPlayers; // Needed for testing both offline and online
@@ -280,8 +279,8 @@ public class Game {
 	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
 		Player currPlayer = players.get(curPlayer());
-		if (currPlayer.getHand().compare(origHand) && board.checkBoard()) {
-			int sum = currPlayer.getHand().sumOfTilesPlaced(origHand);
+		if (currPlayer.getHand().compare(currPlayer.getOrigHand()) && board.checkBoard()) {
+			int sum = currPlayer.getHand().sumOfTilesPlaced(currPlayer.getOrigHand());
 			boolean firstPlacement = currPlayer.getFirstPlacement();
 			if (!firstPlacement && sum<30) {
 				//print error
@@ -312,7 +311,7 @@ public class Game {
 	// as when the turn started
 	// TODO Get origHand and origBoard initialized at every start of a turn
 	private boolean undo(Player curPlayer) {
-		curPlayer.setHand(origHand);
+		curPlayer.resetHand();
 		board = origBoard;
 		return true;
 	}
