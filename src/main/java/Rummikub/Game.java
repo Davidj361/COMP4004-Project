@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
-import Rummykub.Tile.Colors;
+import Rummikub.Tile.Colors;
 
 public class Game {
 	private Server server;
