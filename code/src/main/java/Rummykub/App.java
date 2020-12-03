@@ -29,15 +29,8 @@ public class App {
                 System.out.println("invalid input");
             }
         }
-
     }
 
-    // Are all players ready? If so then start the game
-    public void readyUp (int numOfPlayers, Server server) {
-        if (numOfPlayers == server.getNumClients()) {
-            readyUp = true;
-        }
-    }
 
     // Host the game and play it at the same time
     private static void host(String name) throws IOException, InterruptedException {
@@ -67,9 +60,6 @@ public class App {
             while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
                 Thread.sleep(10);
 
-            // TODO Add ready up functionality
-            server.setReady(true);
-            // Check ready up then start
             Game game = new Game(server);
             // Command loop
             while (true) {

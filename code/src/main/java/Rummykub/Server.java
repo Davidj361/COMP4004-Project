@@ -17,7 +17,6 @@ public class Server extends Thread implements AutoCloseable {
     private ServerSocket socket;
     ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game = null;
-    private boolean ready = false;
     boolean testing;
 
     Server() {
@@ -146,6 +145,8 @@ public class Server extends Thread implements AutoCloseable {
 
     // When client asks for a command
     public boolean command(int clientId, String str) throws IOException {
+        if (game == null)
+            return false;
         final int player = clientId+1;
         print("Received command: "+str+"\n");
         if (!commHelper(player, str)) {
@@ -189,7 +190,5 @@ public class Server extends Thread implements AutoCloseable {
         }
         return names;
     }
-
-    public void setReady(boolean b) { ready = b; }
 
 }

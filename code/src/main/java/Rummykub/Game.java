@@ -73,8 +73,6 @@ public class Game {
 			for (int i=0; i<numPlayers; i++)
 				createPlayer("player"+i);
 		}
-		print("GAME IS RESET!\n");
-		print("Players size: "+players.size()+"\n");
 	}
 
 	// Helper function for Game.reset(..)
@@ -224,7 +222,23 @@ public class Game {
 		Player curPlayer = players.get(curPlayer());
 
 		String[] sArr = input.split(" ");
-		if (input.length() > 1) { // Commands with input arguments
+		if (sArr.length > 1) { // Commands with input arguments
+			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			switch(sArr[0]) {
+				case "p": // placing tiles from hand onto the board
+					placeTiles(args, curPlayer);
+					break;
+				case "g": // giving tiles to a row on the board
+					giveTiles(args, curPlayer);
+					break;
+				case "m": // moving tiles from one row to another on the board
+					moveTiles(args, curPlayer);
+					break;
+				case "s": // splitting rows on the board
+					splitRow(args, curPlayer);
+					break;
+			}
+		} else { // No arguments to commands
 			switch(sArr[0]) {
 				case "h": // display help message
 					help();
@@ -241,22 +255,6 @@ public class Game {
 				case "e": // end turn
 					// TODO Need to implement ending turn and validating board & current player's hand
 					endTurn();
-					break;
-			}
-		} else { // No arguments to commands
-			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
-			switch(sArr[0]) {
-				case "p": // placing tiles from hand onto the board
-					placeTiles(args, curPlayer);
-					break;
-				case "g": // giving tiles to a row on the board
-					giveTiles(args, curPlayer);
-					break;
-				case "m": // moving tiles from one row to another on the board
-					moveTiles(args, curPlayer);
-					break;
-				case "s": // splitting rows on the board
-					splitRow(args, curPlayer);
 					break;
 			}
 		}
@@ -297,7 +295,7 @@ public class Game {
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
 		String str;
 		while ((str = br.readLine()) != null) {
-			print(str);
+			print(str+"\n");
 		}
 	}
 

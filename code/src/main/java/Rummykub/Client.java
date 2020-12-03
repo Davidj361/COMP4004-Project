@@ -11,13 +11,18 @@ public class Client extends Thread implements AutoCloseable {
     int port = 27015;
     String name;
     Socket socket;
+    boolean testing = false;
+    String lastResponse = "";
 
     Client() {}
-
     Client(String name, String hostName, int port) {
+        this(name, hostName, port, false);
+    }
+    Client(String name, String hostName, int port, boolean b) {
         this.name = name;
         this.hostName = hostName;
         this.port = port;
+        testing = b;
     }
 
     public void run() {
@@ -25,8 +30,11 @@ public class Client extends Thread implements AutoCloseable {
         while (isOpen()) {
             try {
                 String str = read();
-                if (str != null)
+                if (str != null && str != "") {
+                    if (testing)
+                        lastResponse = str;
                     System.out.print(str);
+                }
             } catch (SocketException e) {
                 // Server closed
                 try {
@@ -62,6 +70,7 @@ public class Client extends Thread implements AutoCloseable {
     }
 
     public boolean disconnect() throws IOException {
+        System.out.println("Disconnected");
         return disconnect(false);
     }
 
@@ -85,10 +94,8 @@ public class Client extends Thread implements AutoCloseable {
 
 
     public boolean send(String str) throws IOException {
-        if (!isOpen() || socket == null)
+        if (!isOpen() || socket == null || str.equals(""))
             return false;
-        System.out.println("send command");
-        System.out.println(str);
         ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
         dOut.writeUTF(str);
         dOut.flush();
@@ -103,7 +110,7 @@ public class Client extends Thread implements AutoCloseable {
             str = dIn.readUTF();
         } catch (EOFException e) { // Server most likely closed
             System.out.println("Error while reading from server. Server most likely closed.");
-            System.out.println("Closing connection..");
+            System.out.println("Closing connection...");
             disconnect();
         }
         return str;
@@ -119,7 +126,9 @@ public class Client extends Thread implements AutoCloseable {
     public String getPlayerName() { return name; }
 
     public void sendName() throws IOException {
-        send("Name: "+name);
+        String out = "Name: "+name; // Needed to avoid double send?
+        out.trim();
+        send(out);
     }
 
 }
