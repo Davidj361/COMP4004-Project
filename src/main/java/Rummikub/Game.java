@@ -328,7 +328,7 @@ public class Game {
 		// Integer index of tiles on hand
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
-			tilesIdx[i] = Integer.parseInt(sArr[i]);
+			tilesIdx[i] = Integer.parseInt(sArr[i])-1; // Players start their index at 1, not 0
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
