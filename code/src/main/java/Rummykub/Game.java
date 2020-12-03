@@ -193,6 +193,10 @@ public class Game {
 		else // Single player mode
 			System.out.print(str);
 	}
+	public void println(String str) {
+		String out = str+'\n';
+		print(out);
+	}
 
 	// The command handler
 	// Parses text given by a client to Server
