@@ -64,12 +64,11 @@ public class Hand{
             String index = ""; // A string having aligned indexes
             int size = 0;
             for (int i = 0; i < tiles.size(); i++) {
-                if (tiles.get(i).getColor() != Tile.Colors.JOKER) {
+                if (tiles.get(i).getColor() != Tile.Colors.JOKER)
                     string += tiles.get(i).getValue() + "  ";
-                }
                 string += tiles.get(i).getColor() + "}  ";
                 int sz = string.length() - size;
-                index += String.format("%-"+sz+"s", "["+i+"]");
+                index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
                 size = string.length();
             }
             ArrayList<String> ret = new ArrayList<String>();

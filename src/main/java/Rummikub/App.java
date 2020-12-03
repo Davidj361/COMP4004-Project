@@ -18,7 +18,7 @@ public class App {
             name = "NoName";
             System.out.println(name);
         }
-        System.out.println("What port number do you want to host game on?");
+        System.out.println("What port number do you want to host/connect on?");
         String prt = scanner.nextLine();
         int port = 27015;
         if (prt.equals(""))
