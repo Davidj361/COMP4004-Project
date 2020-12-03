@@ -22,6 +22,10 @@ public class Hand{
         return tiles.size();
     }
 
+    public ArrayList<Tile> getTiles () {
+        return tiles;
+    }
+
     //add Tile to players hand
     public void addTile(Tile tile) {
         this.tiles.add(tile);

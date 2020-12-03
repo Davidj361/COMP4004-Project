@@ -63,11 +63,7 @@ public class Player {
         for (int index: tilesIndex) {
             if (!hand.hasTile(index))
                 return false;
-            sum += hand.tiles.get(index - 1).getValue();
         }
-        // if first placement, sum of tile values must be at least 30
-        if (!firstPlacement && sum<30)
-            return false;
         return true;
     }
 
@@ -90,6 +86,20 @@ public class Player {
 
     public void setHand(Hand h) {
         origHand = hand = h;
+    }
+
+    public Hand getOrigHand () {
+        return origHand;
+    }
+
+    public int sumOfTilesPlaced () {
+        ArrayList <Tile> tilesPlaced = origHand.getTiles();
+        tilesPlaced.removeAll(hand.getTiles());
+        int sum = 0;
+        for (int i = 0; i < tilesPlaced.size(); i++) {
+            sum += tilesPlaced.get(i).getValue();
+        }
+        return sum;
     }
 }
 

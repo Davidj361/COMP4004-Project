@@ -17,7 +17,6 @@ public class Game {
     private Board origBoard = new Board();
     private Scanner scanner = new Scanner(System.in);
 	//private static enum Actions {display, pick, finalize, undo, take, split};
-    private Hand origHand;
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	private int numPlayers; // Needed for testing both offline and online
@@ -282,9 +281,26 @@ public class Game {
 	// Valid, no manipulates and drawTile
 	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
-		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
-			origBoard = board;  //update original board to finalize
-			players.get(curPlayer()).updateHand();  //update original hand to finalize
+		Player currPlayer = players.get(curPlayer());
+		if (currPlayer.getHand().compare(currPlayer.getOrigHand()) && board.checkBoard()) {
+			int sum = currPlayer.sumOfTilesPlaced();
+			boolean firstPlacement = currPlayer.getFirstPlacement();
+			if (!firstPlacement && sum<30) {
+				//print error
+				undo(players.get(curPlayer()));
+				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
+				println("Try again");
+				return false;
+			}
+			else if (!firstPlacement && sum > 30) {
+				currPlayer.setFirstPlacement();
+				origBoard = board;  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
+			}
+			else {
+				origBoard = board;  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
+			}
 			return true;
 		} else {
 			drawTile(players.get(curPlayer()));
@@ -298,7 +314,7 @@ public class Game {
 	// as when the turn started
 	// TODO Get origHand and origBoard initialized at every start of a turn
 	private boolean undo(Player curPlayer) {
-		curPlayer.setHand(origHand);
+		curPlayer.resetHand();
 		board = origBoard;
 		return true;
 	}
@@ -322,7 +338,6 @@ public class Game {
 				player.resetHand();
 				return false;
 			}
-			player.setFirstPlacement();
 			return true;
 		}
 		print("You cannot put those tiles!");
