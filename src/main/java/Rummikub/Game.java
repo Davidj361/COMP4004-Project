@@ -156,8 +156,11 @@ public class Game {
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
 			if(players.get(i) != winner) {
-				scoreForWinner += players.get(i).sumOfTiles();
-				int score = -1 * players.get(i).sumOfTiles();
+				int score = -players.get(i).sumOfTiles();
+				if (players.get(i).hasJoker()) {
+					score -= 30;
+				}
+				scoreForWinner += -score;
 				players.get(i).setScore(score);
 			}
 		}

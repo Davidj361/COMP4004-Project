@@ -67,6 +67,15 @@ public class Player {
         return true;
     }
 
+    public boolean hasJoker () {
+        ArrayList<Tile> tiles = hand.getTiles();
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getColor().equals(Tile.Colors.JOKER))
+                return true;
+        }
+        return false;
+    }
+
     // player put tiles from hand
     public ArrayList<Tile> putTiles(int[] tilesIndex) {
         ArrayList<Tile> tileSet = new ArrayList<Tile>();
