@@ -91,5 +91,15 @@ public class Player {
     public Hand getOrigHand () {
         return origHand;
     }
+
+    public int sumOfTilesPlaced () {
+        ArrayList <Tile> tilesPlaced = origHand.getTiles();
+        tilesPlaced.removeAll(hand.getTiles());
+        int sum = 0;
+        for (int i = 0; i < tilesPlaced.size(); i++) {
+            sum += tilesPlaced.get(i).getValue();
+        }
+        return sum;
+    }
 }
 

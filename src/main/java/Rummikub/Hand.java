@@ -87,16 +87,6 @@ public class Hand{
             return false;
         }
     }
-
-    public int sumOfTilesPlaced (Hand origHand) {
-        ArrayList <Tile> tilesPlaced = origHand.getTiles();
-        tilesPlaced.removeAll(tiles);
-        int sum = 0;
-        for (int i = 0; i < tilesPlaced.size(); i++) {
-            sum += tilesPlaced.get(i).getValue();
-        }
-        return sum;
-    }
 }
 
 

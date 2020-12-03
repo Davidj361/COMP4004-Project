@@ -280,7 +280,7 @@ public class Game {
 		//Nothing done on board in this turn, then draw
 		Player currPlayer = players.get(curPlayer());
 		if (currPlayer.getHand().compare(currPlayer.getOrigHand()) && board.checkBoard()) {
-			int sum = currPlayer.getHand().sumOfTilesPlaced(currPlayer.getOrigHand());
+			int sum = currPlayer.sumOfTilesPlaced();
 			boolean firstPlacement = currPlayer.getFirstPlacement();
 			if (!firstPlacement && sum<30) {
 				//print error
