@@ -176,23 +176,6 @@ public class Game {
     	return false;
 	}
 
-	// Should be 3 states to validate
-	// Invalid, unable to endTurn()
-	// Valid, end turn with manipulations to board
-	// Valid, no manipulates and drawTile
-	public boolean endTurn() {
-		//Nothing done on board in this turn, then draw
-		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
-			origBoard = board;  //update original board to finalize
-			players.get(curPlayer()).updateHand();  //update original hand to finalize
-			return true;
-		} else {
-			drawTile(players.get(curPlayer()));
-		}
-		players.get(curPlayer()).nextTurn();
-		turn++;
-		return false;
-	}
 
 	public void startTurn() {
 
@@ -287,6 +270,25 @@ public class Game {
 		while ((str = br.readLine()) != null) {
 			print(str+"\n");
 		}
+	}
+
+
+	// Should be 3 states to validate
+	// Invalid, unable to endTurn()
+	// Valid, end turn with manipulations to board
+	// Valid, no manipulates and drawTile
+	public boolean endTurn() {
+		//Nothing done on board in this turn, then draw
+		if (players.get(curPlayer()).getHand().compare(origHand) && board.checkBoard()) {
+			origBoard = board;  //update original board to finalize
+			players.get(curPlayer()).updateHand();  //update original hand to finalize
+			return true;
+		} else {
+			drawTile(players.get(curPlayer()));
+		}
+		players.get(curPlayer()).nextTurn();
+		turn++;
+		return false;
 	}
 
 	// Reverts the player's hand and the board to the original state
