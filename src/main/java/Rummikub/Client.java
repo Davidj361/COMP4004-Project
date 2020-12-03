@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import java.io.*;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 public class Tile implements Comparable<Tile> {
     public static enum Colors {BL, RE, YE, BK, JOKER};

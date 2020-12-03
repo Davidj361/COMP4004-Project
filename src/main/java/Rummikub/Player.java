@@ -1,5 +1,4 @@
-
-package Rummykub;
+package Rummikub;
 
 import java.util.ArrayList;
 

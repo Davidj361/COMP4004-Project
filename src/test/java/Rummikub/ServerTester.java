@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import static org.junit.Assert.*;
 

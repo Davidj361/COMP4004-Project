@@ -1,8 +1,8 @@
-package Rummykub;
+package Rummikub;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import static Rummykub.Tile.Colors;
+import static Rummikub.Tile.Colors;
 
 public class Deck{
     private ArrayList<Tile> tiles;

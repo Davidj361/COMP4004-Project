@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import java.util.ArrayList;
 import java.util.Collections;

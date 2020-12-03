@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import java.io.EOFException;
 import java.io.IOException;

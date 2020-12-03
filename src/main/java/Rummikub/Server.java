@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import java.io.IOException;
 import java.lang.reflect.Array;

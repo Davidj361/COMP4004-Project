@@ -1,4 +1,4 @@
-package Rummykub;
+package Rummikub;
 
 import org.junit.rules.TestName;
 import org.junit.Before;
