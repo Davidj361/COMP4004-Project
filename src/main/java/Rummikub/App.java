@@ -14,6 +14,17 @@ public class App {
 
         System.out.println("What is your player name?");
         String name = scanner.nextLine();
+        if (name.equals("")) {
+            name = "NoName";
+            System.out.println(name);
+        }
+        System.out.println("What port number do you want to host game on?");
+        String prt = scanner.nextLine();
+        int port = 27015;
+        if (prt.equals(""))
+            System.out.println(port);
+        else
+            port = Integer.parseInt(prt);
         int state = 0;
         while (state == 0) {
             System.out.println("Would you like to host a new game or connect to a host?");
@@ -21,10 +32,10 @@ public class App {
             int hostOrConnect = scanner.nextInt();
             if (hostOrConnect == 1) {
                 state = 1;
-                host(name);
+                host(name, port);
             } else if (hostOrConnect == 2) {
                 state = 2;
-                client(name);
+                client(name, port);
             } else {
                 System.out.println("invalid input");
             }
@@ -33,10 +44,8 @@ public class App {
 
 
     // Host the game and play it at the same time
-    private static void host(String name) throws IOException, InterruptedException {
+    private static void host(String name, int port) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What port number do you want to host game on?");
-        int port = scanner.nextInt();
         int numberOfPlayers;
         while (true) {
             System.out.println("How many players would you like to have in your game?");
@@ -71,12 +80,14 @@ public class App {
     }
 
     // Connect to a host and play the game
-    private static void client(String name) throws IOException, InterruptedException {
+    private static void client(String name, int port) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is the IP/hostname that you wish to connect to?");
         String ip = scanner.nextLine().toLowerCase();
-        System.out.println("What port number do you want to connect to?");
-        int port = scanner.nextInt();
+        if (ip.equals("")) {
+            ip = "127.0.0.1";
+            System.out.println(ip);
+        }
         // Setup network
         try (Client client = new Client(name, ip, port)) {
             if (!client.connect())
