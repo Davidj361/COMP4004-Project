@@ -85,11 +85,11 @@ public class Game {
     public boolean isRun(ArrayList<Tile> run) {
     	Colors color = run.get(0).getColor();
     	int value = run.get(0).getValue() - 1;
-    	
+
     	for (Tile t : run) {
     		if (t.getColor() != color)
     			return false;
-    		
+
     		if (t.getValue() == value + 1)
     			value++;
     		else
@@ -104,11 +104,11 @@ public class Game {
     	boolean yellow = false;
     	boolean black = false;
     	int value = group.get(0).getValue();
-    	
+
     	for (Tile t : group) {
     		if (t.getValue() != value)
     			return false;
-    		
+
     		if (t.getColor() == Colors.RE) {
     			if (!red)
     				red = true;
@@ -176,11 +176,6 @@ public class Game {
     	if (players.get(curPlayer()).getTileNumber() == 0)
     		return true;
     	return false;
-	}
-
-
-	public void startTurn() {
-
 	}
 
 	// Get who's the current player this turn for indexing purposes
@@ -331,19 +326,19 @@ public class Game {
 		// Integer index of tiles on hand
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
-			tilesIdx[i] = Integer.parseInt(sArr[i])-1; // Players start their index at 1, not 0
+			tilesIdx[i] = Integer.parseInt(sArr[i]);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			if (!board.checkBoard()) {
-				print("Invalid placement!");
+				println("Invalid placement!");
 				board = origBoard;
 				player.resetHand();
 				return false;
 			}
 			return true;
 		}
-		print("You cannot put those tiles!");
+		println("You cannot put those tiles!");
 		return false;
 	}
 
@@ -356,19 +351,19 @@ public class Game {
 		int dstRow = Integer.parseInt(sArr[0]);
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
-			tilesIdx[i] = Integer.parseInt(sArr[i]);
+			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			if (!board.checkBoard()) {
-				//TODO: error message printing: invalid placement
+				println("Invalid placement!");
 				board = origBoard;
 				player.resetHand();
 				return false;
 			}
 			return true;
 		}
-		//TODO: error message: no such tiles
+		println("You cannot put those tiles!");
 		return false;
 	}
 
@@ -421,4 +416,33 @@ public class Game {
 
 	// Functions used by command(..)
 	//////////////////////////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////////////////////////
+	// Functions for debugging purposes
+
+	// Return current player's hand
+	public Hand curPlayerHand() {
+		return players.get(curPlayer()).getHand();
+	}
+
+	// Return current turn number
+	public int getTurn() {
+		return turn;
+	}
+
+	// Update current board with the given board
+	public void setBoard(Board newBoard) {
+		board = newBoard;
+	}
+
+	// return board
+	public Board getBoard() {
+		return board;
+	}
+
+	// Set current player's hand
+	public void setCurHand(Hand hand) {
+		players.get(curPlayer()).setHand(hand);
+	}
 }
