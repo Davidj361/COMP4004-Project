@@ -4,6 +4,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -12,29 +13,20 @@ import static org.junit.Assert.*;
 public class gameStepDef {
     private ArrayList<Tile> tiles = new ArrayList<Tile>();
     private Game game = new Game(true); // set testing to true
-    private Player player = new Player("joe");
+//    private Player player = new Player("joe");
 
-    @Given("^Tiles are \"([^\"]*)\"$")
     public void tiles_are(String arg1) {
-        // Express the Regexp above with the code you wish you had
         System.out.println("sequence is " + arg1);
         String a [] = arg1.split(",");
         for (int i = 0; i < a.length; i++) {
             String tileIs = a[i].replace("(", "");
             tileIs = tileIs.replace(")", "");
-//            System.out.println("tile is " +tileIs);
             String b [] = tileIs.split(" ");
-//            System.out.println("2nd tile" + b[0] + " " + b[1]);
             int value  = Integer.parseInt(b[0]);
             String color = b[1];
-//            System.out.println("value is " + value);
-//            System.out.println("color is " + color);
             Tile tile  = new Tile (value, parseColor(color));
             tiles.add(tile);
         }
-//        System.out.println(tiles);
-//        System.out.println("array is " + a[1]);
-
     }
 
     public Tile.Colors parseColor (String color) {
@@ -42,7 +34,7 @@ public class gameStepDef {
         if(color.compareToIgnoreCase("blue") == 0) {
             defaultColor = Tile.Colors.BL;
         }
-        if(color.compareToIgnoreCase("green") == 0) {
+        if(color.compareToIgnoreCase("red") == 0) {
             defaultColor = Tile.Colors.RE;
         }
         if(color.compareToIgnoreCase("yellow") == 0) {
@@ -54,48 +46,51 @@ public class gameStepDef {
         return defaultColor;
     }
 
-    @Then("Tile is a run")
-    public void tile_is_a_run(){
+    @Given("First tile has not been placed")
+    public void first_tile_has_not_been_placed() {
         // Write code here that turns the phrase above into concrete actions
-        assertTrue(game.isRun(tiles));
+        System.out.println(game.curPlayerObj().getFirstPlacement());
+        assertFalse(game.curPlayerObj().getFirstPlacement());
     }
-
-    @Then("Tile is not a run")
-    public void tile_is_not_a_run() {
+    
+    @Given("Player has {string} in hand")
+    public void player_has_in_hand(String string) {
         // Write code here that turns the phrase above into concrete actions
-        assertFalse(game.isRun(tiles));
-    }
-
-    @Then("Tile is a group")
-    public void tile_is_a_group(){
-        // Write code here that turns the phrase above into concrete actions
-        assertTrue(game.isGroup(tiles));
-    }
-
-    @Then("Tiles is not a group")
-    public void tiles_is_not_a_group() {
-        // Write code here that turns the phrase above into concrete actions
-        assertFalse(game.isGroup(tiles));
-    }
-
-    @When("player tries placing their first placement")
-    public void player_tries_placing_their_first_placement() {
-        // Write code here that turns the phrase above into concrete actions
-        String [] index = {"1","2","3"};
+        tiles_are(string);
         Hand hand = new Hand(tiles);
-        player.setHand(hand);
-        game.placeTiles(index,player);
+        game.setCurHand(hand);
+        System.out.println("hand " + game.curPlayerObj().getName());
+        System.out.println("original hand " +game.curPlayerObj().getOrigHand().getSize());
+    }
+
+    @When("Player sends a command for placing {string} tiles on board")
+    public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
+        // Write code here that turns the phrase above into concrete actions
+        String command = "p";
+        for (int i=0; i<3; i++)
+            command = command + " " + (i+1);
+        System.out.println(command);
+        game.command(0, command);
+    }
+    @When("Player sends a command to end turn")
+    public void player_sends_a_command_to_end_turn() throws IOException {
+        // Write code here that turns the phrase above into concrete actions
+        Player player = game.getPlayers().get(0);
+        System.out.println("player name " + player.getName());
+        game.command(0, "e");
     }
 
     @Then("First placement is successful")
     public void first_placement_is_successful() {
         // Write code here that turns the phrase above into concrete actions
-        assertTrue(player.getFirstPlacement());
+        System.out.println(game.curPlayerObj().getFirstPlacement());
+        assertTrue(game.curPlayerObj().getFirstPlacement());
     }
 
     @Then("First placement is NOT successful")
     public void first_placement_is_not_successful() {
         // Write code here that turns the phrase above into concrete actions
-        assertFalse(player.getFirstPlacement());
+        System.out.println(game.curPlayerObj().getFirstPlacement());
+        assertFalse(game.curPlayerObj().getFirstPlacement());
     }
 }

@@ -56,6 +56,9 @@ public class Game {
 		reset();
 	}
 
+	public ArrayList<Player> getPlayers () {
+		return players;
+	}
 	// Useful for testing and restarting the game
 	public void reset() {
 		gameRunning = true;
@@ -181,6 +184,10 @@ public class Game {
 	// Get who's the current player this turn for indexing purposes
 	public int curPlayer() {
 		return ((turn-1) % players.size());
+	}
+
+	public Player curPlayerObj() {
+		return players.get(curPlayer());
 	}
 	public String curPlayerName() {
 		return players.get(curPlayer()).getName();
