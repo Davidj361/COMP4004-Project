@@ -41,6 +41,13 @@ public class PlayTurn {
         return tiles;
     }
 
+    @Given("Player starts round \\(not first placement)")
+    public void player_starts_round_not_first_placement() {
+        assertEquals(1, game.getTurn());
+        assertTrue(game.playerTurn(0));
+        game.getPlayers().get(game.curPlayer()).setFirstPlacement();
+    }
+
     @Given("There already exists a run of {string} on board")
     public void there_already_exists_a_run_of_on_board(String string) {
         Board board = new Board();
