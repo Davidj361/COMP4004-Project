@@ -297,6 +297,7 @@ public class Game {
 			else {
 				origBoard = board;  //update original board to finalize
 				players.get(curPlayer()).updateHand();  //update original hand to finalize
+				players.get(curPlayer()).sortHand(); //sort the updated hand
 			}
 			players.get(curPlayer()).nextTurn();
 			turn++;
