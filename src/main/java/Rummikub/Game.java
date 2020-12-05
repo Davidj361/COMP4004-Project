@@ -458,8 +458,4 @@ public class Game {
 		players.get(curPlayer()).setHand(hand);
 	}
 
-	// return players
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
 }

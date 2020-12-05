@@ -52,7 +52,7 @@ public class gameStepDef {
         System.out.println(game.curPlayerObj().getFirstPlacement());
         assertFalse(game.curPlayerObj().getFirstPlacement());
     }
-    
+
     @Given("Player has {string} in hand")
     public void player_has_in_hand(String string) {
         // Write code here that turns the phrase above into concrete actions
@@ -75,8 +75,6 @@ public class gameStepDef {
     @When("Player sends a command to end turn")
     public void player_sends_a_command_to_end_turn() throws IOException {
         // Write code here that turns the phrase above into concrete actions
-        Player player = game.getPlayers().get(0);
-        System.out.println("player name " + player.getName());
         game.command(0, "e");
     }
 
