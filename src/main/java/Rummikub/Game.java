@@ -295,6 +295,8 @@ public class Game {
 				undo(players.get(curPlayer()));
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
 				println("Try again");
+				players.get(curPlayer()).nextTurn();
+				turn++;
 				return false;
 			}
 			else if (!firstPlacement && sum > 30) {
@@ -305,7 +307,10 @@ public class Game {
 			else {
 				origBoard = board;  //update original board to finalize
 				players.get(curPlayer()).updateHand();  //update original hand to finalize
+				players.get(curPlayer()).sortHand(); //sort the updated hand
 			}
+			players.get(curPlayer()).nextTurn();
+			turn++;
 			return true;
 		} else {
 			drawTile(players.get(curPlayer()));
@@ -451,5 +456,10 @@ public class Game {
 	// Set current player's hand
 	public void setCurHand(Hand hand) {
 		players.get(curPlayer()).setHand(hand);
+	}
+
+	// return players
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 }
