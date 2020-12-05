@@ -51,15 +51,47 @@ Feature: Testing user play a turn in various scenarios
     And Player ends a turn
 
   Scenario: Play Turn - places multiple tiles that form a run, and places multiple tiles that form another run, then finishes turn
-
+    Given Player starts round (not first placement)
+    And Player has "(3 red),(4 red),(5 red),(8 blue),(9 blue),(10 blue)" on hand
+    When Player sends a command for placing a run of "(3 red),(4 red),(5 red)" on board
+    And Placed tiles form a run
+    And Player sends a command for placing a run of "(8 blue),(9 blue),(10 blue)" on board
+    And Placed tiles form another run
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
 
   Scenario: Play Turn - places multiple tiles that form a group, and places multiple tiles that form another group, then finishes turn
-
+    Given Player starts round (not first placement)
+    And Player has "(3 red),(3 blue),(3 black),(8 blue),(8 black),(8 yellow)" on hand
+    When Player sends a command for placing a group of "(3 red),(3 blue),(3 black)" on board
+    And Placed tiles form a group
+    And Player sends a command for placing a group of "(8 blue),(8 black),(8 yellow)" on board
+    And Placed tiles form another group
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
 
   Scenario: Play Turn - places multiple tiles that form a group, and places multiple tiles that form a run, then finishes turn
+    Given Player starts round (not first placement)
+    And Player has "(3 red),(3 blue),(3 black),(8 blue),(9 blue),(10 blue)" on hand
+    When Player sends a command for placing a group of "(3 red),(3 blue),(3 black)" on board
+    And Placed tiles form a group
+    And Player sends a command for placing a run of "(8 blue),(9 blue),(10 blue)" on board
+    And Placed tiles form another run
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
 
   Scenario: Play Turn - places a tile but it is an invalid placement, tiles return to rack, places another tile that form a run, then finishes turn
-
+    Given Player starts round (not first placement)
+    And Player has "(3 red),(5 blue),(7 black),(8 blue),(9 blue),(10 blue)" on rack
+    When Player sends a command for placing tiles of "(3 red),(5 blue),(7 black)" but fails
+    And Player sends a command for placing a run of "(8 blue),(9 blue),(10 blue)" on board
+    And Placed tiles form a run
+    And Player finishes turn by sending end turn command
+    Then Tile is given to player from the deck so player has 4 tiles
+    And Players turn ends
 
   Scenario: Play Turn - places a tile but it is an invalid placement, tiles return to rack, places another tile that form a group, then finishes turn
 

@@ -117,6 +117,7 @@ public class PlayTurn {
 
     @When("Player sends a command for placing a run of {string} on board")
     public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
+        System.out.println("hand: " + game.curPlayerHand().printHand());
         String command = "p";
         for (int i=0; i<parseTiles(string).size(); i++)
             command = command + " " + (i+1);
@@ -136,5 +137,25 @@ public class PlayTurn {
     @When("Placed tiles form a group")
     public void placed_tiles_form_a_group() {
         assertTrue(game.isGroup(game.getBoard().board.get(0)));
+    }
+
+    @When("Placed tiles form another run")
+    public void placed_tiles_form_another_run() {
+        assertTrue(game.isRun(game.getBoard().board.get(1)));
+    }
+
+    @When("Placed tiles form another group")
+    public void placed_tiles_form_another_group() {
+        assertTrue(game.isGroup(game.getBoard().board.get(1)));
+    }
+
+    @When("Player sends a command for placing tiles of {string} but fails")
+    public void player_sends_a_command_for_placing_tiles_of_but_fails(String string) throws IOException {
+        String command = "p";
+        for (int i=0; i<parseTiles(string).size(); i++)
+            command = command + " " + (i+1);
+        System.out.println(command);
+        game.command(0, command);
+        game.println(game.getBoard().printBoard());
     }
 }
