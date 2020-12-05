@@ -3,7 +3,6 @@ package Rummikub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 import Rummikub.Tile.Colors;
@@ -56,9 +55,6 @@ public class Game {
 		reset();
 	}
 
-	public ArrayList<Player> getPlayers () {
-		return players;
-	}
 	// Useful for testing and restarting the game
 	public void reset() {
 		gameRunning = true;
@@ -176,48 +172,53 @@ public class Game {
 
     // returns true if player's hand is empty
     public boolean isGameOver() {
-    	if (players.get(curPlayer()).getTileNumber() == 0)
+    	if (players.get(getCurPlayerIdx()).getTileNumber() == 0)
     		return true;
     	return false;
 	}
 
 	// Get who's the current player this turn for indexing purposes
-	public int curPlayer() {
-		return ((turn-1) % players.size());
-	}
-
-	public Player curPlayerObj() {
-		return players.get(curPlayer());
-	}
-	public String curPlayerName() {
-		return players.get(curPlayer()).getName();
-	}
+	public int getCurPlayerIdx() {  return ((turn-1) % players.size()); }
+	public String getCurPlayerName() { return players.get(getCurPlayerIdx()).getName(); }
+	public Player getCurPlayer() { return players.get(getCurPlayerIdx()); }
 
 	// Is it this player's turn?
 	public boolean playerTurn(int player) {
-		return (curPlayer() == player);
+		return (getCurPlayerIdx() == player);
 	}
 
 	// Prints the same string to all players
 	public void print(String str) {
-		if (server != null) // Multiplayer mode
-			server.print(str);
-		else // Single player mode
-			System.out.print(str);
+		for (int i = 0; i < players.size(); i++)
+			print(str, i);
 	}
 	public void println(String str) {
 		String out = str+'\n';
 		print(out);
 	}
+	// These 2 functions is for private messaging/printing
+	public void print(String str, int idx) {
+		if (server != null) // Multiplayer mode
+			server.print(str, idx);
+		else // Single player mode
+			System.out.print(str);
+	}
+	public void println(String str, int idx) {
+		String out = str+'\n';
+		print(out, idx);
+	}
 
 	// The command handler
 	// Parses text given by a client to Server
-	public boolean command(int player, String input) throws IOException {
-		if (!playerTurn(player))
+	public boolean command(int playerIdx, String input) throws IOException {
+		if (!playerTurn(playerIdx)) {
+			println("It is not your turn yet.", playerIdx);
 			return false;
-		Player curPlayer = players.get(curPlayer());
+		}
+		Player curPlayer = getCurPlayer();
 
 		String[] sArr = input.split(" ");
+		boolean invalidCmd = false;
 		if (sArr.length > 1) { // Commands with input arguments
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
@@ -233,6 +234,9 @@ public class Game {
 				case "s": // splitting rows on the board
 					splitRow(args, curPlayer);
 					break;
+				default:
+					invalidCmd = true;
+					break;
 			}
 		} else { // No arguments to commands
 			switch(sArr[0]) {
@@ -243,19 +247,22 @@ public class Game {
 					println(board.printBoard());
 					break;
 				case "dh": // display player's hand
-					ArrayList<String> tmp = curPlayer.printHand();
-					// Will print index line then player hand line
-					for (String s: tmp)
-						println(s);
+					printCurPlayerHand();
 					break;
 				case "u": // undo
 					undo(curPlayer);
 					break;
 				case "e": // end turn
-					// TODO Need to implement ending turn and validating board & current player's hand
 					endTurn();
 					break;
+				default:
+					invalidCmd = true;
+					break;
 			}
+		}
+		if (invalidCmd) {
+			println("Bad command: "+input, playerIdx);
+			return false;
 		}
 		return true;
 	}
@@ -286,43 +293,43 @@ public class Game {
 	// Valid, no manipulates and drawTile
 	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
-		Player currPlayer = players.get(curPlayer());
+		Player currPlayer = players.get(getCurPlayerIdx());
 		if (currPlayer.getHand().compare(currPlayer.getOrigHand()) && board.checkBoard()) {
 			int sum = currPlayer.sumOfTilesPlaced();
-			boolean firstPlacement = currPlayer.getFirstPlacement();
+			boolean firstPlacement = currPlayer.getDoneFirstPlacement();
 			if (!firstPlacement && sum<30) {
 				//print error
-				undo(players.get(curPlayer()));
+				undo(players.get(getCurPlayerIdx()));
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
 				println("Try again");
-				players.get(curPlayer()).nextTurn();
+				players.get(getCurPlayerIdx()).nextTurn();
 				turn++;
 				return false;
 			}
 			else if (!firstPlacement && sum > 30) {
 				currPlayer.setFirstPlacement();
 				origBoard = board;  //update original board to finalize
-				players.get(curPlayer()).updateHand();  //update original hand to finalize
+				players.get(getCurPlayerIdx()).updateHand();  //update original hand to finalize
 			}
 			else {
 				origBoard = board;  //update original board to finalize
-				players.get(curPlayer()).updateHand();  //update original hand to finalize
-				players.get(curPlayer()).sortHand(); //sort the updated hand
+				players.get(getCurPlayerIdx()).updateHand();  //update original hand to finalize
+				players.get(getCurPlayerIdx()).sortHand(); //sort the updated hand
 			}
-			players.get(curPlayer()).nextTurn();
+			players.get(getCurPlayerIdx()).nextTurn();
 			turn++;
 			return true;
 		} else {
-			drawTile(players.get(curPlayer()));
+			drawTile(players.get(getCurPlayerIdx()));
 		}
-		players.get(curPlayer()).nextTurn();
+		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
+		announcePlayersTurn(); // Will announce who's turn it is now
 		return false;
 	}
 
 	// Reverts the player's hand and the board to the original state
 	// as when the turn started
-	// TODO Get origHand and origBoard initialized at every start of a turn
 	private boolean undo(Player curPlayer) {
 		curPlayer.resetHand();
 		board = origBoard;
@@ -426,6 +433,13 @@ public class Game {
 		return true;
 	}
 
+	public void printCurPlayerHand() {
+		ArrayList<String> tmp = getCurPlayer().printHand();
+		// Will print index line then player hand line
+		for (String s : tmp)
+			println(s, getCurPlayerIdx());
+	}
+
 	// Functions used by command(..)
 	//////////////////////////////////////////////////////////////////////
 
@@ -435,7 +449,7 @@ public class Game {
 
 	// Return current player's hand
 	public Hand curPlayerHand() {
-		return players.get(curPlayer()).getHand();
+		return players.get(getCurPlayerIdx()).getHand();
 	}
 
 	// Return current turn number
@@ -455,7 +469,28 @@ public class Game {
 
 	// Set current player's hand
 	public void setCurHand(Hand hand) {
-		players.get(curPlayer()).setHand(hand);
+		players.get(getCurPlayerIdx()).setHand(hand);
 	}
 
+	// return players
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	// Functions for debugging purposes
+	//////////////////////////////////////////////////////////////////////
+
+
+	public void startText() {
+		println("Game has started!");
+		announcePlayersTurn();
+	}
+
+	public void announcePlayersTurn() {
+		print("It is ");
+		print(getCurPlayerName());
+		println("'s turn!");
+		// Show their hand
+		printCurPlayerHand();
+	}
 }

@@ -49,8 +49,8 @@ public class gameStepDef {
     @Given("First tile has not been placed")
     public void first_tile_has_not_been_placed() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.curPlayerObj().getFirstPlacement());
-        assertFalse(game.curPlayerObj().getFirstPlacement());
+        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
+        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @Given("Player has {string} in hand")
@@ -59,8 +59,8 @@ public class gameStepDef {
         tiles_are(string);
         Hand hand = new Hand(tiles);
         game.setCurHand(hand);
-        System.out.println("hand " + game.curPlayerObj().getName());
-        System.out.println("original hand " +game.curPlayerObj().getOrigHand().getSize());
+        System.out.println("hand " + game.getCurPlayer().getName());
+        System.out.println("original hand " +game.getCurPlayer().getOrigHand().getSize());
     }
 
     @When("Player sends a command for placing {string} tiles on board")
@@ -81,14 +81,14 @@ public class gameStepDef {
     @Then("First placement is successful")
     public void first_placement_is_successful() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.curPlayerObj().getFirstPlacement());
-        assertTrue(game.curPlayerObj().getFirstPlacement());
+        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
+        assertTrue(game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @Then("First placement is NOT successful")
     public void first_placement_is_not_successful() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.curPlayerObj().getFirstPlacement());
-        assertFalse(game.curPlayerObj().getFirstPlacement());
+        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
+        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 }

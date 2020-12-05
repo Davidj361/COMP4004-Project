@@ -45,7 +45,7 @@ public class PlayTurn {
     public void player_starts_round_not_first_placement() {
         assertEquals(1, game.getTurn());
         assertTrue(game.playerTurn(0));
-        game.getPlayers().get(game.curPlayer()).setFirstPlacement();
+        game.getPlayers().get(game.getCurPlayerIdx()).setFirstPlacement();
     }
 
     @Given("There already exists a run of {string} on board")

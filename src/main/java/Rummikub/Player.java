@@ -7,7 +7,7 @@ public class Player {
     private String name;
     private int score; //score for current round
     private int totalScore;
-    private boolean firstPlacement = false; // Has player made their first placement?
+    private boolean doneFirstPlacement = false; // Has player made their first placement?
     private Hand hand, origHand;
     public Player (String n) {
         name = n;
@@ -36,10 +36,10 @@ public class Player {
 
     public ArrayList<String> printHand() { return hand.printHand(); }
 
-    public boolean getFirstPlacement() { return firstPlacement; }
+    public boolean getDoneFirstPlacement() { return doneFirstPlacement; }
 
     public void setFirstPlacement() {
-        firstPlacement = true;
+        doneFirstPlacement = true;
     }
 
     public int getTileNumber() {
