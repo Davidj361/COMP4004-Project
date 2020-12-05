@@ -59,7 +59,6 @@ public class Player {
     }
 
     public boolean hasTiles(int[] tilesIndex) {
-        int sum = 0;
         for (int index: tilesIndex) {
             if (!hand.hasTile(index))
                 return false;
@@ -77,15 +76,16 @@ public class Player {
     }
 
     public void resetHand() {
-        hand = origHand;
+        hand = new Hand(origHand.getTiles());
     }
 
     public void updateHand() {
-        origHand = hand;
+        origHand = new Hand(hand.getTiles());
     }
 
     public void setHand(Hand h) {
-        origHand = hand = h;
+        hand = h;
+        origHand = new Hand(hand.getTiles());
     }
 
     public Hand getOrigHand () {
