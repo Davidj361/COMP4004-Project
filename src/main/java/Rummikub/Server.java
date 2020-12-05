@@ -148,7 +148,6 @@ public class Server extends Thread implements AutoCloseable {
     // When the host asks for a command
     public boolean command(String str) throws IOException {
         if (!commHelper(0, str)) {
-            System.out.print("It is not your turn yet.\n");
             return false;
         }
         return true;
@@ -170,8 +169,6 @@ public class Server extends Thread implements AutoCloseable {
 
 
     private boolean commHelper(int player, String str) throws IOException {
-        if (!game.playerTurn(player))
-            return false;
         return game.command(player, str);
     }
 

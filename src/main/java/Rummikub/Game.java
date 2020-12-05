@@ -247,10 +247,7 @@ public class Game {
 					println(board.printBoard());
 					break;
 				case "dh": // display player's hand
-					ArrayList<String> tmp = curPlayer.printHand();
-					// Will print index line then player hand line
-					for (String s: tmp)
-						println(s);
+					printCurPlayerHand();
 					break;
 				case "u": // undo
 					undo(curPlayer);
@@ -436,6 +433,13 @@ public class Game {
 		return true;
 	}
 
+	public void printCurPlayerHand() {
+		ArrayList<String> tmp = getCurPlayer().printHand();
+		// Will print index line then player hand line
+		for (String s : tmp)
+			println(s, getCurPlayerIdx());
+	}
+
 	// Functions used by command(..)
 	//////////////////////////////////////////////////////////////////////
 
@@ -479,11 +483,14 @@ public class Game {
 
 	public void startText() {
 		println("Game has started!");
+		announcePlayersTurn();
 	}
 
 	public void announcePlayersTurn() {
 		print("It is ");
 		print(getCurPlayerName());
-		println(" turn!");
+		println("'s turn!");
+		// Show their hand
+		printCurPlayerHand();
 	}
 }
