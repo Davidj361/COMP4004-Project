@@ -27,8 +27,8 @@ public class App {
             port = Integer.parseInt(prt);
         int state = 0;
         while (state == 0) {
-            System.out.println("Would you like to host a new game or connect to a host?");
-            System.out.println("1: Host, 2: Connect");
+            System.out.println("Would you like to host a new game and play or connect to a host and play?");
+            System.out.println("Type '1' for Host or '2' for Connect");
             int hostOrConnect = scanner.nextInt();
             if (hostOrConnect == 1) {
                 state = 1;

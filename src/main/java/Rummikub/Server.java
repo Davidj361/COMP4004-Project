@@ -131,7 +131,7 @@ public class Server extends Thread implements AutoCloseable {
             System.out.print(str);
         else {
             try {
-                send(idx, str);
+                send(idx-1, str);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -163,7 +163,6 @@ public class Server extends Thread implements AutoCloseable {
         }
         print("Received command: "+str+"\n", player);
         if (!commHelper(player, str)) {
-            send(clientId, "It is not your turn yet.\n");
             return false;
         }
         return true;

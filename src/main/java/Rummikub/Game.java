@@ -155,8 +155,11 @@ public class Game {
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
 			if(players.get(i) != winner) {
-				scoreForWinner += players.get(i).sumOfTiles();
-				int score = -1 * players.get(i).sumOfTiles();
+				int score = -players.get(i).sumOfTiles();
+				if (players.get(i).hasJoker()) {
+					score -= 30;
+				}
+				scoreForWinner += -score;
 				players.get(i).setScore(score);
 			}
 		}
@@ -175,12 +178,8 @@ public class Game {
 	}
 
 	// Get who's the current player this turn for indexing purposes
-	public int getCurPlayerIdx() {
-		return ((turn-1) % players.size());
-	}
-	public String getCurPlayerName() {
-		return players.get(getCurPlayerIdx()).getName();
-	}
+	public int getCurPlayerIdx() {  return ((turn-1) % players.size()); }
+	public String getCurPlayerName() { return players.get(getCurPlayerIdx()).getName(); }
 	public Player getCurPlayer() { return players.get(getCurPlayerIdx()); }
 
 	// Is it this player's turn?
@@ -212,8 +211,10 @@ public class Game {
 	// The command handler
 	// Parses text given by a client to Server
 	public boolean command(int playerIdx, String input) throws IOException {
-		if (!playerTurn(playerIdx))
+		if (!playerTurn(playerIdx)) {
+			println("It is not your turn yet.", playerIdx);
 			return false;
+		}
 		Player curPlayer = getCurPlayer();
 
 		String[] sArr = input.split(" ");
