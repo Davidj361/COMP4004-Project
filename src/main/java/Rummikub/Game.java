@@ -56,6 +56,9 @@ public class Game {
 		reset();
 	}
 
+	public ArrayList<Player> getPlayers () {
+		return players;
+	}
 	// Useful for testing and restarting the game
 	public void reset() {
 		gameRunning = true;
@@ -156,8 +159,11 @@ public class Game {
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
 			if(players.get(i) != winner) {
-				scoreForWinner += players.get(i).sumOfTiles();
-				int score = -1 * players.get(i).sumOfTiles();
+				int score = -players.get(i).sumOfTiles();
+				if (players.get(i).hasJoker()) {
+					score -= 30;
+				}
+				scoreForWinner += -score;
 				players.get(i).setScore(score);
 			}
 		}
@@ -178,6 +184,10 @@ public class Game {
 	// Get who's the current player this turn for indexing purposes
 	public int curPlayer() {
 		return ((turn-1) % players.size());
+	}
+
+	public Player curPlayerObj() {
+		return players.get(curPlayer());
 	}
 	public String curPlayerName() {
 		return players.get(curPlayer()).getName();
@@ -448,8 +458,4 @@ public class Game {
 		players.get(curPlayer()).setHand(hand);
 	}
 
-	// return players
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
 }
