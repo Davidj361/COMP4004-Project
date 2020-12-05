@@ -70,6 +70,7 @@ public class App {
                 Thread.sleep(10);
 
             Game game = new Game(server);
+            game.startText(); // Tells everyone the game is starting
             // Command loop
             while (true) {
                 String input = scanner.nextLine().toLowerCase();

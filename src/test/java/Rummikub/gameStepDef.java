@@ -90,12 +90,12 @@ public class gameStepDef {
     @Then("First placement is successful")
     public void first_placement_is_successful() {
         // Write code here that turns the phrase above into concrete actions
-        assertTrue(player.getFirstPlacement());
+        assertTrue(player.getDoneFirstPlacement());
     }
 
     @Then("First placement is NOT successful")
     public void first_placement_is_not_successful() {
         // Write code here that turns the phrase above into concrete actions
-        assertFalse(player.getFirstPlacement());
+        assertFalse(player.getDoneFirstPlacement());
     }
 }
