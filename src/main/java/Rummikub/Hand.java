@@ -81,10 +81,6 @@ public class Hand{
             return ret;
     }
 
-    public void moveTiles(int tileIndex, int newTileIndex){
-        tiles.add(newTileIndex, tiles.remove(tileIndex));
-    }
-
     public boolean compare(Hand origHand){
         if(tiles.size() < origHand.getSize()){
             return true;

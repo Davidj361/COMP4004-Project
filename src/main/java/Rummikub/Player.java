@@ -83,6 +83,10 @@ public class Player {
         origHand = new Hand(hand.getTiles());
     }
 
+    public void sortHand() {
+        hand.sortTiles();
+    }
+
     public void setHand(Hand h) {
         hand = h;
         origHand = new Hand(hand.getTiles());
