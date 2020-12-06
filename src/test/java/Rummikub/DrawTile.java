@@ -74,7 +74,7 @@ public class DrawTile {
         Board board = new Board();
         board.addSet(parseTiles(string));
         game.println(board.printBoard());
-        game.setBoard(board);
+        game.setOrigBoard();
     }
 
     @When("Player sends a command for placing a tile of {string} on board but fails")
