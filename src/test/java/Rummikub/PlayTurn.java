@@ -45,7 +45,7 @@ public class PlayTurn {
     public void player_starts_round_not_first_placement() {
         assertEquals(1, game.getTurn());
         assertTrue(game.playerTurn(0));
-        game.getPlayers().get(game.getCurPlayerIdx()).setFirstPlacement();
+        game.getCurPlayer().setFirstPlacement();
     }
 
     @Given("There already exists a run of {string} on board")
@@ -117,6 +117,7 @@ public class PlayTurn {
 
     @When("Player sends a command for placing a run of {string} on board")
     public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
+        System.out.println("hand: " + game.curPlayerHand().printHand());
         String command = "p";
         for (int i=0; i<parseTiles(string).size(); i++)
             command = command + " " + (i+1);
@@ -136,5 +137,52 @@ public class PlayTurn {
     @When("Placed tiles form a group")
     public void placed_tiles_form_a_group() {
         assertTrue(game.isGroup(game.getBoard().board.get(0)));
+    }
+
+    @When("Placed tiles form another run")
+    public void placed_tiles_form_another_run() {
+        assertTrue(game.isRun(game.getBoard().board.get(1)));
+    }
+
+    @When("Placed tiles form another group")
+    public void placed_tiles_form_another_group() {
+        assertTrue(game.isGroup(game.getBoard().board.get(1)));
+    }
+
+    @When("Player sends a command for placing tiles of {string} but fails")
+    public void player_sends_a_command_for_placing_tiles_of_but_fails(String string) throws IOException {
+        String command = "p";
+        for (int i=0; i<parseTiles(string).size(); i++)
+            command = command + " " + (i+1);
+        System.out.println(command);
+        game.command(0, command);
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Player sends a command for placing another run of {string} on board")
+    public void player_sends_a_command_for_placing_another_run_of_on_board(String string) throws IOException {
+        String command = "p";
+        for (int i=0; i<parseTiles(string).size(); i++)
+            command = command + " " + (i+4);
+        System.out.println(command);
+        game.command(0, command);
+    }
+
+    @When("Secondly placed tiles form a run")
+    public void secondly_placed_tiles_form_a_run() {
+        assertTrue(game.isRun(game.getBoard().board.get(1)));
+    }
+
+    @Then("Player has {int} tiles")
+    public void player_has_tiles(Integer int1) {
+        game.println(game.curPlayerHand().printHand().toString());
+        assertEquals(int1.intValue(), game.curPlayerHand().getSize());
+    }
+
+    @When("Player sends a command for undoing the previous action")
+    public void player_sends_a_command_for_undoing_the_previous_action() throws IOException {
+        game.command(0, "u");
+        game.println("hand: " + game.curPlayerHand().printHand().toString());
+        game.println("board" + game.getBoard().printBoard());
     }
 }
