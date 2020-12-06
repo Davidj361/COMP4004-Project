@@ -53,7 +53,7 @@ public class PlayTurn {
         Board board = new Board();
         board.addSet(parseTiles(string));
         game.println(board.printBoard());
-        game.setBoard(board);
+        game.setOrigBoard();
     }
 
     @Given("Player has {string} on hand")
@@ -93,7 +93,7 @@ public class PlayTurn {
         Board board = new Board();
         board.addSet(parseTiles(string));
         game.println(board.printBoard());
-        game.setBoard(board);
+       game.setOrigBoard();
     }
 
     @When("Placed tile form a group")

@@ -1,6 +1,7 @@
 package Rummikub;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -176,5 +177,20 @@ public class Board {
 			}
 		}
 		return row;
+	}
+
+	public ArrayList<Tile> getTiles(){
+		ArrayList<Tile> tiles = new ArrayList<>();
+		for(int i = 0; i < board.size(); i++){
+			tiles.addAll(board.get(i));
+		}
+		return tiles;
+	}
+
+	public void setTiles(ArrayList<Tile> tiles){
+		board.clear();
+		if(!tiles.isEmpty()) {
+			board.add(tiles);
+		}
 	}
 }

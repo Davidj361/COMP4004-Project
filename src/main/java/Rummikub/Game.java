@@ -60,7 +60,7 @@ public class Game {
 		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
-		origBoard = board;
+		setOrigBoard();
 		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
 
@@ -79,6 +79,7 @@ public class Game {
 		Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
 		p.setHand(hand);
 		players.add(p);
+		p.sortHand();
 	}
 
     public boolean isRun(ArrayList<Tile> run) {
@@ -144,8 +145,8 @@ public class Game {
 			}
 		}
 		if (p != null) {
-			print("Winner: " + p.getName());
-			print("Score: " + p.getScore());
+			println("Winner: " + p.getName());
+			println("Score: " + p.getScore());
 		}
 		return p;
 	}
@@ -302,25 +303,25 @@ public class Game {
 				undo(players.get(getCurPlayerIdx()));
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
 				println("Try again");
-				players.get(getCurPlayerIdx()).nextTurn();
-				turn++;
 				return false;
 			}
 			else if (!firstPlacement && sum > 30) {
 				currPlayer.setFirstPlacement();
-				origBoard = board;  //update original board to finalize
-				players.get(getCurPlayerIdx()).updateHand();  //update original hand to finalize
+				setOrigBoard();  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
 			}
 			else {
-				origBoard = board;  //update original board to finalize
-				players.get(getCurPlayerIdx()).updateHand();  //update original hand to finalize
-				players.get(getCurPlayerIdx()).sortHand(); //sort the updated hand
+				setOrigBoard();  //update original board to finalize
+				players.get(curPlayer()).updateHand();  //update original hand to finalize
+				players.get(curPlayer()).sortHand(); //sort the updated hand
 			}
 			players.get(getCurPlayerIdx()).nextTurn();
 			turn++;
 			return true;
 		} else {
-			drawTile(players.get(getCurPlayerIdx()));
+			drawTile(players.get(curPlayer()));
+			players.get(curPlayer()).updateHand();  //update original hand to finalize
+			players.get(curPlayer()).sortHand(); //sort the updated hand
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
@@ -332,7 +333,8 @@ public class Game {
 	// as when the turn started
 	private boolean undo(Player curPlayer) {
 		curPlayer.resetHand();
-		board = origBoard;
+		curPlayer.sortHand();
+		setBoard();
 		return true;
 	}
 
@@ -346,13 +348,15 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
+			Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			if (!board.checkBoard()) {
 				println("Invalid placement!");
-				board = origBoard;
+				setBoard();
 				player.resetHand();
+				player.sortHand();
 				return false;
 			}
 			return true;
@@ -376,8 +380,9 @@ public class Game {
 			board.addToCurrent(playerTiles,dstRow);
 			if (!board.checkBoard()) {
 				println("Invalid placement!");
-				board = origBoard;
+				setBoard();
 				player.resetHand();
+				player.sortHand();
 				return false;
 			}
 			return true;
@@ -405,8 +410,8 @@ public class Game {
 			board.combineCurrent(srcRow,dstRow,index);
 			if (!board.checkBoard()) {
 				//TODO: error message printing: invalid board
-				board = origBoard;
 				player.resetHand();
+				player.sortHand();
 				return false;
 			}
 			return true;
@@ -426,8 +431,9 @@ public class Game {
 		board.separateSet(srcRow,splitIdx);
 			if (!board.checkBoard()) {
 				//TODO: error message printing: invalid split
-				board = origBoard;
+				setBoard();
 				player.resetHand();
+				player.sortHand();
 				return false;
 			}
 		return true;
@@ -458,7 +464,14 @@ public class Game {
 	}
 
 	// Update current board with the given board
-	public void setBoard(Board newBoard) {
+	public void setOrigBoard() {
+		Board newBoard = new Board();
+		newBoard.setTiles(board.getTiles());
+		origBoard = newBoard;
+	}
+	public void setBoard() {
+		Board newBoard = new Board();
+		newBoard.setTiles(origBoard.getTiles());
 		board = newBoard;
 	}
 

@@ -1,6 +1,9 @@
 package Rummikub;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Player {
     private int turn;
@@ -93,7 +96,10 @@ public class Player {
     }
 
     public void sortHand() {
-        hand.sortTiles();
+        Collections.sort(hand.getTiles(), new Comparator<Tile>() {
+            @Override
+            public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
+        });
     }
 
     public void setHand(Hand h) {
@@ -106,7 +112,7 @@ public class Player {
     }
 
     public int sumOfTilesPlaced () {
-        ArrayList <Tile> tilesPlaced = origHand.getTiles();
+        ArrayList<Tile> tilesPlaced = new ArrayList<Tile>(origHand.getTiles());
         tilesPlaced.removeAll(hand.getTiles());
         int sum = 0;
         for (int i = 0; i < tilesPlaced.size(); i++) {
