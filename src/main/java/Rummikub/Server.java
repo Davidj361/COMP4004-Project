@@ -62,7 +62,7 @@ public class Server extends Thread implements AutoCloseable {
         if (socket != null && s != null) {
             clients.add(new ClientHandler(this, s, clients.size(), testing));
             clients.get(clients.size()-1).start();
-            print("Host: Client " + (clients.size()-1) + " connected.\n");
+            print("Host: Client " + (clients.size()-1) + " connected.\n", 0);
             return true;
         }
         return false;
@@ -126,6 +126,17 @@ public class Server extends Thread implements AutoCloseable {
             }
         }
     }
+    public void print(String str, int idx) {
+        if (idx == 0)
+            System.out.print(str);
+        else {
+            try {
+                send(idx-1, str);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	/*
 	public void reset() throws IOException {
@@ -137,7 +148,6 @@ public class Server extends Thread implements AutoCloseable {
     // When the host asks for a command
     public boolean command(String str) throws IOException {
         if (!commHelper(0, str)) {
-            System.out.print("It is not your turn yet.\n");
             return false;
         }
         return true;
@@ -145,12 +155,13 @@ public class Server extends Thread implements AutoCloseable {
 
     // When client asks for a command
     public boolean command(int clientId, String str) throws IOException {
-        if (game == null)
-            return false;
         final int player = clientId+1;
-        print("Received command: "+str+"\n");
+        if (game == null) {
+            print("Game hasn't started yet.", player);
+            return false;
+        }
+        print("Received command: "+str+"\n", player);
         if (!commHelper(player, str)) {
-            send(clientId, "It is not your turn yet.\n");
             return false;
         }
         return true;
@@ -158,8 +169,6 @@ public class Server extends Thread implements AutoCloseable {
 
 
     private boolean commHelper(int player, String str) throws IOException {
-        if (!game.playerTurn(player))
-            return false;
         return game.command(player, str);
     }
 

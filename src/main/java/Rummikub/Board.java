@@ -109,8 +109,6 @@ public class Board {
 			int valueCorrect = 0;
 			Tile.Colors color = null;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
-
-
 			if(board.get(i).size() < 3){
 				return false;
 			}
