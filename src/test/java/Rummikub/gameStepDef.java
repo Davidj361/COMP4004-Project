@@ -49,7 +49,6 @@ public class gameStepDef {
     @Given("First tile has not been placed")
     public void first_tile_has_not_been_placed() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
         assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
@@ -59,15 +58,14 @@ public class gameStepDef {
         tiles_are(string);
         Hand hand = new Hand(tiles);
         game.setCurHand(hand);
-        System.out.println("hand " + game.getCurPlayer().getName());
-        System.out.println("original hand " +game.getCurPlayer().getOrigHand().getSize());
     }
 
     @When("Player sends a command for placing {string} tiles on board")
     public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
         // Write code here that turns the phrase above into concrete actions
+        String tiles [] = string.split(",");
         String command = "p";
-        for (int i=0; i<3; i++)
+        for (int i=0; i<tiles.length; i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -81,14 +79,12 @@ public class gameStepDef {
     @Then("First placement is successful")
     public void first_placement_is_successful() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
         assertTrue(game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @Then("First placement is NOT successful")
     public void first_placement_is_not_successful() {
         // Write code here that turns the phrase above into concrete actions
-        System.out.println(game.getCurPlayer().getDoneFirstPlacement());
         assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 }
