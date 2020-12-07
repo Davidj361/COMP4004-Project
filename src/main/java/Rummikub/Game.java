@@ -319,9 +319,9 @@ public class Game {
 			turn++;
 			return true;
 		} else {
-			drawTile(players.get(getCurPlayerIdx()));
-			players.get(getCurPlayerIdx()).updateHand();  //update original hand to finalize
-			players.get(getCurPlayerIdx()).sortHand(); //sort the updated hand
+			drawTile(currPlayer);
+			currPlayer.updateHand();  //update original hand to finalize
+			currPlayer.sortHand(); //sort the updated hand
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
