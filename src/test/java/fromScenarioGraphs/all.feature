@@ -1,3 +1,5 @@
+# This was written for a deliverable and goes through the same paths in the scenario graphs
+
 # First placement scenarios
 Feature: Testing for use cases
   Testing all use cases so far
