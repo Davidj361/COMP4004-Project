@@ -308,20 +308,20 @@ public class Game {
 			else if (!firstPlacement && sum > 30) {
 				currPlayer.setFirstPlacement();
 				setOrigBoard();  //update original board to finalize
-				players.get(curPlayer()).updateHand();  //update original hand to finalize
+				currPlayer.updateHand();  //update original hand to finalize
 			}
 			else {
 				setOrigBoard();  //update original board to finalize
-				players.get(curPlayer()).updateHand();  //update original hand to finalize
-				players.get(curPlayer()).sortHand(); //sort the updated hand
+			currPlayer.updateHand();  //update original hand to finalize
+				currPlayer.sortHand(); //sort the updated hand
 			}
 			players.get(getCurPlayerIdx()).nextTurn();
 			turn++;
 			return true;
 		} else {
-			drawTile(players.get(curPlayer()));
-			players.get(curPlayer()).updateHand();  //update original hand to finalize
-			players.get(curPlayer()).sortHand(); //sort the updated hand
+			drawTile(currPlayer);
+			currPlayer.updateHand();  //update original hand to finalize
+			currPlayer.sortHand(); //sort the updated hand
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
