@@ -312,7 +312,7 @@ public class Game {
 			}
 			else {
 				setOrigBoard();  //update original board to finalize
-			currPlayer.updateHand();  //update original hand to finalize
+				currPlayer.updateHand();  //update original hand to finalize
 				currPlayer.sortHand(); //sort the updated hand
 			}
 			players.get(getCurPlayerIdx()).nextTurn();
