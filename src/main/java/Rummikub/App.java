@@ -50,12 +50,26 @@ public class App {
         while (true) {
             System.out.println("How many players would you like to have in your game?");
             System.out.println("Note: A Game can have a minimum of 2 players and maximum of 4 players");
-           numberOfPlayers = scanner.nextInt();
-            if (numberOfPlayers < 2 || numberOfPlayers > 4) {
+            numberOfPlayers = scanner.nextInt();
+            if (numberOfPlayers < 2 || numberOfPlayers > 4)
                 System.out.println("Invalid input. number of players must be between 2 and 4");
-            }
             else
                 break;
+        }
+        scanner.nextLine(); // Have to manually call due to some bug
+        int gameEndingScore = -1;
+        while (true) {
+            System.out.println("At what number of points should the game end at?");
+            String tmp = scanner.nextLine();
+            if (tmp.equals(""))
+                break;
+            int i = Integer.parseInt(tmp);
+            if (i <= 0)
+                System.out.println("Specified score must be above 0");
+            else {
+                gameEndingScore = i;
+                break;
+            }
         }
 
         try (Server server = new Server(name, port, numberOfPlayers)) {
@@ -70,6 +84,8 @@ public class App {
                 Thread.sleep(10);
 
             Game game = new Game(server);
+            if (gameEndingScore != -1)
+                game.setGameEndingScore(gameEndingScore);
             game.startText(); // Tells everyone the game is starting
             // Command loop
             while (true) {
