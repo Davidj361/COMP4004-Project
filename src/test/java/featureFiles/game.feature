@@ -2,30 +2,12 @@
   Feature: Testing for functions in Game Class
     Testing functions in Game Class
 
-  Scenario: Run - success
-    Given Tiles are "(10 green),(11 green),(12 green)"
-    Then Tile is a run
 
-  Scenario: Run - fail
-    Given Tiles are "(3 green),(4 green),(5 blue)"
-    Then Tile is not a run
-
-
-  Scenario: Group - success
-    Given Tiles are "(3 green),(3 blue),(3 black)"
-    Then Tile is a group
-
-  Scenario: Group - fail
-    Given Tiles are "(3 green),(3 blue),(3 blue)"
-    Then Tiles is not a group
-
-
-  Scenario: First Placement - success
-    Given Tiles are "(10 green),(11 green),(12 green)"
-    When player tries placing their first placement
-    Then First placement is successful
-
-  Scenario: First Placement - fail
-    Given Tiles are "(8 green),(9 green),(10 green)"
-    When player tries placing their first placement
-    Then First placement is NOT successful
+  Scenario: checking get winner and points functionality
+    Given Game has 2 players
+    And Player1 has placed all tiles
+    And Player2 has tiles "(7 yellow),(11 blue),(5 red)"
+    And Player3 has tiles "(6 red),(9 blue),(0 Joker)"
+    Then Player1 wins the round with score 68 points
+    And Player2 finishes the round with -23 points
+    And Player3 finishes the round with -45 points
