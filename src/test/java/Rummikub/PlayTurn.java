@@ -28,62 +28,50 @@ public class PlayTurn {
         throw new RuntimeException("Did not find a tile index in PlayTurn.findTile(..)");
     }
 
+    // Helper function for parsing
+    private Tile parseTile(String str) {
+        String tileIs = str.replace("(", "");
+        tileIs = tileIs.replace(")", "");
+        String b [] = tileIs.split(" ");
+        int value  = Integer.parseInt(b[0]);
+        String c = b[1];
+        Tile.Colors color;
+        if(c.compareToIgnoreCase("blue") == 0) {
+            color = Tile.Colors.BL;
+        } else if(c.compareToIgnoreCase("red") == 0) {
+            color = Tile.Colors.RE;
+        } else if(c.compareToIgnoreCase("yellow") == 0) {
+            color = Tile.Colors.YE;
+        } else {
+            color = Tile.Colors.BK;
+        }
+        return new Tile(value, color);
+    }
+
     // Parses the string to get indexes of tiles in the current player's hand
-    public ArrayList<Integer> parseTilesForIndexes (String string) {
+    public ArrayList<Integer> getIndexes(String string) {
         ArrayList<Integer> idx = new ArrayList<Integer>();
         // Express the Regexp above with the code you wish you had
         String a [] = string.split(",");
         for (int i = 0; i < a.length; i++) {
-            String tileIs = a[i].replace("(", "");
-            tileIs = tileIs.replace(")", "");
-            String b [] = tileIs.split(" ");
-            int value  = Integer.parseInt(b[0]);
-            String c = b[1];
-            Tile.Colors color;
-            if(c.compareToIgnoreCase("blue") == 0) {
-                color = Tile.Colors.BL;
-            }
-            else if(c.compareToIgnoreCase("red") == 0) {
-                color = Tile.Colors.RE;
-            }
-            else if(c.compareToIgnoreCase("yellow") == 0) {
-                color = Tile.Colors.YE;
-            }
-            else {
-                color = Tile.Colors.BK;
-            }
-            idx.add(findTile(value, color));
+            Tile t = parseTile(a[i]);
+            idx.add(findTile(t.getValue(), t.getColor()));
         }
         return idx;
     }
 
-    public ArrayList<Tile> parseTiles (String string) {
+    // Parsing a string to create a list of tiles
+    public ArrayList<Tile> createTiles(String string) {
         ArrayList<Tile> tiles = new ArrayList<Tile>();
         // Express the Regexp above with the code you wish you had
         String a [] = string.split(",");
         for (int i = 0; i < a.length; i++) {
-            String tileIs = a[i].replace("(", "");
-            tileIs = tileIs.replace(")", "");
-            String b [] = tileIs.split(" ");
-            int value  = Integer.parseInt(b[0]);
-            String color = b[1];
-            Tile tile;
-            if(color.compareToIgnoreCase("blue") == 0) {
-                tile  = new Tile (value, Tile.Colors.BL);
-            }
-            else if(color.compareToIgnoreCase("red") == 0) {
-                tile  = new Tile (value, Tile.Colors.RE);
-            }
-            else if(color.compareToIgnoreCase("yellow") == 0) {
-                tile  = new Tile (value, Tile.Colors.YE);
-            }
-            else {
-                tile  = new Tile (value, Tile.Colors.BK);
-            }
-            tiles.add(tile);
+            Tile t = parseTile(a[i]);
+            tiles.add(t);
         }
         return tiles;
     }
+
 
     @Given("Player starts round \\(not first placement)")
     public void player_starts_round_not_first_placement() {
@@ -95,14 +83,14 @@ public class PlayTurn {
     @Given("There already exists a run of {string} on board")
     public void there_already_exists_a_run_of_on_board(String string) {
         Board board = new Board();
-        board.addSet(parseTiles(string));
+        board.addSet(createTiles(string));
         game.println(board.printBoard());
         game.setOrigBoard();
     }
 
     @Given("Player has {string} on hand")
     public void player_has_on_hand(String string) {
-        Hand hand = new Hand(parseTiles(string));
+        Hand hand = new Hand(createTiles(string));
         game.println(hand.printHand().toString());
         game.setCurHand(hand);
     }
@@ -135,7 +123,7 @@ public class PlayTurn {
     @Given("There already exists a group of {string} on board")
     public void there_already_exists_a_group_of_on_board(String string) {
         Board board = new Board();
-        board.addSet(parseTiles(string));
+        board.addSet(createTiles(string));
         game.println(board.printBoard());
        game.setOrigBoard();
     }
@@ -148,7 +136,7 @@ public class PlayTurn {
     @When("Player sends a command for placing tiles of {string} on board")
     public void player_sends_a_command_for_placing_tiles_of_on_board(String string) throws IOException {
         String command = "g 0";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -163,7 +151,7 @@ public class PlayTurn {
     public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
         System.out.println("hand: " + game.curPlayerHand().printHand());
         String command = "p";
-        ArrayList<Integer> idx = parseTilesForIndexes(string);
+        ArrayList<Integer> idx = getIndexes(string);
         for (int i: idx)
             command += " " + i;
         System.out.println(command);
@@ -173,7 +161,7 @@ public class PlayTurn {
     @When("Player sends a command for placing a group of {string} on board")
     public void player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
         String command = "p";
-        ArrayList<Integer> idx = parseTilesForIndexes(string);
+        ArrayList<Integer> idx = getIndexes(string);
         for (int i: idx)
             command += " " + i;
         System.out.println(command);
@@ -198,7 +186,7 @@ public class PlayTurn {
     @When("Player sends a command for placing tiles of {string} but fails")
     public void player_sends_a_command_for_placing_tiles_of_but_fails(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -208,7 +196,7 @@ public class PlayTurn {
     @When("Player sends a command for placing another run of {string} on board")
     public void player_sends_a_command_for_placing_another_run_of_on_board(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+4);
         System.out.println(command);
         game.command(0, command);
