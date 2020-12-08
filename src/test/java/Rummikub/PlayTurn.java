@@ -106,8 +106,8 @@ public class PlayTurn {
     }
 
     @When("Player sends a command for ending current turn")
-    public void player_sends_a_command_for_ending_current_turn() throws IOException {
-        game.command(0, "e");
+    public boolean player_sends_a_command_for_ending_current_turn() throws IOException {
+        return game.command(0, "e");
     }
 
     @Then("Tiles placed on board successfully")
@@ -148,24 +148,29 @@ public class PlayTurn {
     }
 
     @When("Player sends a command for placing a run of {string} on board")
-    public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
-        System.out.println("hand: " + game.curPlayerHand().printHand());
-        String command = "p";
+    public boolean player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
+        if (!game.isRun(createTiles(string)))
+            return false;
+        StringBuilder command = new StringBuilder("p");
         ArrayList<Integer> idx = getIndexes(string);
         for (int i: idx)
-            command += " " + i;
+            command.append(" ").append(i);
         System.out.println(command);
-        game.command(0, command);
+        game.command(0, command.toString());
+        return true;
     }
 
     @When("Player sends a command for placing a group of {string} on board")
-    public void player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
-        String command = "p";
+    public boolean player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
+        if (!game.isGroup(createTiles(string)))
+            return false;
+        StringBuilder command = new StringBuilder("p");
         ArrayList<Integer> idx = getIndexes(string);
         for (int i: idx)
-            command += " " + i;
+            command.append(" ").append(i);
         System.out.println(command);
-        game.command(0, command);
+        game.command(0, command.toString());
+        return true;
     }
 
     @When("Placed tiles form a group")
