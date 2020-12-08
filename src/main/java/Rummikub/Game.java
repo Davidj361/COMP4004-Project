@@ -399,7 +399,7 @@ public class Game {
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
-		return false;
+		return true;
 	}
 
 	// Reverts the player's hand and the board to the original state
@@ -474,7 +474,7 @@ public class Game {
 		int dstRow = Integer.parseInt(sArr[1]);
 		int[] tilesIdx = new int[sArr.length-2];
 		for (int i=2; i<sArr.length; i++)
-			tilesIdx[i] = Integer.parseInt(sArr[i]);
+			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Integer> index = new ArrayList<Integer>();
 			for(int num:tilesIdx){
@@ -482,7 +482,7 @@ public class Game {
 			}
 			board.combineCurrent(srcRow,dstRow,index);
 			if (!board.checkBoard()) {
-				//TODO: error message printing: invalid board
+				println("Invalid placement!");
 				player.resetHand();
 				player.sortHand();
 				return false;
@@ -503,7 +503,7 @@ public class Game {
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
 			if (!board.checkBoard()) {
-				//TODO: error message printing: invalid split
+				println("Invalid placement!");
 				setBoard();
 				player.resetHand();
 				player.sortHand();
@@ -525,6 +525,14 @@ public class Game {
 
 	//////////////////////////////////////////////////////////////////////
 	// Functions for debugging purposes
+
+	// initialize the board status for debugging
+	public void setBoardState(Board b) {
+		origBoard = new Board();
+		origBoard.setTiles(b.getTiles());
+		board = new Board();
+		board.setTiles(b.getTiles());
+	}
 
 	// Return current player's hand
 	public Hand curPlayerHand() {
