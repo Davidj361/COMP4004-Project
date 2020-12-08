@@ -11,7 +11,7 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
-    private int gameEndingScore;
+    private int gameEndingScore = 0;
     private boolean endRound = false;
     public Deck deck;
     private Board board = new Board();
@@ -215,6 +215,7 @@ public class Game {
 				winner.setScore(scoreForWinner);
 			}
 		}
+		// Final round ending for multiple rounds
 		for (int i = 0; i < players.size(); i++) {
 			if(players.get(i).getTotalScore() >= gameEndingScore){
 				getFinalWinner();
@@ -346,45 +347,46 @@ public class Game {
 	// Valid, no manipulates and drawTile
 	public boolean endTurn() {
 		//Nothing done on board in this turn, then draw
-		Player currPlayer = getCurPlayer();
-		if (currPlayer.getHand().compare(currPlayer.getOrigHand()) && board.checkBoard()) {
-			int sum = currPlayer.sumOfTilesPlaced();
-			boolean firstPlacement = currPlayer.getDoneFirstPlacement();
+		Player player = getCurPlayer(); // The current player
+		// Is the player's hand different and is the board valid?
+		if (getCurPlayer().getHand().compare(player.getOrigHand()) && board.checkBoard()) {
+			int sum = player.sumOfTilesPlaced();
+			boolean firstPlacement = player.getDoneFirstPlacement();
 			if (!firstPlacement && sum<30) {
 				//print error
-				undo(currPlayer);
+				undo(player);
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points");
 				println("Try again");
 				return false;
 			}
 			else if (!firstPlacement && sum > 30) {
-				currPlayer.setFirstPlacement();
+				player.setFirstPlacement();
 				setOrigBoard();  //update original board to finalize
-				currPlayer.updateHand();  //update original hand to finalize
+				player.updateHand();  //update original hand to finalize
 			}
 			else {
 				setOrigBoard();  //update original board to finalize
-				currPlayer.updateHand();  //update original hand to finalize
-				currPlayer.sortHand(); //sort the updated hand
+				player.updateHand();  //update original hand to finalize
+				player.sortHand(); //sort the updated hand
 			}
 		} else {
-			if(currPlayer.getHand().compare(currPlayer.getOrigHand())) {
+			if(player.getHand().compare(player.getOrigHand())) {
 				if (deck.getTiles().size() > 0) {
-					drawTile(currPlayer);
-					drawTile(currPlayer);
-					drawTile(currPlayer);
+					drawTile(player);
+					drawTile(player);
+					drawTile(player);
 				} else {
 					endRound = true;
 				}
 			} else{
 				if (deck.getTiles().size() > 0) {
-					drawTile(currPlayer);
+					drawTile(player);
 				} else {
 					endRound = true;
 				}
 			}
-			currPlayer.updateHand();  //update original hand to finalize
-			currPlayer.sortHand(); //sort the updated hand
+			player.updateHand();  //update original hand to finalize
+			player.sortHand(); //sort the updated hand
 		}
 		if(isGameOver() || endRound){
 			scorePoints();
@@ -581,4 +583,6 @@ public class Game {
 		// Show their hand
 		printCurPlayerHand();
 	}
+
+	public void setGameEndingScore(int i) { gameEndingScore = i; }
 }
