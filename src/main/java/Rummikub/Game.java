@@ -36,6 +36,7 @@ public class Game {
 		numPlayers = 1;
 		reset();
 	}
+
 	public Game(int i) {
 		this(i, false);
 	}
@@ -84,7 +85,7 @@ public class Game {
 	}
 
 	// Helper function for Game.reset(..)
-	private void createPlayer(String name) {
+	public void createPlayer(String name) {
 		Player p = new Player(name);
 		Hand hand = new Hand(deck); // Generate a hand, deal tiles from Deck
 		p.setHand(hand);
@@ -203,16 +204,19 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
+				System.out.println("sum of tiles " + score);
 				if (players.get(i).hasJoker()) {
 					score -= 30;
 				}
 				scoreForWinner += -score;
 				players.get(i).setScore(score);
+				players.get(i).updateTotalScore(score);
 			}
 		}
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) == winner) {
 				winner.setScore(scoreForWinner);
+				winner.updateTotalScore(scoreForWinner);
 			}
 		}
 		for (int i = 0; i < players.size(); i++) {

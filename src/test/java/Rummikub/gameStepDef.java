@@ -31,60 +31,71 @@ public class gameStepDef {
 
     public Tile.Colors parseColor (String color) {
         Tile.Colors defaultColor = Tile.Colors.BL;
-        if(color.compareToIgnoreCase("blue") == 0) {
+        if(color.equalsIgnoreCase("blue"))
             defaultColor = Tile.Colors.BL;
-        }
-        if(color.compareToIgnoreCase("red") == 0) {
+
+        if(color.equalsIgnoreCase("red"))
             defaultColor = Tile.Colors.RE;
-        }
-        if(color.compareToIgnoreCase("yellow") == 0) {
+
+        if(color.equalsIgnoreCase("yellow"))
             defaultColor = Tile.Colors.YE;
-        }
-        if(color.compareToIgnoreCase("black") == 0) {
+
+        if(color.equalsIgnoreCase("black"))
             defaultColor = Tile.Colors.BK;
-        }
+
+        if(color.equalsIgnoreCase("Joker"))
+            defaultColor = Tile.Colors.JOKER;
         return defaultColor;
     }
 
-    @Given("First tile has not been placed")
-    public void first_tile_has_not_been_placed() {
-        // Write code here that turns the phrase above into concrete actions
-        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
+    @Given("Game has {int} players")
+    public void game_has_players(Integer int1) {
+        for(int i = 1; i <= int1; i ++) {
+            game.createPlayer("player" + i);
+        }
     }
 
-    @Given("Player has {string} in hand")
-    public void player_has_in_hand(String string) {
-        // Write code here that turns the phrase above into concrete actions
+    @Given("Player1 has placed all tiles")
+    public void player1_has_placed_all_tiles() {
+        tiles = new ArrayList<Tile>();
+        Hand hand = new Hand(tiles);
+        game.getPlayers().get(0).setHand(hand);
+        System.out.println(game.getPlayers().get(0).getTileNumber());
+    }
+
+    @Given("Player2 has tiles {string}")
+    public void player2_has_tiles(String string) {
         tiles_are(string);
         Hand hand = new Hand(tiles);
-        game.setCurHand(hand);
+        game.getPlayers().get(1).setHand(hand);
     }
 
-    @When("Player sends a command for placing {string} tiles on board")
-    public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
+    @Given("Player3 has tiles {string}")
+    public void player3_has_tiles(String string) {
+        tiles = new ArrayList<Tile>();
+        tiles_are(string);
+        Hand hand = new Hand(tiles);
+        game.getPlayers().get(2).setHand(hand);
         // Write code here that turns the phrase above into concrete actions
-        String tiles [] = string.split(",");
-        String command = "p";
-        for (int i=0; i<tiles.length; i++)
-            command = command + " " + (i+1);
-        System.out.println(command);
-        game.command(0, command);
-    }
-    @When("Player sends a command to end turn")
-    public void player_sends_a_command_to_end_turn() throws IOException {
-        // Write code here that turns the phrase above into concrete actions
-        game.command(0, "e");
     }
 
-    @Then("First placement is successful")
-    public void first_placement_is_successful() {
-        // Write code here that turns the phrase above into concrete actions
-        assertTrue(game.getCurPlayer().getDoneFirstPlacement());
+    @Then("Player1 wins the round with score {int} points")
+    public void player1_wins_the_round_with_score_points(Integer int1) {
+        assertEquals(game.getWinner(), game.getPlayers().get(0));
+        System.out.println("score is " +game.getPlayers().get(0).getTotalScore());
+        game.scorePoints();
+        System.out.println(game.getPlayers().get(0).getTotalScore());
+        assertTrue(game.getPlayers().get(0).getScore() == int1);
     }
 
-    @Then("First placement is NOT successful")
-    public void first_placement_is_not_successful() {
-        // Write code here that turns the phrase above into concrete actions
-        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
+    @Then("Player2 finishes the round with {int} points")
+    public void player2_finishes_the_round_with_points(Integer int1) {
+        System.out.println("player2's score is " +game.getPlayers().get(0).getScore());
+        assertTrue(game.getPlayers().get(1).getScore() == int1);
+    }
+
+    @Then("Player3 finishes the round with {int} points")
+    public void player3_finishes_the_round_with_points(Integer int1) {
+        assertTrue(game.getPlayers().get(2).getScore() == int1);
     }
 }
