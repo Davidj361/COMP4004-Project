@@ -13,6 +13,50 @@ import static org.junit.Assert.assertTrue;
 public class PlayTurn {
     Game game = new Game(true);
 
+    // Helper function for parseTilesForIndexes
+    // Gets the index of the first tile matching the same value and color
+    // off the current player
+    private int findTile(int val, Tile.Colors color) {
+        Tile ret = null;
+        ArrayList<Tile> tiles = game.getCurPlayer().getHand().getTiles();
+        for (int i=0; i<tiles.size(); i++) {
+            Tile t = tiles.get(i);
+            if (t.getValue() == val && t.getColor() == color)
+                return i+1; // Because players start indexes at 1, not 0
+        }
+        // We didn't find a tile so throw an error
+        throw new RuntimeException("Did not find a tile index in PlayTurn.findTile(..)");
+    }
+
+    // Parses the string to get indexes of tiles in the current player's hand
+    public ArrayList<Integer> parseTilesForIndexes (String string) {
+        ArrayList<Integer> idx = new ArrayList<Integer>();
+        // Express the Regexp above with the code you wish you had
+        String a [] = string.split(",");
+        for (int i = 0; i < a.length; i++) {
+            String tileIs = a[i].replace("(", "");
+            tileIs = tileIs.replace(")", "");
+            String b [] = tileIs.split(" ");
+            int value  = Integer.parseInt(b[0]);
+            String c = b[1];
+            Tile.Colors color;
+            if(c.compareToIgnoreCase("blue") == 0) {
+                color = Tile.Colors.BL;
+            }
+            else if(c.compareToIgnoreCase("red") == 0) {
+                color = Tile.Colors.RE;
+            }
+            else if(c.compareToIgnoreCase("yellow") == 0) {
+                color = Tile.Colors.YE;
+            }
+            else {
+                color = Tile.Colors.BK;
+            }
+            idx.add(findTile(value, color));
+        }
+        return idx;
+    }
+
     public ArrayList<Tile> parseTiles (String string) {
         ArrayList<Tile> tiles = new ArrayList<Tile>();
         // Express the Regexp above with the code you wish you had
@@ -119,8 +163,9 @@ public class PlayTurn {
     public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
         System.out.println("hand: " + game.curPlayerHand().printHand());
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
-            command = command + " " + (i+1);
+        ArrayList<Integer> idx = parseTilesForIndexes(string);
+        for (int i: idx)
+            command += " " + i;
         System.out.println(command);
         game.command(0, command);
     }
@@ -128,8 +173,9 @@ public class PlayTurn {
     @When("Player sends a command for placing a group of {string} on board")
     public void player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
-            command = command + " " + (i+1);
+        ArrayList<Integer> idx = parseTilesForIndexes(string);
+        for (int i: idx)
+            command += " " + i;
         System.out.println(command);
         game.command(0, command);
     }
