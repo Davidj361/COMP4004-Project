@@ -53,7 +53,7 @@ public class PlayTurn {
         Board board = new Board();
         board.addSet(parseTiles(string));
         game.println(board.printBoard());
-        game.setOrigBoard();
+        game.setBoardState(board);
     }
 
     @Given("Player has {string} on hand")
@@ -93,7 +93,7 @@ public class PlayTurn {
         Board board = new Board();
         board.addSet(parseTiles(string));
         game.println(board.printBoard());
-       game.setOrigBoard();
+        game.setBoardState(board);
     }
 
     @When("Placed tile form a group")
@@ -170,7 +170,7 @@ public class PlayTurn {
 
     @When("Secondly placed tiles form a run")
     public void secondly_placed_tiles_form_a_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(1)));
+        assertTrue(game.isRun(game.getBoard().board.get(0)));
     }
 
     @Then("Player has {int} tiles")
@@ -182,7 +182,53 @@ public class PlayTurn {
     @When("Player sends a command for undoing the previous action")
     public void player_sends_a_command_for_undoing_the_previous_action() throws IOException {
         game.command(0, "u");
-        game.println("hand: " + game.curPlayerHand().printHand().toString());
-        game.println("board" + game.getBoard().printBoard());
+    }
+
+    @When("Secondly placed tiles form a group")
+    public void secondly_placed_tiles_form_a_group() {
+        assertTrue(game.isGroup(game.getBoard().board.get(0)));
+    }
+
+    @When("Player sends a command for placing another group of {string} on board")
+    public void player_sends_a_command_for_placing_another_group_of_on_board(String string) throws IOException {
+        String command = "p";
+        for (int i=0; i<parseTiles(string).size(); i++)
+            command = command + " " + (i+4);
+        System.out.println(command);
+        game.command(0, command);
+    }
+
+    @When("Player sends a command for placing a tile of {string} but fails")
+    public void player_sends_a_command_for_placing_a_tile_of_but_fails(String string) throws IOException {
+        game.command(0, "g 0 1");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Player sends a command for placing another tile of {string} on board")
+    public void player_sends_a_command_for_placing_another_tile_of_on_board(String string) throws IOException {
+        game.command(0, "g 0 2");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Secondly placed tile form a run")
+    public void secondly_placed_tile_form_a_run() {
+        assertTrue(game.isRun(game.getBoard().board.get(0)));
+    }
+
+    @Then("Player has {int} tile")
+    public void player_has_tile(Integer int1) {
+        game.println(game.curPlayerHand().printHand().toString());
+        assertEquals(int1.intValue(), game.curPlayerHand().getSize());
+    }
+
+    @When("Secondly placed tile form a group")
+    public void secondly_placed_tile_form_a_group() {
+        assertTrue(game.isGroup(game.getBoard().board.get(0)));
+    }
+
+    @When("Player sends a command for moving tiles of {string} into a new row")
+    public void player_sends_a_command_for_moving_tiles_of_into_a_new_row(String string) throws IOException {
+        game.command(0, "m 0 1 3 4");
+        game.println(game.getBoard().printBoard());
     }
 }

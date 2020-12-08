@@ -91,7 +91,7 @@ Feature: Testing user play a turn in various scenarios
     And Secondly placed tiles form a run
     And Player sends a command for ending current turn
     Then Player has 3 tiles
-    And Players turn ends
+    And Player ends a turn
 
   Scenario: Play Turn - places multiple tiles but it is an invalid placement, undo and places other tiles that form a group, then finishes turn
     Given Player starts round (not first placement)
@@ -102,7 +102,7 @@ Feature: Testing user play a turn in various scenarios
     And Secondly placed tiles form a group
     And Player sends a command for ending current turn
     Then Player has 3 tiles
-    And Players turn ends
+    And Player ends a turn
 
   Scenario: Play Turn - places a tile but it is an invalid placement, undo and places another tile that form a run, then finishes turn
     Given Player starts round (not first placement)
@@ -114,7 +114,7 @@ Feature: Testing user play a turn in various scenarios
     And Secondly placed tile form a run
     And Player sends a command for ending current turn
     Then Player has 1 tile
-    And Players turn ends
+    And Player ends a turn
 
   Scenario: Play Turn - places a tile but it is an invalid placement, undo and places another tile that form a group, then finishes turn
     Given Player starts round (not first placement)
@@ -126,4 +126,34 @@ Feature: Testing user play a turn in various scenarios
     And Secondly placed tile form a group
     And Player sends a command for ending current turn
     Then Player has 1 tile
-    And Players turn ends
+    And Player ends a turn
+
+  Scenario: Play Turn - moves tiles and places a tile to form a run
+    Given Player starts round (not first placement)
+    And There already exists a group of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
+    And Player has "(8 red)" on hand
+    When Player sends a command for moving tiles of "(6 red),(7 red)" into a new row
+    And Player sends a command for placing a tile of "(8 red)" together with moved tiles
+    And There has a new run on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
+
+  Scenario: Play Turn - moves tiles and places a tile to form a group
+    Given Player starts round (not first placement)
+    And There already exists a group of "(3 red),(4 red),(5 red),(6 red)" on board
+    And There already exists another group of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
+    And Player has "(6 black)" on hand
+    When Player sends a command for moving a tile of "(6 red)" into a new row
+    And Player sends a command for moving the second tile of "(6 blue)" into a new row
+    And Player sends a command for placing a tile of "(6 black)" together with moved tiles
+    And There has a new group on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
+
+  Scenario: Play Turn - moves tiles and places multiple tiles to form a run
+
+  Scenario: Play Turn - moves tiles and places multiple tiles to form a group
+
+  Scenario: Play Turn - split a run on board into two runs

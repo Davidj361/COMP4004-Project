@@ -393,7 +393,7 @@ public class Game {
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
-		return false;
+		return true;
 	}
 
 	// Reverts the player's hand and the board to the original state
@@ -519,6 +519,14 @@ public class Game {
 
 	//////////////////////////////////////////////////////////////////////
 	// Functions for debugging purposes
+
+	// initialize the board status for debugging
+	public void setBoardState(Board b) {
+		origBoard = new Board();
+		origBoard.setTiles(b.getTiles());
+		board = new Board();
+		board.setTiles(b.getTiles());
+	}
 
 	// Return current player's hand
 	public Hand curPlayerHand() {
