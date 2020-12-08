@@ -11,6 +11,7 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
+    private boolean endRound = false;
     public Deck deck;
     private Board board = new Board();
     private Board origBoard = new Board();
@@ -61,16 +62,16 @@ public class Game {
 		deck = new Deck();
 		board = new Board();
 		setOrigBoard();
-		players = new ArrayList<Player>(); // Also reset the player list and re-add them
+		//players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
 
-		if (server != null) { // Multiplayer mode
-			for (String name : server.getNames())
-				createPlayer(name);
-		} else { // Single player mode
-			for (int i=0; i<numPlayers; i++)
-				createPlayer("player"+i);
-		}
+		//if (server != null) { // Multiplayer mode
+		//	for (String name : server.getNames())
+		//		createPlayer(name);
+		//} else { // Single player mode
+		//	for (int i=0; i<numPlayers; i++)
+		//		createPlayer("player"+i);
+		//}
 	}
 
 	// Helper function for Game.reset(..)
@@ -151,7 +152,32 @@ public class Game {
 		return p;
 	}
 
-	public void scorePoints(ArrayList<Player> players) {
+	public Player getFinalWinner() {
+		Player p = null;
+		int totalscore = 0;
+		for (int i = 0; i < players.size(); i ++ ) {
+			if (players.get(i).getTotalScore() > totalscore) {
+				p = players.get(i);
+				totalscore = players.get(i).getTotalScore();
+			}
+		}
+		if (p != null) {
+			println("Winner: " + p.getName());
+			println("Score: " + p.getScore());
+		}
+		return p;
+	}
+
+	public String printFinalScores(){
+		String output;
+		output = "=========FINAL SCORES=========";
+		for(int i = 0; i < players.size(); i++){
+			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
+		}
+		return output;
+	}
+
+	public void scorePoints() {
 		Player winner = getWinner();
 		int scoreForWinner = 0;
 		for (int i = 0; i < players.size(); i ++) {
@@ -319,13 +345,32 @@ public class Game {
 			turn++;
 			return true;
 		} else {
-			drawTile(currPlayer);
+			if(currPlayer.getHand().compare(currPlayer.getOrigHand())) {
+				if (deck.getTiles().size() > 0) {
+					drawTile(currPlayer);
+					drawTile(currPlayer);
+					drawTile(currPlayer);
+				} else {
+					endRound = true;
+				}
+			} else{
+				if (deck.getTiles().size() > 0) {
+					drawTile(currPlayer);
+				} else {
+					endRound = true;
+				}
+			}
 			currPlayer.updateHand();  //update original hand to finalize
 			currPlayer.sortHand(); //sort the updated hand
+		}
+		if(isGameOver()){
+			scorePoints();
+			reset();
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
+
 		return false;
 	}
 
