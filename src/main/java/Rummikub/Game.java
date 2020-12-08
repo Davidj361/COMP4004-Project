@@ -11,6 +11,7 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
+    private int gameEndingScore;
     private boolean endRound = false;
     public Deck deck;
     private Board board = new Board();
@@ -180,8 +181,8 @@ public class Game {
 	public void scorePoints() {
 		Player winner = getWinner();
 		int scoreForWinner = 0;
-		for (int i = 0; i < players.size(); i ++) {
-			if(players.get(i) != winner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
 				if (players.get(i).hasJoker()) {
 					score -= 30;
@@ -190,9 +191,15 @@ public class Game {
 				players.get(i).setScore(score);
 			}
 		}
-		for (int i = 0; i < players.size(); i ++) {
-			if(players.get(i) == winner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) == winner) {
 				winner.setScore(scoreForWinner);
+			}
+		}
+		for (int i = 0; i < players.size(); i++) {
+			if(players.get(i).getTotalScore() >= gameEndingScore){
+				getFinalWinner();
+				println(printFinalScores());
 			}
 		}
 	}
