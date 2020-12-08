@@ -1,4 +1,4 @@
-# First placement scenarios
+@firstPlacementFeature
 Feature: Testing for use cases
   Testing all use cases so far
 

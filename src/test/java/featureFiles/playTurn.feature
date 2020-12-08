@@ -1,4 +1,4 @@
-# Play turn scenarios
+@playTurnFeature
 Feature: Testing user play a turn in various scenarios
 
   Scenario: Play Turn - places a tile and form a run, then finishes turn
