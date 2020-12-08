@@ -103,6 +103,8 @@ public class Board {
 	}
 
 
+	// Checks if the board is valid with all the modified rows
+	// Used for ending turns to see if what player did is valid
 	public boolean checkBoard() {
 		for (int i = 0; i < board.size(); i++) {
 			int type = 0;
