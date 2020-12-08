@@ -367,9 +367,6 @@ public class Game {
 				currPlayer.updateHand();  //update original hand to finalize
 				currPlayer.sortHand(); //sort the updated hand
 			}
-			currPlayer.nextTurn();
-			turn++;
-			return true;
 		} else {
 			if(currPlayer.getHand().compare(currPlayer.getOrigHand())) {
 				if (deck.getTiles().size() > 0) {
@@ -389,14 +386,13 @@ public class Game {
 			currPlayer.updateHand();  //update original hand to finalize
 			currPlayer.sortHand(); //sort the updated hand
 		}
-		if(isGameOver()){
+		if(isGameOver() || endRound){
 			scorePoints();
 			resetRound();
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
-
 		return false;
 	}
 
