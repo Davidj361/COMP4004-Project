@@ -11,6 +11,8 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
+    private int gameEndingScore;
+    private boolean endRound = false;
     public Deck deck;
     private Board board = new Board();
     private Board origBoard = new Board();
@@ -71,6 +73,14 @@ public class Game {
 			for (int i=0; i<numPlayers; i++)
 				createPlayer("player"+i);
 		}
+	}
+
+	public void resetRound() {
+		gameRunning = true;
+		deck = new Deck();
+		board = new Board();
+		setOrigBoard();
+		turn = 1;
 	}
 
 	// Helper function for Game.reset(..)
@@ -138,10 +148,21 @@ public class Game {
     }
 
     public Player getWinner() {
+		int highscore = 10000;
 		Player p = null;
-		for (int i = 0; i < players.size(); i ++ ) {
-			if (players.get(i).getTileNumber() == 0) {
-				p = players.get(i);
+		if(deck.getTiles().size() == 0){
+			for (int i = 0; i < players.size(); i ++ ) {
+				if (players.get(i).getTileNumber() == 0) {
+					p = players.get(i);
+				}
+			}
+		}
+		else{
+			for(int i = 0; i< players.size(); i++) {
+				if (players.get(i).getTotalScore() < highscore) {
+					p = players.get(i);
+					highscore = players.get(i).getScore();
+				}
 			}
 		}
 		if (p != null) {
@@ -151,11 +172,36 @@ public class Game {
 		return p;
 	}
 
-	public void scorePoints(ArrayList<Player> players) {
+	public Player getFinalWinner() {
+		Player p = null;
+		int totalscore = 0;
+		for (int i = 0; i < players.size(); i ++ ) {
+			if (players.get(i).getTotalScore() > totalscore) {
+				p = players.get(i);
+				totalscore = players.get(i).getTotalScore();
+			}
+		}
+		if (p != null) {
+			println("Winner: " + p.getName());
+			println("Score: " + p.getScore());
+		}
+		return p;
+	}
+
+	public String printFinalScores(){
+		String output;
+		output = "=========FINAL SCORES=========";
+		for(int i = 0; i < players.size(); i++){
+			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
+		}
+		return output;
+	}
+
+	public void scorePoints() {
 		Player winner = getWinner();
 		int scoreForWinner = 0;
-		for (int i = 0; i < players.size(); i ++) {
-			if(players.get(i) != winner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
 				if (players.get(i).hasJoker()) {
 					score -= 30;
@@ -164,9 +210,15 @@ public class Game {
 				players.get(i).setScore(score);
 			}
 		}
-		for (int i = 0; i < players.size(); i ++) {
-			if(players.get(i) == winner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) == winner) {
 				winner.setScore(scoreForWinner);
+			}
+		}
+		for (int i = 0; i < players.size(); i++) {
+			if(players.get(i).getTotalScore() >= gameEndingScore){
+				getFinalWinner();
+				println(printFinalScores());
 			}
 		}
 	}
@@ -315,13 +367,28 @@ public class Game {
 				currPlayer.updateHand();  //update original hand to finalize
 				currPlayer.sortHand(); //sort the updated hand
 			}
-			currPlayer.nextTurn();
-			turn++;
-			return true;
 		} else {
-			drawTile(currPlayer);
+			if(currPlayer.getHand().compare(currPlayer.getOrigHand())) {
+				if (deck.getTiles().size() > 0) {
+					drawTile(currPlayer);
+					drawTile(currPlayer);
+					drawTile(currPlayer);
+				} else {
+					endRound = true;
+				}
+			} else{
+				if (deck.getTiles().size() > 0) {
+					drawTile(currPlayer);
+				} else {
+					endRound = true;
+				}
+			}
 			currPlayer.updateHand();  //update original hand to finalize
 			currPlayer.sortHand(); //sort the updated hand
+		}
+		if(isGameOver() || endRound){
+			scorePoints();
+			resetRound();
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
