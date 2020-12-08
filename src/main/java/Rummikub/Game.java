@@ -63,16 +63,24 @@ public class Game {
 		deck = new Deck();
 		board = new Board();
 		setOrigBoard();
-		//players = new ArrayList<Player>(); // Also reset the player list and re-add them
+		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
 
-		//if (server != null) { // Multiplayer mode
-		//	for (String name : server.getNames())
-		//		createPlayer(name);
-		//} else { // Single player mode
-		//	for (int i=0; i<numPlayers; i++)
-		//		createPlayer("player"+i);
-		//}
+		if (server != null) { // Multiplayer mode
+			for (String name : server.getNames())
+				createPlayer(name);
+		} else { // Single player mode
+			for (int i=0; i<numPlayers; i++)
+				createPlayer("player"+i);
+		}
+	}
+
+	public void resetRound() {
+		gameRunning = true;
+		deck = new Deck();
+		board = new Board();
+		setOrigBoard();
+		turn = 1;
 	}
 
 	// Helper function for Game.reset(..)
@@ -383,7 +391,7 @@ public class Game {
 		}
 		if(isGameOver()){
 			scorePoints();
-			reset();
+			resetRound();
 		}
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
