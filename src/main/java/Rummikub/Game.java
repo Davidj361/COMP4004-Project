@@ -140,10 +140,21 @@ public class Game {
     }
 
     public Player getWinner() {
+		int highscore = 10000;
 		Player p = null;
-		for (int i = 0; i < players.size(); i ++ ) {
-			if (players.get(i).getTileNumber() == 0) {
-				p = players.get(i);
+		if(deck.getTiles().size() == 0){
+			for (int i = 0; i < players.size(); i ++ ) {
+				if (players.get(i).getTileNumber() == 0) {
+					p = players.get(i);
+				}
+			}
+		}
+		else{
+			for(int i = 0; i< players.size(); i++) {
+				if (players.get(i).getTotalScore() < highscore) {
+					p = players.get(i);
+					highscore = players.get(i).getScore();
+				}
 			}
 		}
 		if (p != null) {
