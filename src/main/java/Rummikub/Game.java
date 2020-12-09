@@ -503,9 +503,11 @@ public class Game {
 	// initialize the board status for debugging
 	public void setBoardState(Board b) {
 		origBoard = new Board();
-		origBoard.setTiles(b.getTiles());
 		board = new Board();
-		board.setTiles(b.getTiles());
+		for (ArrayList<Tile> row: b.board) {
+			origBoard.addSet(row);
+			board.addSet(row);
+		}
 	}
 
 	// Return current player's hand

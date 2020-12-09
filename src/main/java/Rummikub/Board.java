@@ -52,10 +52,10 @@ public class Board {
 	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tiles){
 		ArrayList<Tile> moving = new ArrayList<Tile>();
 		for(int i = 0; i < tiles.size(); i++){
-			moving.add(board.get(sourceRow).get(tiles.get(i)));
+			moving.add(board.get(sourceRow).get(tiles.get(i)-1));
 		}
 		for(int i = 0; i < tiles.size(); i++){
-			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i));
+			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i -1));
 		}
 		ArrayList<Tile> checkDestination = board.get(destinationRow);
 		checkDestination.addAll(moving);
