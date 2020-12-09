@@ -109,7 +109,7 @@ public class StepDefinitions {
 
     @Given("Game has {int} players")
     public void game_has_players(Integer int1) {
-        for(int i = 1; i <= int1; i ++) {
+        for(int i = 1; i < int1; i ++) {
             game.createPlayer("player" + i);
         }
     }
@@ -120,6 +120,50 @@ public class StepDefinitions {
         Hand hand = new Hand(tiles);
         game.getPlayers().get(0).setHand(hand);
         System.out.println(game.getPlayers().get(0).getTileNumber());
+    }
+
+
+    @Given("First tile has not been placed")
+    public void first_tile_has_not_been_placed() {
+        // Write code here that turns the phrase above into concrete actions
+        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
+    }
+
+    @Given("Player has {string} in hand")
+    public void player_has_in_hand(String string) {
+        // Write code here that turns the phrase above into concrete actions
+        tiles_are(string);
+        Hand hand = new Hand(tiles);
+        game.setCurHand(hand);
+    }
+
+    @When("Player sends a command for placing {string} tiles on board")
+    public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
+        // Write code here that turns the phrase above into concrete actions
+        String tiles [] = string.split(",");
+        String command = "p";
+        for (int i=0; i<tiles.length; i++)
+            command = command + " " + (i+1);
+        System.out.println(command);
+        game.command(0, command);
+    }
+
+    @When("Player sends a command to end turn")
+    public void player_sends_a_command_to_end_turn() throws IOException {
+        // Write code here that turns the phrase above into concrete actions
+        game.command(0, "e");
+    }
+
+    @Then("First placement is successful")
+    public void first_placement_is_successful() {
+        // Write code here that turns the phrase above into concrete actions
+        assertTrue(game.getCurPlayer().getDoneFirstPlacement());
+    }
+
+    @Then("First placement is NOT successful")
+    public void first_placement_is_not_successful() {
+        // Write code here that turns the phrase above into concrete actions
+        assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @Given("Player2 has tiles {string}")
