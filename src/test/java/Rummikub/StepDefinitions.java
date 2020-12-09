@@ -205,6 +205,12 @@ public class StepDefinitions {
         game.command(0, command);
     }
 
+    /*
+    @When("Player {int} sends a command for placing a run of {string} on board")
+    public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String arg1) {
+    }
+    */
+
     @When("Player sends a command to end turn")
     public void player_sends_a_command_to_end_turn() throws IOException {
         // Write code here that turns the phrase above into concrete actions
@@ -287,6 +293,13 @@ public class StepDefinitions {
         Hand hand = new Hand(createTiles(string));
         game.println(hand.printHand().toString());
         game.setCurHand(hand);
+    }
+
+    @Given("Player {int} has {string} on hand")
+    public void playerHasOnHand(int i, String str) {
+        Hand hand = new Hand(createTiles(str));
+        game.println(hand.printHand().toString());
+        game.getPlayers().get(i).setHand(hand);
     }
 
     @Given("There exists a run of {string} on board")
