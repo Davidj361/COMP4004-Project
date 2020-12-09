@@ -17,7 +17,6 @@ public class Game {
     private Board board = new Board();
     private Board origBoard = new Board();
     private Scanner scanner = new Scanner(System.in);
-	//private static enum Actions {display, pick, finalize, undo, take, split};
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	private int numPlayers; // Needed for testing both offline and online
@@ -505,9 +504,11 @@ public class Game {
 		origBoard = new Board();
 		board = new Board();
 		for (ArrayList<Tile> row: b.board) {
-			origBoard.addSet(row);
-			board.addSet(row);
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			origBoard.addSet(temp);
 		}
+		setBoard();
 	}
 
 	// Return current player's hand
@@ -522,14 +523,20 @@ public class Game {
 
 	// Update current board with the given board
 	public void setOrigBoard() {
-		Board newBoard = new Board();
-		newBoard.setTiles(board.getTiles());
-		origBoard = newBoard;
+		origBoard = new Board();
+		for (ArrayList<Tile> row: board.board) {
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			origBoard.addSet(temp);
+		}
 	}
 	public void setBoard() {
-		Board newBoard = new Board();
-		newBoard.setTiles(origBoard.getTiles());
-		board = newBoard;
+		board = new Board();
+		for (ArrayList<Tile> row: origBoard.board) {
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			board.addSet(temp);
+		}
 	}
 
 	// return board

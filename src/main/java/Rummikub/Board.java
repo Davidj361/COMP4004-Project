@@ -61,6 +61,7 @@ public class Board {
 		checkDestination.addAll(moving);
 		checkDestination = addJoker(checkDestination);
 		board.set(destinationRow,checkDestination);
+		// if moving all tiles from source row, remove the empty row
 		if(board.get(sourceRow).size() == 0) {
 			board.remove(sourceRow);
 		}
