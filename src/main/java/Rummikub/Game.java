@@ -425,13 +425,6 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		println("You cannot put those tiles!");
@@ -451,13 +444,6 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		println("You cannot put those tiles!");
@@ -481,12 +467,6 @@ public class Game {
 				index.add(num);
 			}
 			board.combineCurrent(srcRow,dstRow,index);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		//TODO: error message: no such tiles
@@ -502,13 +482,6 @@ public class Game {
 		int srcRow = Integer.parseInt(sArr[0]);
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 		return true;
 	}
 
