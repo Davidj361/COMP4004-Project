@@ -17,7 +17,6 @@ public class Game {
     private Board board = new Board();
     private Board origBoard = new Board();
     private Scanner scanner = new Scanner(System.in);
-	//private static enum Actions {display, pick, finalize, undo, take, split};
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	private int numPlayers; // Needed for testing both offline and online
@@ -377,6 +376,7 @@ public class Game {
 				player.sortHand(); //sort the updated hand
 			}
 		} else {
+			undo(player);
 			if(player.getHand().compare(player.getOrigHand())) {
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
@@ -428,13 +428,6 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		println("You cannot put those tiles!");
@@ -454,13 +447,6 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		println("You cannot put those tiles!");
@@ -484,12 +470,6 @@ public class Game {
 				index.add(num);
 			}
 			board.combineCurrent(srcRow,dstRow,index);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 			return true;
 		}
 		//TODO: error message: no such tiles
@@ -505,13 +485,6 @@ public class Game {
 		int srcRow = Integer.parseInt(sArr[0]);
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
-			if (!board.checkBoard()) {
-				println("Invalid placement!");
-				setBoard();
-				player.resetHand();
-				player.sortHand();
-				return false;
-			}
 		return true;
 	}
 
@@ -532,9 +505,13 @@ public class Game {
 	// initialize the board status for debugging
 	public void setBoardState(Board b) {
 		origBoard = new Board();
-		origBoard.setTiles(b.getTiles());
 		board = new Board();
-		board.setTiles(b.getTiles());
+		for (ArrayList<Tile> row: b.board) {
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			origBoard.addSet(temp);
+		}
+		setBoard();
 	}
 
 	// Return current player's hand
@@ -549,14 +526,20 @@ public class Game {
 
 	// Update current board with the given board
 	public void setOrigBoard() {
-		Board newBoard = new Board();
-		newBoard.setTiles(board.getTiles());
-		origBoard = newBoard;
+		origBoard = new Board();
+		for (ArrayList<Tile> row: board.board) {
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			origBoard.addSet(temp);
+		}
 	}
 	public void setBoard() {
-		Board newBoard = new Board();
-		newBoard.setTiles(origBoard.getTiles());
-		board = newBoard;
+		board = new Board();
+		for (ArrayList<Tile> row: origBoard.board) {
+			ArrayList<Tile> temp = new ArrayList<Tile>();
+			temp.addAll(row);
+			board.addSet(temp);
+		}
 	}
 
 	// return board
