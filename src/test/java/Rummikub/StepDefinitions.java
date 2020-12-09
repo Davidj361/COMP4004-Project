@@ -264,9 +264,9 @@ public class StepDefinitions {
         assertTrue(game.getPlayers().get(2).getScore() == int1);
     }
 
-    @Given("Player starts round")
-    public void player_starts_round() {
-        assertEquals(1, game.getTurn());
+    @Given("Player starts turn {int}")
+    public void player_starts_round(int int1) {
+        assertEquals(int1, game.getTurn());
         assertTrue(game.playerTurn(0));
     }
 
@@ -315,9 +315,9 @@ public class StepDefinitions {
     }
 
     @Then("Tile is given to player from the deck so player has {int} tiles")
-    public void tile_is_given_to_player_from_the_deck_so_player_has_tiles(Integer int1) {
+    public void tile_is_given_to_player_from_the_deck_so_player_has_tiles(int int1) {
         game.println(game.curPlayerHand().printHand().toString());
-        assertEquals(int1.intValue(), game.curPlayerHand().getSize());
+        assertEquals(int1, game.curPlayerHand().getSize());
     }
 
     @When("Player sends a command for placing tiles of {string} on board but fails")
@@ -330,7 +330,7 @@ public class StepDefinitions {
         game.println(game.getBoard().printBoard());
     }
 
-    @Given("Player starts round \\(not first placement)")
+    @Given("Player starts turn \\(not first placement)")
     public void player_starts_round_not_first_placement() {
         assertEquals(1, game.getTurn());
         assertTrue(game.playerTurn(0));
@@ -350,9 +350,9 @@ public class StepDefinitions {
         game.command(0, "g 0 1");
     }
 
-    @When("Placed tile form a run")
-    public void placed_tile_form_a_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(0)));
+    @When("Placed tiles form a run on row {int}")
+    public void placed_tile_form_a_run_on_row(int int1) {
+        assertTrue(game.isRun(game.getBoard().board.get(int1)));
     }
 
     @When("Player sends a command for ending current turn")
@@ -370,9 +370,9 @@ public class StepDefinitions {
         assertTrue(game.getBoard().checkBoard());
     }
 
-    @Then("Player ends a turn")
-    public void player_ends_a_turn() {
-        assertEquals(2, game.getTurn());
+    @Then("There are {int} total turns")
+    public void thereAreTotalTurns(int arg0) {
+        assertEquals(arg0, game.getTurn());
     }
 
     @Given("There already exists a group of {string} on board")
@@ -383,9 +383,9 @@ public class StepDefinitions {
         game.setBoardState(board);
     }
 
-    @When("Placed tile form a group")
-    public void placed_tile_form_a_group() {
-        assertTrue(game.isGroup(game.getBoard().board.get(0)));
+    @When("Placed tiles form a group on row {int}")
+    public void placed_tile_form_a_group(int int1) {
+        assertTrue(game.isGroup(game.getBoard().board.get(int1)));
     }
 
     @When("Player sends a command for placing tiles of {string} on board")
@@ -395,11 +395,6 @@ public class StepDefinitions {
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
-    }
-
-    @When("Placed tiles form a run")
-    public void placed_tiles_form_a_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(0)));
     }
 
     @When("Player sends a command for placing a run of {string} on board")
@@ -428,21 +423,6 @@ public class StepDefinitions {
         return true;
     }
 
-    @When("Placed tiles form a group")
-    public void placed_tiles_form_a_group() {
-        assertTrue(game.isGroup(game.getBoard().board.get(0)));
-    }
-
-    @When("Placed tiles form another run")
-    public void placed_tiles_form_another_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(1)));
-    }
-
-    @When("Placed tiles form another group")
-    public void placed_tiles_form_another_group() {
-        assertTrue(game.isGroup(game.getBoard().board.get(1)));
-    }
-
     @When("Player sends a command for placing tiles of {string} but fails")
     public void player_sends_a_command_for_placing_tiles_of_but_fails(String string) throws IOException {
         String command = "p";
@@ -462,15 +442,10 @@ public class StepDefinitions {
         game.command(0, command);
     }
 
-    @When("Secondly placed tiles form a run")
-    public void secondly_placed_tiles_form_a_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(0)));
-    }
-
     @Then("Player has {int} tiles")
-    public void player_has_tiles(Integer int1) {
+    public void player_has_tiles(int int1) {
         game.println(game.curPlayerHand().printHand().toString());
-        assertEquals(int1.intValue(), game.curPlayerHand().getSize());
+        assertEquals(int1, game.curPlayerHand().getSize());
     }
 
     @When("Player sends a command for undoing the previous action")
@@ -478,11 +453,6 @@ public class StepDefinitions {
         game.command(0, "u");
         game.println(game.getBoard().printBoard());
         game.printCurPlayerHand();
-    }
-
-    @When("Secondly placed tiles form a group")
-    public void secondly_placed_tiles_form_a_group() {
-        assertTrue(game.isGroup(game.getBoard().board.get(0)));
     }
 
     @When("Player sends a command for placing another group of {string} on board")
@@ -506,20 +476,10 @@ public class StepDefinitions {
         game.println(game.getBoard().printBoard());
     }
 
-    @When("Secondly placed tile form a run")
-    public void secondly_placed_tile_form_a_run() {
-        assertTrue(game.isRun(game.getBoard().board.get(0)));
-    }
-
     @Then("Player has {int} tile")
-    public void player_has_tile(Integer int1) {
+    public void player_has_tile(int int1) {
         game.println(game.curPlayerHand().printHand().toString());
-        assertEquals(int1.intValue(), game.curPlayerHand().getSize());
-    }
-
-    @When("Secondly placed tile form a group")
-    public void secondly_placed_tile_form_a_group() {
-        assertTrue(game.isGroup(game.getBoard().board.get(0)));
+        assertEquals(int1, game.curPlayerHand().getSize());
     }
 
     @When("Player sends a command for splitting tiles of {string} into a new row")
@@ -531,11 +491,6 @@ public class StepDefinitions {
     public void player_sends_a_command_for_placing_a_tile_of_together_with_splitted_tiles(String string) throws IOException {
         game.command(0, "g 1 1");
         game.println(game.getBoard().printBoard());
-    }
-
-    @When("There has a new run on board")
-    public void there_has_a_new_run_on_board() {
-        assertTrue(game.isRun(game.getBoard().board.get(1)));
     }
 
     @Given("There already exists another run of {string} on board")
@@ -558,11 +513,6 @@ public class StepDefinitions {
         game.println(game.getBoard().printBoard());
     }
 
-    @When("There has a new run on row {int}")
-    public void there_has_a_new_run_on_row(Integer int1) {
-        assertTrue(game.isRun(game.getBoard().board.get(int1.intValue())));
-    }
-
     @When("Player sends a command for combining the second and third row and placing a tile of {string} together with the third row")
     public void player_sends_a_command_for_placing_a_tile_of_together_with_the_third_row(String string) throws IOException {
         game.command(0, "m 3 2 1");
@@ -582,19 +532,9 @@ public class StepDefinitions {
         game.println(game.getBoard().printBoard());
     }
 
-    @When("There has a new group on row {int}")
-    public void there_has_a_new_group_on_row(Integer int1) {
-        assertTrue(game.isGroup(game.getBoard().board.get(int1.intValue())));
-    }
-
     @Given("Player sends a command for moving the first row into the second row to combine them")
     public void player_sends_a_command_for_moving_the_first_row_into_the_second_row_to_combine_them() throws IOException {
         game.command(0, "m 1 0 1 2 3");
-    }
-
-    @Given("There has a run on row {int}")
-    public void there_has_a_run_on_row(Integer int1) {
-        assertTrue(game.isRun(game.getBoard().board.get(int1.intValue())));
     }
 
     @Given("The game has a game ending score at {int}")
@@ -613,5 +553,21 @@ public class StepDefinitions {
         assertNotEquals(null, winner);
         Player p = game.getPlayers().get(arg0);
         assertEquals(p, winner);
+    }
+
+    @Then("Player {int} has {int} points")
+    public void playerHasPoints(int arg0, int arg1) {
+        int scr = game.getPlayer(arg0).getScore();
+        assertEquals(arg1, scr);
+    }
+
+    @Then("All other players but player {int} have {int} points")
+    public void allOtherPlayersButPlayerHavePoints(int arg0, int arg1) {
+        for (int i=0; i<game.getPlayers().size(); i++) {
+            if (i == arg0)
+                continue;
+            int scr = game.getPlayer(i).getScore();
+            assertEquals(arg1, scr);
+        }
     }
 }

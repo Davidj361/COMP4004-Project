@@ -553,6 +553,8 @@ public class Game {
 	// return players
 	public ArrayList<Player> getPlayers() { return players; }
 
+	public Player getPlayer(int i) { return players.get(i); }
+
 	public int getGameEndingScore() { return gameEndingScore; }
 	public void setGameEndingScore(int i) { gameEndingScore = i; }
 

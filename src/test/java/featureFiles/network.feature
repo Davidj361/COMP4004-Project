@@ -31,5 +31,5 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     # And The game is finished # Previous line does this but might add this back in
     # TODO Change points
     And Player 1 has 999999 points
-    And All other players have -9999 points
-    And There are 5 total turns
+    And All other players but player 1 have -9999 points
+    And There are 9 total turns
