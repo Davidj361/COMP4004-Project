@@ -3,6 +3,7 @@ package Rummikub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 import Rummikub.Tile.Colors;
@@ -553,9 +554,7 @@ public class Game {
 	}
 
 	// return players
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
+	public ArrayList<Player> getPlayers() { return players; }
 
 	// Functions for debugging purposes
 	//////////////////////////////////////////////////////////////////////
