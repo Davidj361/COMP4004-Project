@@ -500,9 +500,6 @@ public class Game {
 	//////////////////////////////////////////////////////////////////////
 
 
-	//////////////////////////////////////////////////////////////////////
-	// Functions for debugging purposes
-
 	// initialize the board status for debugging
 	public void setBoardState(Board b) {
 		origBoard = new Board();
@@ -556,8 +553,8 @@ public class Game {
 	// return players
 	public ArrayList<Player> getPlayers() { return players; }
 
-	// Functions for debugging purposes
-	//////////////////////////////////////////////////////////////////////
+	public int getGameEndingScore() { return gameEndingScore; }
+	public void setGameEndingScore(int i) { gameEndingScore = i; }
 
 
 	public void startText() {
@@ -573,6 +570,5 @@ public class Game {
 		printCurPlayerHand();
 	}
 
-	public int getGameEndingScore() { return gameEndingScore; }
-	public void setGameEndingScore(int i) { gameEndingScore = i; }
+
 }

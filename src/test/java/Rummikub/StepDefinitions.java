@@ -196,20 +196,18 @@ public class StepDefinitions {
 
     @When("Player sends a command for placing {string} tiles on board")
     public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
-        // Write code here that turns the phrase above into concrete actions
-        String tiles [] = string.split(",");
+        playerSendsACommandForPlacingARunOfOnBoard(0, string);
+    }
+
+    @When("Player {int} sends a command for placing a run of {string} on board")
+    public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String str) throws IOException {
+        String tiles [] = str.split(",");
         String command = "p";
         for (int i=0; i<tiles.length; i++)
             command = command + " " + (i+1);
         System.out.println(command);
-        game.command(0, command);
+        game.command(arg0, command);
     }
-
-    /*
-    @When("Player {int} sends a command for placing a run of {string} on board")
-    public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String arg1) {
-    }
-    */
 
     @When("Player sends a command to end turn")
     public void player_sends_a_command_to_end_turn() throws IOException {
@@ -359,7 +357,12 @@ public class StepDefinitions {
 
     @When("Player sends a command for ending current turn")
     public void player_sends_a_command_for_ending_current_turn() throws IOException {
-        game.command(0, "e");
+        playerSendsACommandForEndingCurrentTurn(0);
+    }
+
+    @When("Player {int} sends a command for ending current turn")
+    public void playerSendsACommandForEndingCurrentTurn(int arg0) throws IOException {
+        game.command(arg0, "e");
     }
 
     @Then("Tiles placed on board successfully")
@@ -602,5 +605,13 @@ public class StepDefinitions {
     @Given("Set game ending score to {int}")
     public void setGameEndingScoreTo(int arg0) {
         game.setGameEndingScore(arg0);
+    }
+
+    @Then("Player {int} has won the game")
+    public void playerHasWonTheGame(int arg0) {
+        Player winner = game.getWinner();
+        assertNotEquals(null, winner);
+        Player p = game.getPlayers().get(arg0);
+        assertEquals(p, winner);
     }
 }
