@@ -143,7 +143,7 @@ Feature: Testing user play a turn in various scenarios
   Scenario: Play Turn - splits tiles and places a tile to form a run
     Given New game is started
     And Player starts round (not first placement)
-    And There already exists a group of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
+    And There already exists a run of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
     And Player has "(8 red)" on hand
     When Player sends a command for splitting tiles of "(6 red),(7 red)" into a new row
     And Player sends a command for placing a tile of "(8 red)" together with splitted tiles
@@ -152,22 +152,50 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And Player ends a turn
 
-  Scenario: Play Turn - splits tiles and places a tile to form a group
+  Scenario: Play Turn - splits tiles and places multiple tiles to form a run
     Given New game is started
     And Player starts round (not first placement)
-    And There already exists a group of "(3 red),(4 red),(5 red),(6 red)" on board
-    And There already exists another group of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
-    And Player has "(6 black)" on hand
+    And There already exists a run of "(3 red),(4 red),(5 red),(6 red)" on board
+    And Player has "(7 red),(8 red)" on hand
     When Player sends a command for splitting a tile of "(6 red)" into a new row
-    And Player sends a command for splitting the second tile of "(6 blue)" into a new row
-    And Player sends a command for placing a tile of "(6 black)" together with splitted tiles
-    And There has a new group on board
+    And Player sends a command for placing tiles of "(7 red),(8 red)" together with splitted tiles
+    And There has a new run on board
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
     And Player ends a turn
 
-  Scenario: Play Turn - splits tiles and places multiple tiles to form a run
+  Scenario: Play Turn - splits tiles and places a tile with them to form a group
+    Given New game is started
+    And Player starts round (not first placement)
+    And There already exists a run of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
+    And Player has "(8 red)" on hand
+    When Player sends a command for splitting tiles of "(6 red),(7 red)" into a new row
+    And Player sends a command for placing a tile of "(8 black)" together with the second row
+    And There has a new run on row 1
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
 
-  Scenario: Play Turn - splits tiles and places multiple tiles to form a group
+  Scenario: Play Turn - splits tiles from two rows, combine splitted tiles and places a tile with them to form a group
+    Given New game is started
+    And Player starts round (not first placement)
+    And There already exists a run of "(3 red),(4 red),(5 red),(6 red)" on board
+    And There already exists another run of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
+    And Player has "(6 black)" on hand
+    When Player sends a command for splitting a tile of "(6 red)" into a new row
+    And Player sends a command for splitting the second tile of "(6 blue)" into a new row
+    And Player sends a command for combining the second and third row and placing a tile of "(6 black)" together with the third row
+    And There has a new group on row 2
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And Player ends a turn
 
-  Scenario: Play Turn - split a run on board into two runs
+
+  Scenario: Play Turn - move a run of tiles into another run to combine
+    Given Player starts round (not first placement)
+    And There already exists a run of "(3 red),(4 red),(5 red)" on board
+    And There already exists another run of "(6 red),(7 red),(8 red)" on board
+    And Player sends a command for moving the first row into the second row to combine them
+    And There has a run on row 0
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
