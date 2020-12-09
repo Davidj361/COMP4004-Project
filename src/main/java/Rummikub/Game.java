@@ -426,7 +426,7 @@ public class Game {
 	public boolean placeTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place
 		if (sArr.length < 1) {
-			println("COMMAND INVALID: press h to get help on how to execute commands" , getCurPlayerIdx());
+			invalidCommandMessage();
 			return false;
 		}
 		// Integer index of tiles on hand
@@ -437,8 +437,7 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
-			println("command received", getCurPlayerIdx());
-			println("U can make other moves or end your turn", getCurPlayerIdx());
+			commandReceivedMessage();
 			return true;
 		}
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
@@ -450,7 +449,7 @@ public class Game {
 	private boolean giveTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place and dstRow
 		if (sArr.length < 2) {
-			println("COMMAND INVALID: press h to get help on how to execute commands", getCurPlayerIdx());
+			invalidCommandMessage();
 			return false;
 		}
 		int dstRow = Integer.parseInt(sArr[0]);
@@ -460,8 +459,7 @@ public class Game {
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
-			println("command received", getCurPlayerIdx());
-			println("U can make other moves or end your turn", getCurPlayerIdx());
+			commandReceivedMessage();
 			return true;
 		}
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
@@ -473,7 +471,7 @@ public class Game {
 	private boolean moveTiles(String[] sArr, Player player) {
 		// Needs at least 1 tile to place and dstRow & srcRow
 		if (sArr.length < 3) {
-			println("COMMAND INVALID: press h to get help on how to execute commands", getCurPlayerIdx());
+			invalidCommandMessage();
 			return false;
 		}
 		int srcRow = Integer.parseInt(sArr[0]);
@@ -487,11 +485,10 @@ public class Game {
 				index.add(num);
 			}
 			board.combineCurrent(srcRow,dstRow,index);
-			println("command received", getCurPlayerIdx());
-			println("U can make other moves or end your turn", getCurPlayerIdx());
+			commandReceivedMessage();
 			return true;
 		}
-		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+		invalidCommandMessage();
 		return false;
 	}
 
@@ -500,14 +497,13 @@ public class Game {
 	private boolean splitRow(String[] sArr, Player player) {
 		// Needs a split index and srcRow
 		if (sArr.length != 2) {
-			println("COMMAND INVALID: press h to get help on how to execute commands", getCurPlayerIdx());
+			invalidCommandMessage();
 			return false;
 		}
 		int srcRow = Integer.parseInt(sArr[0]);
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
-		println("command received", getCurPlayerIdx());
-		println("U can make other moves or end your turn", getCurPlayerIdx());
+		commandReceivedMessage();
 		return true;
 	}
 
@@ -590,4 +586,13 @@ public class Game {
 	}
 
 	public void setGameEndingScore(int i) { gameEndingScore = i; }
+
+	public void commandReceivedMessage () {
+		println("command received", getCurPlayerIdx());
+		println("You can make other moves or end your turn", getCurPlayerIdx());
+	}
+
+	public void invalidCommandMessage() {
+		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+	}
 }
