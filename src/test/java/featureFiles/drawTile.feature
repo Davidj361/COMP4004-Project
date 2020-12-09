@@ -12,7 +12,7 @@ Feature: Testing user draws a tile scenario
     Given New game is started
     And Player starts round 1
     And There exists a run of "(3 blue),(4 blue),(5 blue)" on board
-    And Player has "(6 red)" on rack
+    And Player has "(6 red)" in their hand
     When Player sends a command for placing a tile of "(6 red)" on board but fails
     And Player finishes turn by sending end turn command
     Then Tile is given to player from the deck so player has 2 tiles
@@ -21,7 +21,7 @@ Feature: Testing user draws a tile scenario
   Scenario: Play Turn - places multiple tiles but it is an invalid placement, tiles return to rack, then finishes turn
     Given New game is started
     And Player starts round 1
-    And Player has "(3 red),(5 blue),(7 black)" on rack
+    And Player has "(3 red),(5 blue),(7 black)" in their hand
     When Player sends a command for placing tiles of "(3 red),(5 blue),(7 black)" on board but fails
     And Player finishes turn by sending end turn command
     Then Tile is given to player from the deck so player has 4 tiles
