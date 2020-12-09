@@ -1,6 +1,5 @@
-#Test Cases for Functions in the Tile class
-  Feature: Testing for functions in Game Class
-    Testing functions in Game Class
+@gameFeature
+Feature: Testing for functions in Game Class
 
 
   Scenario: checking get winner and points functionality
