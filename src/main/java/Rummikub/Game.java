@@ -387,7 +387,6 @@ public class Game {
 				} else {
 					endRound = true;
 				}
-				player.updateHand();
 			} else{
 				println("You ended your turn with out making any moves");
 				println("A tile has been added to your hand from deck", getCurPlayerIdx());
@@ -396,8 +395,9 @@ public class Game {
 				} else {
 					endRound = true;
 				}
-				player.updateHand();
 			}
+			player.updateHand();  //update original hand to finalize
+			player.sortHand(); //sort the updated hand
 		}
 		if(isGameOver() || endRound){
 			println("Round is over, get ready for next Round!");
