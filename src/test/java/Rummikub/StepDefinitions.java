@@ -194,14 +194,6 @@ public class StepDefinitions {
         assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
-    @Given("Player has {string} in hand")
-    public void player_has_in_hand(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        tiles_are(string);
-        Hand hand = new Hand(tiles);
-        game.setCurHand(hand);
-    }
-
     @When("Player sends a command for placing {string} tiles on board")
     public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
         // Write code here that turns the phrase above into concrete actions
@@ -289,8 +281,9 @@ public class StepDefinitions {
         assertEquals(2, game.getTurn());
     }
 
-    @Given("Player has {string} on rack")
-    public void player_has_on_rack(String string) {
+    @Given("Player has {string} in their hand")
+    public void player_has_in_their_hand(String string) {
+        // tiles_are(string); // Might need to add back in later
         Hand hand = new Hand(createTiles(string));
         game.println(hand.printHand().toString());
         game.setCurHand(hand);
@@ -339,13 +332,6 @@ public class StepDefinitions {
         board.addSet(createTiles(string));
         game.println(board.printBoard());
         game.setBoardState(board);
-    }
-
-    @Given("Player has {string} on hand")
-    public void player_has_on_hand(String string) {
-        Hand hand = new Hand(createTiles(string));
-        game.println(hand.printHand().toString());
-        game.setCurHand(hand);
     }
 
     @When("Player sends a command for placing a tile of {string} on board")
