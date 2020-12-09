@@ -330,12 +330,10 @@ public class Game {
 
 	// player draws a tile
 	public void drawTile(Player p) {
-		if(deck.size() > 0) {
+		if(deck.size() > 0)
 			p.drawTile(deck);
-		}
-		else{
-			println("No more tiles left in the deck. Could not draw tile.", getCurPlayerIdx());
-		}
+		else
+			println("No more tiles left in the deck. Could not draw a tile.", getCurPlayerIdx());
 	}
 
 
