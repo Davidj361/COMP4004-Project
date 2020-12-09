@@ -374,6 +374,7 @@ public class Game {
 				player.sortHand(); //sort the updated hand
 			}
 		} else {
+			undo(player);
 			if(player.getHand().compare(player.getOrigHand())) {
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
