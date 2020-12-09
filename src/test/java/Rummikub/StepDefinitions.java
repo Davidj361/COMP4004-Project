@@ -441,6 +441,8 @@ public class StepDefinitions {
     @When("Player sends a command for undoing the previous action")
     public void player_sends_a_command_for_undoing_the_previous_action() throws IOException {
         game.command(0, "u");
+        game.println(game.getBoard().printBoard());
+        game.printCurPlayerHand();
     }
 
     @When("Secondly placed tiles form a group")
@@ -487,20 +489,77 @@ public class StepDefinitions {
 
     @When("Player sends a command for splitting tiles of {string} into a new row")
     public void player_sends_a_command_for_splitting_tiles_of_into_a_new_row(String string) throws IOException {
-        game.println("before " + game.getBoard().printBoard());
         game.command(0, "s 0 3");
-        game.println("after " + game.getBoard().printBoard());
     }
 
     @When("Player sends a command for placing a tile of {string} together with splitted tiles")
     public void player_sends_a_command_for_placing_a_tile_of_together_with_splitted_tiles(String string) throws IOException {
-        //game.command(0, "g 1 1");
-        //game.println(game.getBoard().printBoard());
+        game.command(0, "g 1 1");
+        game.println(game.getBoard().printBoard());
     }
 
     @When("There has a new run on board")
     public void there_has_a_new_run_on_board() {
+        assertTrue(game.isRun(game.getBoard().board.get(1)));
+    }
 
+    @Given("There already exists another run of {string} on board")
+    public void there_already_exists_another_run_of_on_board(String string) {
+        Board board = game.getBoard();
+        board.addSet(createTiles(string));
+        game.println(board.printBoard());
+        game.setBoardState(board);
+    }
+
+    @When("Player sends a command for splitting a tile of {string} into a new row")
+    public void player_sends_a_command_for_splitting_a_tile_of_into_a_new_row(String string) throws IOException {
+        game.command(0, "s 0 3");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Player sends a command for splitting the second tile of {string} into a new row")
+    public void player_sends_a_command_for_splitting_the_second_tile_of_into_a_new_row(String string) throws IOException {
+        game.command(0, "s 1 3");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("There has a new run on row {int}")
+    public void there_has_a_new_run_on_row(Integer int1) {
+        assertTrue(game.isRun(game.getBoard().board.get(int1.intValue())));
+    }
+
+    @When("Player sends a command for combining the second and third row and placing a tile of {string} together with the third row")
+    public void player_sends_a_command_for_placing_a_tile_of_together_with_the_third_row(String string) throws IOException {
+        game.command(0, "m 3 2 1");
+        game.command(0, "g 2 1");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Player sends a command for placing tiles of {string} together with splitted tiles")
+    public void player_sends_a_command_for_placing_tiles_of_together_with_splitted_tiles(String string) throws IOException {
+        game.command(0, "g 1 1 2");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("Player sends a command for placing a tile of {string} together with the second row")
+    public void player_sends_a_command_for_placing_a_tile_of_together_with_the_second_row(String string) throws IOException {
+        game.command(0, "g 1 1");
+        game.println(game.getBoard().printBoard());
+    }
+
+    @When("There has a new group on row {int}")
+    public void there_has_a_new_group_on_row(Integer int1) {
+        assertTrue(game.isGroup(game.getBoard().board.get(int1.intValue())));
+    }
+
+    @Given("Player sends a command for moving the first row into the second row to combine them")
+    public void player_sends_a_command_for_moving_the_first_row_into_the_second_row_to_combine_them() throws IOException {
+        game.command(0, "m 1 0 1 2 3");
+    }
+
+    @Given("There has a run on row {int}")
+    public void there_has_a_run_on_row(Integer int1) {
+        assertTrue(game.isRun(game.getBoard().board.get(int1.intValue())));
     }
 
 }
