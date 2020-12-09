@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -136,15 +137,32 @@ public class StepDefinitions {
         assertEquals(int1, game.getPlayers().size());
     }
 
-    /*
+    /////////////////
+    // Network crud
+
     @Given("The host hosts a game")
-    public void theHostHostsAGame() {
-        server = new Server();
+    public void theHostHostsAGame() throws IOException {
+        // Server(String name, int port, int numPlayers, boolean b)
+        server = new Server("HostPlayer", 27015, 4);
         // Setup network
         assertTrue(server.host());
         server.start();
     }
-    */
+
+    @Given("the other players connect to host")
+    public void the_other_players_connect_to_host() throws InterruptedException, UnknownHostException, IOException {
+        clients = new Client[2];
+        for (int i = 0; i<Server.maxClients; i++) {
+            clients[i] = new Client();
+            assertTrue(clients[i].connect());
+        }
+        while (server.clientsConnected != Server.maxClients)
+            Thread.sleep(10);
+        assertEquals(server.clientsConnected, Server.maxClients);
+    }
+
+    // Network crud
+    /////////////////
 
     @Given("Player1 has placed all tiles")
     public void player1_has_placed_all_tiles() {
