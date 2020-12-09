@@ -334,7 +334,7 @@ public class Game {
 			p.drawTile(deck);
 		}
 		else{
-			println("No more tiles left in the deck", getCurPlayerIdx());
+			println("No more tiles left in the deck. Could not draw tile.", getCurPlayerIdx());
 		}
 	}
 
