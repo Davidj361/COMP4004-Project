@@ -1,5 +1,6 @@
 package Rummikub;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertFalse;
 public class StepDefinitions {
     Game game;
     Server server;
+    ArrayList<Client> clients;
     ArrayList<Tile> tiles = new ArrayList<Tile>();
 
 
@@ -140,8 +142,14 @@ public class StepDefinitions {
     /////////////////
     // Network crud
 
+    @Given("A new networked game is started")
+    public void A_new_networked_game_is_started() {
+        game = new Game(server, true);
+        assertEquals(1, game.getTurn());
+    }
+
     @Given("The host hosts a game")
-    public void theHostHostsAGame() throws IOException {
+    public void TheHostHostsAGame() throws IOException {
         // Server(String name, int port, int numPlayers, boolean b)
         server = new Server("HostPlayer", 27015, 4);
         // Setup network
@@ -149,16 +157,23 @@ public class StepDefinitions {
         server.start();
     }
 
-    @Given("the other players connect to host")
-    public void the_other_players_connect_to_host() throws InterruptedException, UnknownHostException, IOException {
-        clients = new Client[2];
-        for (int i = 0; i<Server.maxClients; i++) {
-            clients[i] = new Client();
-            assertTrue(clients[i].connect());
+    @Given("The other players connect to host")
+    public void The_other_players_connect_to_host() throws InterruptedException, IOException {
+        clients = new ArrayList<Client>();
+        for (int i = 0; i<server.getMaxClients(); i++) {
+            Client c = new Client();
+            clients.add(c);
+            assertTrue(c.connect());
         }
-        while (server.clientsConnected != Server.maxClients)
+        while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
             Thread.sleep(10);
-        assertEquals(server.clientsConnected, Server.maxClients);
+        assertEquals(server.getNumClients(), server.getMaxClients());
+    }
+
+    @When("Everyone closes their connections")
+    public void Everyone_closes_their_connections() throws IOException {
+        server.close();
+        assertTrue(!server.isOpen());
     }
 
     // Network crud
@@ -580,4 +595,13 @@ public class StepDefinitions {
         assertTrue(game.isRun(game.getBoard().board.get(int1.intValue())));
     }
 
+    @Given("The game has a game ending score at {int}")
+    public void theGameHasAGameEndingScoreAt(int arg0) {
+        assertEquals(arg0, game.getGameEndingScore());
+    }
+
+    @Given("Set game ending score to {int}")
+    public void setGameEndingScoreTo(int arg0) {
+        game.setGameEndingScore(arg0);
+    }
 }

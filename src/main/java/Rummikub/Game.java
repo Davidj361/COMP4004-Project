@@ -573,5 +573,6 @@ public class Game {
 		printCurPlayerHand();
 	}
 
+	public int getGameEndingScore() { return gameEndingScore; }
 	public void setGameEndingScore(int i) { gameEndingScore = i; }
 }
