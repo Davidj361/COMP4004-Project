@@ -47,6 +47,66 @@ public class StepDefinitions {
         return defaultColor;
     }
 
+    // Helper function for parseTilesForIndexes
+    // Gets the index of the first tile matching the same value and color
+    // off the current player
+    private int findTile(int val, Tile.Colors color) {
+        Tile ret = null;
+        ArrayList<Tile> tiles = game.getCurPlayer().getHand().getTiles();
+        for (int i=0; i<tiles.size(); i++) {
+            Tile t = tiles.get(i);
+            if (t.getValue() == val && t.getColor() == color)
+                return i+1; // Because players start indexes at 1, not 0
+        }
+        // We didn't find a tile so throw an error
+        throw new RuntimeException("Did not find a tile index in PlayTurn.findTile(..)");
+    }
+
+    // Helper function for parsing
+    private Tile parseTile(String str) {
+        String tileIs = str.replace("(", "");
+        tileIs = tileIs.replace(")", "");
+        String b [] = tileIs.split(" ");
+        int value  = Integer.parseInt(b[0]);
+        String c = b[1];
+        Tile.Colors color;
+        if(c.compareToIgnoreCase("blue") == 0) {
+            color = Tile.Colors.BL;
+        } else if(c.compareToIgnoreCase("red") == 0) {
+            color = Tile.Colors.RE;
+        } else if(c.compareToIgnoreCase("yellow") == 0) {
+            color = Tile.Colors.YE;
+        } else {
+            color = Tile.Colors.BK;
+        }
+        return new Tile(value, color);
+    }
+
+    // Parses the string to get indexes of tiles in the current player's hand
+    private ArrayList<Integer> getIndexes(String string) {
+        ArrayList<Integer> idx = new ArrayList<Integer>();
+        // Express the Regexp above with the code you wish you had
+        String a [] = string.split(",");
+        for (int i = 0; i < a.length; i++) {
+            Tile t = parseTile(a[i]);
+            idx.add(findTile(t.getValue(), t.getColor()));
+        }
+        return idx;
+    }
+
+    // Parsing a string to create a list of tiles
+    private ArrayList<Tile> createTiles(String string) {
+        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        // Express the Regexp above with the code you wish you had
+        String a [] = string.split(",");
+        for (int i = 0; i < a.length; i++) {
+            Tile t = parseTile(a[i]);
+            tiles.add(t);
+        }
+        return tiles;
+    }
+
+
     @Given("Game has {int} players")
     public void game_has_players(Integer int1) {
         for(int i = 1; i <= int1; i ++) {
@@ -99,34 +159,6 @@ public class StepDefinitions {
         assertTrue(game.getPlayers().get(2).getScore() == int1);
     }
 
-    public ArrayList<Tile> parseTiles (String string) {
-        ArrayList<Tile> tiles = new ArrayList<Tile>();
-        // Express the Regexp above with the code you wish you had
-        String a [] = string.split(",");
-        for (int i = 0; i < a.length; i++) {
-            String tileIs = a[i].replace("(", "");
-            tileIs = tileIs.replace(")", "");
-            String b [] = tileIs.split(" ");
-            int value  = Integer.parseInt(b[0]);
-            String color = b[1];
-            Tile tile;
-            if(color.compareToIgnoreCase("blue") == 0) {
-                tile  = new Tile (value, Tile.Colors.BL);
-            }
-            else if(color.compareToIgnoreCase("red") == 0) {
-                tile  = new Tile (value, Tile.Colors.RE);
-            }
-            else if(color.compareToIgnoreCase("yellow") == 0) {
-                tile  = new Tile (value, Tile.Colors.YE);
-            }
-            else {
-                tile  = new Tile (value, Tile.Colors.BK);
-            }
-            tiles.add(tile);
-        }
-        return tiles;
-    }
-
     @Given("Player starts round")
     public void player_starts_round() {
         assertEquals(1, game.getTurn());
@@ -150,7 +182,7 @@ public class StepDefinitions {
 
     @Given("Player has {string} on rack")
     public void player_has_on_rack(String string) {
-        Hand hand = new Hand(parseTiles(string));
+        Hand hand = new Hand(createTiles(string));
         game.println(hand.printHand().toString());
         game.setCurHand(hand);
     }
@@ -158,7 +190,7 @@ public class StepDefinitions {
     @Given("There exists a run of {string} on board")
     public void there_exists_a_run_of_on_board(String string) {
         Board board = new Board();
-        board.addSet(parseTiles(string));
+        board.addSet(createTiles(string));
         game.println(board.printBoard());
         game.setBoardState(board);
     }
@@ -178,7 +210,7 @@ public class StepDefinitions {
     @When("Player sends a command for placing tiles of {string} on board but fails")
     public void player_sends_a_command_for_placing_tiles_of_on_board_but_fails(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -195,14 +227,14 @@ public class StepDefinitions {
     @Given("There already exists a run of {string} on board")
     public void there_already_exists_a_run_of_on_board(String string) {
         Board board = new Board();
-        board.addSet(parseTiles(string));
+        board.addSet(createTiles(string));
         game.println(board.printBoard());
         game.setBoardState(board);
     }
 
     @Given("Player has {string} on hand")
     public void player_has_on_hand(String string) {
-        Hand hand = new Hand(parseTiles(string));
+        Hand hand = new Hand(createTiles(string));
         game.println(hand.printHand().toString());
         game.setCurHand(hand);
     }
@@ -235,7 +267,7 @@ public class StepDefinitions {
     @Given("There already exists a group of {string} on board")
     public void there_already_exists_a_group_of_on_board(String string) {
         Board board = new Board();
-        board.addSet(parseTiles(string));
+        board.addSet(createTiles(string));
         game.println(board.printBoard());
         game.setBoardState(board);
     }
@@ -248,7 +280,7 @@ public class StepDefinitions {
     @When("Player sends a command for placing tiles of {string} on board")
     public void player_sends_a_command_for_placing_tiles_of_on_board(String string) throws IOException {
         String command = "g 0";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -260,22 +292,29 @@ public class StepDefinitions {
     }
 
     @When("Player sends a command for placing a run of {string} on board")
-    public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
-        System.out.println("hand: " + game.curPlayerHand().printHand());
-        String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
-            command = command + " " + (i+1);
+    public boolean player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
+        if (!game.isRun(createTiles(string)))
+            return false;
+        StringBuilder command = new StringBuilder("p");
+        ArrayList<Integer> idx = getIndexes(string);
+        for (int i: idx)
+            command.append(" ").append(i);
         System.out.println(command);
-        game.command(0, command);
+        game.command(0, command.toString());
+        return true;
     }
 
     @When("Player sends a command for placing a group of {string} on board")
-    public void player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
-        String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
-            command = command + " " + (i+1);
+    public boolean player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
+        if (!game.isGroup(createTiles(string)))
+            return false;
+        StringBuilder command = new StringBuilder("p");
+        ArrayList<Integer> idx = getIndexes(string);
+        for (int i: idx)
+            command.append(" ").append(i);
         System.out.println(command);
-        game.command(0, command);
+        game.command(0, command.toString());
+        return true;
     }
 
     @When("Placed tiles form a group")
@@ -296,7 +335,7 @@ public class StepDefinitions {
     @When("Player sends a command for placing tiles of {string} but fails")
     public void player_sends_a_command_for_placing_tiles_of_but_fails(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+1);
         System.out.println(command);
         game.command(0, command);
@@ -306,7 +345,7 @@ public class StepDefinitions {
     @When("Player sends a command for placing another run of {string} on board")
     public void player_sends_a_command_for_placing_another_run_of_on_board(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+4);
         System.out.println(command);
         game.command(0, command);
@@ -336,7 +375,7 @@ public class StepDefinitions {
     @When("Player sends a command for placing another group of {string} on board")
     public void player_sends_a_command_for_placing_another_group_of_on_board(String string) throws IOException {
         String command = "p";
-        for (int i=0; i<parseTiles(string).size(); i++)
+        for (int i = 0; i< createTiles(string).size(); i++)
             command = command + " " + (i+4);
         System.out.println(command);
         game.command(0, command);

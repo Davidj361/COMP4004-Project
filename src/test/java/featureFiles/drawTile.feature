@@ -1,4 +1,4 @@
-# Draw a tile scenario
+@drawTileFeature
 Feature: Testing user draws a tile scenario
 
   Scenario: Draw Tile at the end of turn
