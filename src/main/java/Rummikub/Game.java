@@ -329,8 +329,13 @@ public class Game {
 	// Functions used by command(..)
 
 	// player draws a tile
-	public void drawTile(Player p) { // DUPLICATE FUNCTION NAME
-		p.drawTile(deck);
+	public void drawTile(Player p) {
+		if(deck.size() > 0) {
+			p.drawTile(deck);
+		}
+		else{
+			println("No more tiles left in the deck", getCurPlayerIdx());
+		}
 	}
 
 
