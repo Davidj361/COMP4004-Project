@@ -11,10 +11,15 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 
 public class StepDefinitions {
-    Game game = new Game(true);
+    Game game;
+    Server server;
     ArrayList<Tile> tiles = new ArrayList<Tile>();
 
-    public void tiles_are(String arg1) {
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Helper functions
+
+    private void tiles_are(String arg1) {
         System.out.println("sequence is " + arg1);
         String a [] = arg1.split(",");
         for (int i = 0; i < a.length; i++) {
@@ -28,7 +33,7 @@ public class StepDefinitions {
         }
     }
 
-    public Tile.Colors parseColor(String color) {
+    private Tile.Colors parseColor(String color) {
         Tile.Colors defaultColor = Tile.Colors.BL;
         if(color.equalsIgnoreCase("blue"))
             defaultColor = Tile.Colors.BL;
@@ -106,13 +111,40 @@ public class StepDefinitions {
         return tiles;
     }
 
+    // Helper functions
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Glue Code
+
+    @Given("New game is started")
+    public void new_game_is_started() {
+        game = new Game(true); // setup the game in testing mode
+        assertEquals(1, game.getTurn());
+    }
+
+    @Given("New game is started with {int} players")
+    public void new_game_is_started_with_players(Integer int1) {
+        game = new Game(int1, true); // setup the game in testing mode
+        assertEquals(1, game.getTurn());
+    }
+
 
     @Given("Game has {int} players")
-    public void game_has_players(Integer int1) {
-        for(int i = 1; i < int1; i ++) {
-            game.createPlayer("player" + i);
-        }
+    public void game_has_players(int int1) {
+        assertEquals(int1, game.getPlayers().size());
     }
+
+    /*
+    @Given("The host hosts a game")
+    public void theHostHostsAGame() {
+        server = new Server();
+        // Setup network
+        assertTrue(server.host());
+        server.start();
+    }
+    */
 
     @Given("Player1 has placed all tiles")
     public void player1_has_placed_all_tiles() {
@@ -470,4 +502,5 @@ public class StepDefinitions {
     public void there_has_a_new_run_on_board() {
 
     }
+
 }
