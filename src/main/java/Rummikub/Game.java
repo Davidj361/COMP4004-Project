@@ -203,10 +203,8 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
-				println("sum of tiles " + score);
-				if (players.get(i).hasJoker()) {
+				if (players.get(i).hasJoker())
 					score -= 30;
-				}
 				scoreForWinner += -score;
 				players.get(i).setScore(score);
 				players.get(i).updateTotalScore(score);
