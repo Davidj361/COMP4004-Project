@@ -160,13 +160,11 @@ public class Server extends Thread implements AutoCloseable {
             print("Game hasn't started yet.", player);
             return false;
         }
-        print("Received command: "+str+"\n", player);
         if (!commHelper(player, str)) {
             return false;
         }
         return true;
     }
-
 
     private boolean commHelper(int player, String str) throws IOException {
         return game.command(player, str);
