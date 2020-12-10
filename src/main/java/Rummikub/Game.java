@@ -365,12 +365,14 @@ public class Game {
 			}
 			else if (!firstPlacement && sum > 30) {
 				println("You have successfully completed your First placement", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayer().getName() + " Successfully completed First placement round");
 				player.setFirstPlacement();
 				setOrigBoard();  //update original board to finalize
 				player.updateHand();  //update original hand to finalize
 			}
 			else {
 				println("Your moves are valid!", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayer().getName() + " made valid moves, board has been updated");
 				setOrigBoard();  //update original board to finalize
 				player.updateHand();  //update original hand to finalize
 				player.sortHand(); //sort the updated hand
@@ -378,8 +380,10 @@ public class Game {
 		} else {
 			if (player.getHand().compare(player.getOrigHand())) {
 				println("Your moves are not valid", getCurPlayerIdx());
+				println("Three tiles have been added to your hand from deck", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayer().getName() + " moves are invalid");
+				messageToOtherPlayers("Three tiles have been added to " + getCurPlayer().getName() + "'s hand");
 				undo(player);
-				println("three tiles have been added to your hand from deck", getCurPlayerIdx());
 				if (deck.getTiles().size() > 0) {
 					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
 					for (int i=0; i<3; i++)
@@ -390,6 +394,8 @@ public class Game {
 			} else{
 				println("You ended your turn with out making any moves");
 				println("A tile has been added to your hand from deck", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayer().getName() + "ended turn with out making any moves");
+				messageToOtherPlayers("A tile has been added to " + getCurPlayer().getName() + "'s hand");
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
 				} else {
@@ -404,7 +410,7 @@ public class Game {
 			scorePoints();
 			resetRound();
 		}
-		println("Your turn has ended");
+		println("Your turn has ended", getCurPlayerIdx());
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
@@ -438,6 +444,7 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			commandReceivedMessage();
+			messageToOtherPlayers(getCurPlayer().getName() + " placed a tile");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -460,6 +467,7 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage();
+			messageToOtherPlayers(getCurPlayer().getName() + " added a tile to row on the board");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -486,6 +494,7 @@ public class Game {
 			}
 			board.combineCurrent(srcRow,dstRow,index);
 			commandReceivedMessage();
+			messageToOtherPlayers(getCurPlayer().getName() + " moved a tile from one row to another on the board");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -504,6 +513,7 @@ public class Game {
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
 		commandReceivedMessage();
+		messageToOtherPlayers(getCurPlayer().getName() + " splitted a row on the board");
 		return true;
 	}
 
@@ -598,5 +608,13 @@ public class Game {
 
 	public void noSuchTileExistErrorMessage() {
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+	}
+
+	public void messageToOtherPlayers(String message) {
+		for (int i = 0; i< players.size(); i ++) {
+			if (!players.get(i).equals(getCurPlayer())) {
+				println(message, i);
+			}
+		}
 	}
 }
