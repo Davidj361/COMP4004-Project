@@ -363,8 +363,16 @@ public class Game {
 				//print error
 				undo(player);
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points", getCurPlayerIdx());
-				println("Try again", getCurPlayerIdx());
-				return false;
+				println("Three tiles have been added to your hand from deck", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
+				messageToOtherPlayers("Three tiles have been added to " + getCurPlayerName() + "'s hand");
+				if (deck.getTiles().size() > 0) {
+					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
+					for (int i=0; i<3; i++)
+						drawTile(player);
+				} else {
+					endRound = true;
+				}
 			}
 			else if (!firstPlacement && sum > 30) {
 				println("You have successfully completed your First placement", getCurPlayerIdx());
