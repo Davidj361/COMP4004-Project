@@ -632,7 +632,6 @@ public class Game {
 		for (int i = 0; i < tilesPlaced.size(); i++) {
 			sum += tilesPlaced.get(i).getValue();
 		}
-		println("sum is " + sum);
 		return sum;
 	}
 }

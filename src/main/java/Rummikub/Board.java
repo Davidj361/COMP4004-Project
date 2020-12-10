@@ -197,10 +197,12 @@ public class Board {
 	public int getBoardSize() {
 		return board.size();
 	}
+
 	public void setTiles(ArrayList<Tile> tiles){
 		board.clear();
 		if(!tiles.isEmpty()) {
 			board.add(tiles);
 		}
 	}
+	
 }
