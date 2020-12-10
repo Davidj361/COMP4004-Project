@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class Server extends Thread implements AutoCloseable {
 
-    private int maxClients = 4;
+    private int maxClients = 3;
     private int port = 27015;
-    private String name = "unnamed";
+    private String name = "unnamed"; // Name for the host player
     private ServerSocket socket;
     ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     Game game = null;

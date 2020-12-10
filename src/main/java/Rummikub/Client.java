@@ -15,6 +15,7 @@ public class Client extends Thread implements AutoCloseable {
     String lastResponse = "";
 
     Client() {}
+    Client(String name) { this.name = name; }
     Client(String name, String hostName, int port) {
         this(name, hostName, port, false);
     }
@@ -40,7 +41,6 @@ public class Client extends Thread implements AutoCloseable {
                 try {
                     close();
                 } catch (IOException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             } catch (IOException e) {
@@ -49,7 +49,6 @@ public class Client extends Thread implements AutoCloseable {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

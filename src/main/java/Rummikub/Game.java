@@ -12,6 +12,7 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
+    private int round = 0;
     private int gameEndingScore = 0;
     private boolean endRound = false;
     public Deck deck;
@@ -54,7 +55,7 @@ public class Game {
 		testing = b;
 		server = s;
 		server.game = this;
-		numPlayers = server.getNumClients();
+		numPlayers = server.getNumClients()+1; // Add the host
 		reset();
 	}
 
@@ -66,6 +67,7 @@ public class Game {
 		setOrigBoard();
 		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
+		round = 1;
 
 		if (server != null) { // Multiplayer mode
 			for (String name : server.getNames())
@@ -82,6 +84,7 @@ public class Game {
 		board = new Board();
 		setOrigBoard();
 		turn = 1;
+		round++;
 	}
 
 	// Helper function for Game.reset(..)
@@ -189,13 +192,12 @@ public class Game {
 		return p;
 	}
 
-	public String printFinalScores(){
+	public void printFinalScores() {
 		String output;
 		output = "=========FINAL SCORES=========";
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < players.size(); i++)
 			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
-		}
-		return output;
+		println(output);
 	}
 
 	public void scorePoints() {
@@ -204,10 +206,8 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
-				System.out.println("sum of tiles " + score);
-				if (players.get(i).hasJoker()) {
+				if (players.get(i).hasJoker())
 					score -= 30;
-				}
 				scoreForWinner += -score;
 				players.get(i).setScore(score);
 				players.get(i).updateTotalScore(score);
@@ -223,7 +223,7 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if(players.get(i).getTotalScore() >= gameEndingScore){
 				getFinalWinner();
-				println(printFinalScores());
+				printFinalScores();
 			}
 		}
 	}
@@ -236,7 +236,7 @@ public class Game {
 	}
 
 	// Get who's the current player this turn for indexing purposes
-	public int getCurPlayerIdx() {  return ((turn-1) % players.size()); }
+	public int getCurPlayerIdx() {  return (turn-1) % players.size(); }
 	public String getCurPlayerName() { return players.get(getCurPlayerIdx()).getName(); }
 	public Player getCurPlayer() { return players.get(getCurPlayerIdx()); }
 
@@ -382,11 +382,11 @@ public class Game {
 			}
 		} else {
 			if (player.getHand().compare(player.getOrigHand())) {
+				undo(player); // This is needed here - David & Tom
 				println("Your moves are not valid", getCurPlayerIdx());
 				println("Three tiles have been added to your hand from deck", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
 				messageToOtherPlayers("Three tiles have been added to " + getCurPlayerName() + "'s hand");
-				undo(player);
 				if (deck.getTiles().size() > 0) {
 					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
 					for (int i=0; i<3; i++)
@@ -394,7 +394,7 @@ public class Game {
 				} else {
 					endRound = true;
 				}
-			} else{
+			} else {
 				println("You ended your turn with out making any moves");
 				println("A tile has been added to your hand from deck", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
@@ -522,18 +522,12 @@ public class Game {
 	}
 
 	public void printCurPlayerHand() {
-		ArrayList<String> tmp = getCurPlayer().printHand();
-		// Will print index line then player hand line
-		for (String s : tmp)
-			println(s, getCurPlayerIdx());
+		println(getCurPlayer().getHandStr(), getCurPlayerIdx());
 	}
 
 	// Functions used by command(..)
 	//////////////////////////////////////////////////////////////////////
 
-
-	//////////////////////////////////////////////////////////////////////
-	// Functions for debugging purposes
 
 	// initialize the board status for debugging
 	public void setBoardState(Board b) {
@@ -553,9 +547,9 @@ public class Game {
 	}
 
 	// Return current turn number
-	public int getTurn() {
-		return turn;
-	}
+	public int getTurn() {  return turn; }
+
+	public int getRound() {  return round; }
 
 	// Update current board with the given board
 	public void setOrigBoard() {
@@ -588,8 +582,10 @@ public class Game {
 	// return players
 	public ArrayList<Player> getPlayers() { return players; }
 
-	// Functions for debugging purposes
-	//////////////////////////////////////////////////////////////////////
+	public Player getPlayer(int i) { return players.get(i); }
+
+	public int getGameEndingScore() { return gameEndingScore; }
+	public void setGameEndingScore(int i) { gameEndingScore = i; }
 
 
 	public void startText() {
@@ -604,8 +600,6 @@ public class Game {
 		// Show their hand
 		printCurPlayerHand();
 	}
-
-	public void setGameEndingScore(int i) { gameEndingScore = i; }
 
 	public void commandReceivedMessage () {
 		println("command received", getCurPlayerIdx());

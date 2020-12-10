@@ -2,6 +2,7 @@ package Rummikub;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Hand{
     protected ArrayList<Tile> tiles;
@@ -16,15 +17,20 @@ public class Hand{
     public Hand(ArrayList<Tile> tiles) {
         this.tiles = new ArrayList<Tile>(tiles);
     }
+    public Hand(Hand h) {
+        this.tiles = new ArrayList<Tile>(h.tiles);
+    }
 
     //get number of tiles in hand
-    public int getSize() {
+    public int size() {
         return tiles.size();
     }
 
     public ArrayList<Tile> getTiles () {
         return tiles;
     }
+
+    public Tile getTile(int i) { return tiles.get(i); }
 
     //add Tile to players hand
     public void addTile(Tile tile) {
@@ -40,8 +46,11 @@ public class Hand{
     }
 
     //sort tiles in players hand
-    public void sortTiles() {
-        Collections.sort(tiles);
+    public void sort() {
+        Collections.sort(getTiles(), new Comparator<Tile>() {
+            @Override
+            public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
+        });
     }
 
     public int sumOfTiles() {
@@ -62,27 +71,43 @@ public class Hand{
         return tiles.remove(t);
     }
 
-    //send players hand to string *used for output of players hand*
-    public ArrayList<String> printHand() {
+    // Good for debugging output
+    public String toString() {
             String string = "";
-            String index = ""; // A string having aligned indexes
             int size = 0;
             for (int i = 0; i < tiles.size(); i++) {
                 if (tiles.get(i).getColor() != Tile.Colors.JOKER)
                     string += tiles.get(i).getValue() + "  ";
                 string += tiles.get(i).getColor() + "}  ";
                 int sz = string.length() - size;
-                index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
                 size = string.length();
             }
-            ArrayList<String> ret = new ArrayList<String>();
-            ret.add(index);
-            ret.add(string);
+            String ret = "";
+            ret += string;
             return ret;
     }
 
+    // Used by the game
+    public String printHelper() {
+        String string = "";
+        String index = ""; // A string having aligned indexes
+        int size = 0;
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getColor() != Tile.Colors.JOKER)
+                string += tiles.get(i).getValue() + "  ";
+            string += tiles.get(i).getColor() + "}  ";
+            int sz = string.length() - size;
+            index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
+            size = string.length();
+        }
+        String ret = "";
+        ret += index+'\n';
+        ret += string;
+        return ret;
+    }
+
     public boolean compare(Hand origHand){
-        if(tiles.size() < origHand.getSize()){
+        if(tiles.size() < origHand.size()){
             return true;
         }else {
             return false;

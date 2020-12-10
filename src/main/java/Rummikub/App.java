@@ -36,9 +36,8 @@ public class App {
             } else if (hostOrConnect == 2) {
                 state = 2;
                 client(name, port);
-            } else {
+            } else
                 System.out.println("invalid input");
-            }
         }
     }
 

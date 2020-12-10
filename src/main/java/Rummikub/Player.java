@@ -1,6 +1,5 @@
 package Rummikub;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +36,7 @@ public class Player {
         totalScore += scoreForRound;
     }
 
-    public ArrayList<String> printHand() { return hand.printHand(); }
+    public String getHandStr() { return hand.printHelper(); }
 
     public boolean getDoneFirstPlacement() { return doneFirstPlacement; }
 
@@ -46,7 +45,7 @@ public class Player {
     }
 
     public int getTileNumber() {
-        return hand.getSize();
+        return hand.size();
     }
 
     public void nextTurn() {
@@ -96,10 +95,7 @@ public class Player {
     }
 
     public void sortHand() {
-        Collections.sort(hand.getTiles(), new Comparator<Tile>() {
-            @Override
-            public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
-        });
+        hand.sort();
     }
 
     public void setHand(Hand h) {
