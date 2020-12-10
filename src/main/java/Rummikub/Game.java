@@ -189,13 +189,12 @@ public class Game {
 		return p;
 	}
 
-	public String printFinalScores(){
+	public void printFinalScores() {
 		String output;
 		output = "=========FINAL SCORES=========";
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < players.size(); i++)
 			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
-		}
-		return output;
+		println(output);
 	}
 
 	public void scorePoints() {
@@ -204,7 +203,7 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
 				int score = -players.get(i).sumOfTiles();
-				System.out.println("sum of tiles " + score);
+				println("sum of tiles " + score);
 				if (players.get(i).hasJoker()) {
 					score -= 30;
 				}
@@ -223,7 +222,7 @@ public class Game {
 		for (int i = 0; i < players.size(); i++) {
 			if(players.get(i).getTotalScore() >= gameEndingScore){
 				getFinalWinner();
-				println(printFinalScores());
+				printFinalScores();
 			}
 		}
 	}
