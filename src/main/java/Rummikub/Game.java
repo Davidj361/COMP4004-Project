@@ -377,8 +377,8 @@ public class Game {
 				player.sortHand(); //sort the updated hand
 			}
 		} else {
-			undo(player);
-			if(player.getHand().compare(player.getOrigHand())) {
+			if (player.getHand().compare(player.getOrigHand())) {
+				undo(player);
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
 					drawTile(player);
@@ -386,7 +386,7 @@ public class Game {
 				} else {
 					endRound = true;
 				}
-			} else{
+			} else {
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
 				} else {
