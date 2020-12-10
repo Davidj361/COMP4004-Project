@@ -22,6 +22,8 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     And Player 2 sends a command for ending current turn
     And Player 3 sends a command for ending current turn
     And Player 3 sends a command for ending current turn
+    And Player 4 sends a command for ending current turn
+    And Player 4 sends a command for ending current turn
     And Player 1 sends a command for placing a run of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
     # Player should have no more tiles so he wins the round and the game since 5 points
     And Player 1 sends a command for ending current turn

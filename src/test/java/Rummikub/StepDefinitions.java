@@ -198,7 +198,7 @@ public class StepDefinitions {
 
     @When("Player sends a command for placing {string} tiles on board")
     public void player_sends_a_command_for_placing_tiles_on_board(String string) throws IOException {
-        playerSendsACommandForPlacingARunOfOnBoard(0, string);
+        playerSendsACommandForPlacingARunOfOnBoard(1, string);
     }
 
     @When("Player {int} sends a command for placing a run of {string} on board")
@@ -208,7 +208,7 @@ public class StepDefinitions {
         for (int i=0; i<tiles.length; i++)
             command = command + " " + (i+1);
         System.out.println(command);
-        game.command(arg0, command);
+        game.command(arg0-1, command);
     }
 
     @When("Player sends a command to end turn")
@@ -359,12 +359,12 @@ public class StepDefinitions {
 
     @When("Player sends a command for ending current turn")
     public void player_sends_a_command_for_ending_current_turn() throws IOException {
-        playerSendsACommandForEndingCurrentTurn(0);
+        playerSendsACommandForEndingCurrentTurn(1);
     }
 
     @When("Player {int} sends a command for ending current turn")
     public void playerSendsACommandForEndingCurrentTurn(int arg0) throws IOException {
-        game.command(arg0, "e");
+        game.command(arg0-1, "e");
     }
 
     @Then("Tiles placed on board successfully")
@@ -553,20 +553,20 @@ public class StepDefinitions {
     public void playerHasWonTheGame(int arg0) {
         Player winner = game.getFinalWinner();
         assertNotEquals(null, winner);
-        Player p = game.getPlayers().get(arg0);
+        Player p = game.getPlayers().get(arg0-1);
         assertEquals(p, winner);
     }
 
     @Then("Player {int} has {int} points")
     public void playerHasPoints(int arg0, int arg1) {
-        int scr = game.getPlayer(arg0).getScore();
+        int scr = game.getPlayer(arg0-1).getScore();
         assertEquals(arg1, scr);
     }
 
     @Then("All other players but player {int} have {int} points")
     public void allOtherPlayersButPlayerHavePoints(int arg0, int arg1) {
         for (int i=0; i<game.getPlayers().size(); i++) {
-            if (i == arg0)
+            if (i == arg0-1)
                 continue;
             int scr = game.getPlayer(i).getScore();
             assertEquals(arg1, scr);

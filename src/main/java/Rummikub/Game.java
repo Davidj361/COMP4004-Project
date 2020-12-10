@@ -236,7 +236,7 @@ public class Game {
 	}
 
 	// Get who's the current player this turn for indexing purposes
-	public int getCurPlayerIdx() {  return ((turn-1) % players.size()); }
+	public int getCurPlayerIdx() {  return (turn-1) % players.size(); }
 	public String getCurPlayerName() { return players.get(getCurPlayerIdx()).getName(); }
 	public Player getCurPlayer() { return players.get(getCurPlayerIdx()); }
 
