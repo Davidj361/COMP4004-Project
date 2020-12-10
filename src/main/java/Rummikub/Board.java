@@ -190,6 +190,13 @@ public class Board {
 		return tiles;
 	}
 
+	public ArrayList<Tile> getRow (int index) {
+		return board.get(index);
+	}
+
+	public int getBoardSize() {
+		return board.size();
+	}
 	public void setTiles(ArrayList<Tile> tiles){
 		board.clear();
 		if(!tiles.isEmpty()) {

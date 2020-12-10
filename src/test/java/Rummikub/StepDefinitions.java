@@ -77,13 +77,15 @@ public class StepDefinitions {
         int value  = Integer.parseInt(b[0]);
         String c = b[1];
         Tile.Colors color;
-        if(c.compareToIgnoreCase("blue") == 0) {
+        if(c.equalsIgnoreCase("blue")) {
             color = Tile.Colors.BL;
-        } else if(c.compareToIgnoreCase("red") == 0) {
+        } else if(c.equalsIgnoreCase("red")) {
             color = Tile.Colors.RE;
-        } else if(c.compareToIgnoreCase("yellow") == 0) {
+        } else if(c.equalsIgnoreCase("yellow")) {
             color = Tile.Colors.YE;
-        } else {
+        } else if (c.equalsIgnoreCase("joker")){
+            color = Tile.Colors.JOKER;
+        }else {
             color = Tile.Colors.BK;
         }
         return new Tile(value, color);
@@ -149,7 +151,7 @@ public class StepDefinitions {
         game = new Game(int1, true); // setup the game in testing mode
         assertEquals(1, game.getTurn());
     }
-
+    
 
     @Given("Game has {int} players")
     public void game_has_players(int int1) {
@@ -198,14 +200,6 @@ public class StepDefinitions {
     // Network crud
     /////////////////
 
-    @Given("Player1 has placed all tiles")
-    public void player1_has_placed_all_tiles() {
-        tiles = new ArrayList<Tile>();
-        Hand hand = new Hand(tiles);
-        game.getPlayer(0).setHand(hand);
-        System.out.println(game.getPlayers().get(0).getTileNumber());
-    }
-
 
     @Given("First tile has not been placed")
     public void first_tile_has_not_been_placed() {
@@ -246,41 +240,28 @@ public class StepDefinitions {
         assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
-    @Given("Player2 has tiles {string}")
-    public void player2_has_tiles(String string) {
-        tiles_are(string);
-        Hand hand = new Hand(tiles);
-        game.setCurHand(hand);
-        game.getPlayers().get(1).setHand(hand);
-    }
-
-    @Given("Player3 has tiles {string}")
-    public void player3_has_tiles(String string) {
-        tiles = new ArrayList<Tile>();
-        tiles_are(string);
-        Hand hand = new Hand(tiles);
-        game.getPlayers().get(2).setHand(hand);
+    @Given("Player {int} has placed all tiles")
+    public void player_has_placed_all_tiles(Integer int1) {
         // Write code here that turns the phrase above into concrete actions
+        tiles = new ArrayList<Tile>();
+        Hand hand = new Hand(tiles);
+        game.getPlayer(int1 -1 ).setHand(hand);
+        System.out.println(game.getPlayers().get(int1 - 1).getTileNumber());
     }
 
-    @Then("Player1 wins the round with score {int} points")
-    public void player1_wins_the_round_with_score_points(Integer int1) {
-        assertEquals(game.getWinner(), game.getPlayers().get(0));
-        System.out.println("score is " +game.getPlayers().get(0).getTotalScore());
+    @Then("Player {int} wins the round with score {int} points")
+    public void player_wins_the_round_with_score_points(Integer int1, Integer int2) {
+        assertEquals(game.getWinner(), game.getPlayers().get(int1 - 1));
+        System.out.println("score is " +game.getPlayers().get(int1 - 1).getTotalScore());
         game.scorePoints();
-        System.out.println(game.getPlayers().get(0).getTotalScore());
-        assertTrue(game.getPlayers().get(0).getScore() == int1);
+        System.out.println(game.getPlayers().get(int1 - 1).getTotalScore());
+        assertTrue(game.getPlayers().get(int1 - 1).getScore() == int2);
     }
 
-    @Then("Player2 finishes the round with {int} points")
-    public void player2_finishes_the_round_with_points(Integer int1) {
-        System.out.println("player2's score is " +game.getPlayers().get(0).getScore());
-        assertTrue(game.getPlayers().get(1).getScore() == int1);
-    }
-
-    @Then("Player3 finishes the round with {int} points")
-    public void player3_finishes_the_round_with_points(Integer int1) {
-        assertTrue(game.getPlayers().get(2).getScore() == int1);
+    @Then("Player {int} finishes the round with {int} points")
+    public void player_finishes_the_round_with_points(Integer int1, Integer int2) {
+        System.out.println("player2's score is " +game.getPlayers().get(int1 - 1).getScore());
+        assertTrue(game.getPlayers().get(int1 - 1).getScore() == int2);
     }
 
     @Given("Player starts turn {int}")
@@ -521,6 +502,11 @@ public class StepDefinitions {
     @When("Player sends a command for splitting tiles of {string} into a new row")
     public void player_sends_a_command_for_splitting_tiles_of_into_a_new_row(String string) throws IOException {
         game.command(0, "s 0 3");
+    }
+
+    @When("Player sends a command for splitting tiles at index {int}")
+    public void player_sends_a_command_for_splitting_tiles_at_index(Integer int1) throws IOException {
+        game.command(0,"s 0 "+ int1 );
     }
 
     @When("Player sends a command for placing a tile of {string} together with splitted tiles")
