@@ -63,7 +63,7 @@ public class Hand{
     }
 
     //send players hand to string *used for output of players hand*
-    public ArrayList<String> printHand() {
+    public String toString() {
             String string = "";
             String index = ""; // A string having aligned indexes
             int size = 0;
@@ -75,9 +75,8 @@ public class Hand{
                 index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
                 size = string.length();
             }
-            ArrayList<String> ret = new ArrayList<String>();
-            ret.add(index);
-            ret.add(string);
+            String ret = "";
+            ret += index+'\n'+string;
             return ret;
     }
 

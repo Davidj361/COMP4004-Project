@@ -54,7 +54,7 @@ public class Game {
 		testing = b;
 		server = s;
 		server.game = this;
-		numPlayers = server.getNumClients();
+		numPlayers = server.getNumClients()+1; // Add the host
 		reset();
 	}
 
@@ -490,10 +490,7 @@ public class Game {
 	}
 
 	public void printCurPlayerHand() {
-		ArrayList<String> tmp = getCurPlayer().printHand();
-		// Will print index line then player hand line
-		for (String s : tmp)
-			println(s, getCurPlayerIdx());
+		println(getCurPlayer().getHandStr(), getCurPlayerIdx());
 	}
 
 	// Functions used by command(..)

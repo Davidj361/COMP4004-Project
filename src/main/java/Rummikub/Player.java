@@ -37,7 +37,7 @@ public class Player {
         totalScore += scoreForRound;
     }
 
-    public ArrayList<String> printHand() { return hand.printHand(); }
+    public String getHandStr() { return hand.toString(); }
 
     public boolean getDoneFirstPlacement() { return doneFirstPlacement; }
 

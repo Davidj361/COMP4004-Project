@@ -15,6 +15,7 @@ public class Client extends Thread implements AutoCloseable {
     String lastResponse = "";
 
     Client() {}
+    Client(String name) { this.name = name; }
     Client(String name, String hostName, int port) {
         this(name, hostName, port, false);
     }

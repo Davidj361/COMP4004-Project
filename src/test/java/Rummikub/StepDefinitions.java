@@ -161,9 +161,11 @@ public class StepDefinitions {
     public void The_other_players_connect_to_host() throws InterruptedException, IOException {
         clients = new ArrayList<Client>();
         for (int i = 0; i<server.getMaxClients(); i++) {
-            Client c = new Client();
+            Client c = new Client("Player "+(i+2));
             clients.add(c);
             assertTrue(c.connect());
+            //c.start();
+            c.sendName();
         }
         while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
             Thread.sleep(10);
@@ -289,15 +291,15 @@ public class StepDefinitions {
     public void player_has_in_their_hand(String string) {
         // tiles_are(string); // Might need to add back in later
         Hand hand = new Hand(createTiles(string));
-        game.println(hand.printHand().toString());
+        game.println(hand.toString());
         game.setCurHand(hand);
     }
 
     @Given("Player {int} has {string} on hand")
     public void playerHasOnHand(int i, String str) {
         Hand hand = new Hand(createTiles(str));
-        game.println(hand.printHand().toString());
-        game.getPlayers().get(i).setHand(hand);
+        game.println(hand.toString());
+        game.getPlayers().get(i-1).setHand(hand);
     }
 
     @Given("There exists a run of {string} on board")
@@ -316,7 +318,7 @@ public class StepDefinitions {
 
     @Then("Tile is given to player from the deck so player has {int} tiles")
     public void tile_is_given_to_player_from_the_deck_so_player_has_tiles(int int1) {
-        game.println(game.curPlayerHand().printHand().toString());
+        game.println(game.curPlayerHand().toString());
         assertEquals(int1, game.curPlayerHand().getSize());
     }
 
@@ -444,7 +446,7 @@ public class StepDefinitions {
 
     @Then("Player has {int} tiles")
     public void player_has_tiles(int int1) {
-        game.println(game.curPlayerHand().printHand().toString());
+        game.println(game.curPlayerHand().toString());
         assertEquals(int1, game.curPlayerHand().getSize());
     }
 
@@ -478,7 +480,7 @@ public class StepDefinitions {
 
     @Then("Player has {int} tile")
     public void player_has_tile(int int1) {
-        game.println(game.curPlayerHand().printHand().toString());
+        game.println(game.curPlayerHand().toString());
         assertEquals(int1, game.curPlayerHand().getSize());
     }
 
@@ -549,7 +551,7 @@ public class StepDefinitions {
 
     @Then("Player {int} has won the game")
     public void playerHasWonTheGame(int arg0) {
-        Player winner = game.getWinner();
+        Player winner = game.getFinalWinner();
         assertNotEquals(null, winner);
         Player p = game.getPlayers().get(arg0);
         assertEquals(p, winner);
