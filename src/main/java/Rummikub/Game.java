@@ -440,7 +440,7 @@ public class Game {
 			commandReceivedMessage();
 			return true;
 		}
-		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+		noSuchTileExistErrorMessage();
 		return false;
 	}
 
@@ -462,7 +462,7 @@ public class Game {
 			commandReceivedMessage();
 			return true;
 		}
-		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+		noSuchTileExistErrorMessage();
 		return false;
 	}
 
@@ -488,7 +488,7 @@ public class Game {
 			commandReceivedMessage();
 			return true;
 		}
-		invalidCommandMessage();
+		noSuchTileExistErrorMessage();
 		return false;
 	}
 
@@ -593,6 +593,10 @@ public class Game {
 	}
 
 	public void invalidCommandMessage() {
+		println("COMMAND INVALID: press h to get help on how to execute commands", getCurPlayerIdx());
+	}
+
+	public void noSuchTileExistErrorMessage() {
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
 	}
 }
