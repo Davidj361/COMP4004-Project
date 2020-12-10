@@ -357,7 +357,7 @@ public class Game {
 		Player player = getCurPlayer(); // The current player
 		// Is the player's hand different and is the board valid?
 		if (getCurPlayer().getHand().compare(player.getOrigHand()) && board.checkBoard()) {
-			int sum = player.sumOfTilesPlaced();
+			int sum = sumOfTilesPlaced();
 			boolean firstPlacement = player.getDoneFirstPlacement();
 			if (!firstPlacement && sum<30) {
 				//print error
@@ -620,5 +620,18 @@ public class Game {
 				println(message, i);
 			}
 		}
+	}
+	public int sumOfTilesPlaced () {
+		int origBoardSize = origBoard.getBoardSize();
+		int currentBoardSize = board.getBoardSize();
+		ArrayList<Tile> tilesPlaced = new ArrayList<Tile>();
+		for (int i = origBoardSize; i < currentBoardSize; i++ ) {
+			tilesPlaced.addAll(board.getRow(i));
+		}
+		int sum = 0;
+		for (int i = 0; i < tilesPlaced.size(); i++) {
+			sum += tilesPlaced.get(i).getValue();
+		}
+		return sum;
 	}
 }

@@ -107,14 +107,5 @@ public class Player {
         return origHand;
     }
 
-    public int sumOfTilesPlaced () {
-        ArrayList<Tile> tilesPlaced = new ArrayList<Tile>(origHand.getTiles());
-        tilesPlaced.removeAll(hand.getTiles());
-        int sum = 0;
-        for (int i = 0; i < tilesPlaced.size(); i++) {
-            sum += tilesPlaced.get(i).getValue();
-        }
-        return sum;
-    }
 }
 

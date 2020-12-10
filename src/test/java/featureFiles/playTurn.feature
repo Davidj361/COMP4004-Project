@@ -1,6 +1,7 @@
 @playTurnFeature
 Feature: Testing user play a turn in various scenarios
 
+  @playTurn_1
   Scenario: Play Turn - places a tile and form a run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -12,6 +13,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_2
   Scenario: Play Turn - places a tile and form a group, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -23,6 +25,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_3
   Scenario: Play Turn - places multiple tiles and form a run together with existing tiles on board, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -34,6 +37,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_4
   Scenario: Play Turn - places multiple tiles that form a run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -43,7 +47,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
     And There are 2 total turns
-
+  @playTurn_5
   Scenario: Play Turn - places multiple tiles that form a group, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -54,6 +58,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_6
   Scenario: Play Turn - places multiple tiles that form a run, and places multiple tiles that form another run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -66,6 +71,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_7
   Scenario: Play Turn - places multiple tiles that form a group, and places multiple tiles that form another group, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -78,6 +84,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_8
   Scenario: Play Turn - places multiple tiles that form a group, and places multiple tiles that form a run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -90,6 +97,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_9
   Scenario: Play Turn - places multiple tiles but it is an invalid placement, undo and places other tiles that form a run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -102,6 +110,7 @@ Feature: Testing user play a turn in various scenarios
     Then Player has 3 tiles
     And There are 2 total turns
 
+  @playTurn_10
   Scenario: Play Turn - places multiple tiles but it is an invalid placement, undo and places other tiles that form a group, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -114,6 +123,7 @@ Feature: Testing user play a turn in various scenarios
     Then Player has 3 tiles
     And There are 2 total turns
 
+  @playTurn_11
   Scenario: Play Turn - places a tile but it is an invalid placement, undo and places another tile that form a run, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -127,6 +137,7 @@ Feature: Testing user play a turn in various scenarios
     Then Player has 1 tile
     And There are 2 total turns
 
+  @playTurn_12
   Scenario: Play Turn - places a tile but it is an invalid placement, undo and places another tile that form a group, then finishes turn
     Given New game is started
     And Player starts turn (not first placement)
@@ -140,6 +151,7 @@ Feature: Testing user play a turn in various scenarios
     Then Player has 1 tile
     And There are 2 total turns
 
+  @playTurn_13
   Scenario: Play Turn - splits tiles and places a tile to form a run
     Given New game is started
     And Player starts turn (not first placement)
@@ -152,6 +164,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_14
   Scenario: Play Turn - splits tiles and places multiple tiles to form a run
     Given New game is started
     And Player starts turn (not first placement)
@@ -164,6 +177,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_15
   Scenario: Play Turn - splits tiles and places a tile with them to form a group
     Given New game is started
     And Player starts turn (not first placement)
@@ -176,6 +190,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
+  @playTurn_16
   Scenario: Play Turn - splits tiles from two rows, combine splitted tiles and places a tile with them to form a group
     Given New game is started
     And Player starts turn (not first placement)
@@ -190,7 +205,7 @@ Feature: Testing user play a turn in various scenarios
     Then Tiles placed on board successfully
     And There are 2 total turns
 
-
+  @playTurn_17
   Scenario: Play Turn - move a run of tiles into another run to combine
     Given New game is started
     And Player starts turn (not first placement)

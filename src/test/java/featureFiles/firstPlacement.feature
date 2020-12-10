@@ -2,6 +2,7 @@
 Feature: Testing for use cases
   Testing all use cases so far
 
+  @firstPlacement_1
   Scenario: First placement - success with one placement
     Given New game is started
     And First tile has not been placed
@@ -10,6 +11,7 @@ Feature: Testing for use cases
     And Player sends a command to end turn
     Then First placement is successful
 
+  @firstPlacement_2
   Scenario: First placement - success with two placements
     Given New game is started
     And First tile has not been placed
@@ -19,6 +21,7 @@ Feature: Testing for use cases
     And Player sends a command to end turn
     Then First placement is successful
 
+  @firstPlacement_3
   Scenario: First placement - fail with one placement
     Given New game is started
     And First tile has not been placed
@@ -27,6 +30,7 @@ Feature: Testing for use cases
     And Player sends a command to end turn
     Then First placement is NOT successful
 
+  @firstPlacement_4
   Scenario: First placement - fail with two placements
     Given New game is started
     And First tile has not been placed

@@ -1,6 +1,7 @@
 @networkFeature
 Feature: networkFeature, The game is networked and can have up to 4 players playing across the network
 
+  @gamePlay
   Scenario: game starts, players play turns where Player 1 wins in 1 round
 
     Given The host hosts a game
