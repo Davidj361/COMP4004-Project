@@ -365,14 +365,14 @@ public class Game {
 			}
 			else if (!firstPlacement && sum > 30) {
 				println("You have successfully completed your First placement", getCurPlayerIdx());
-				messageToOtherPlayers(getCurPlayer().getName() + " Successfully completed First placement round");
+				messageToOtherPlayers(getCurPlayerName() + " successfully completed First placement round");
 				player.setFirstPlacement();
 				setOrigBoard();  //update original board to finalize
 				player.updateHand();  //update original hand to finalize
 			}
 			else {
 				println("Your moves are valid!", getCurPlayerIdx());
-				messageToOtherPlayers(getCurPlayer().getName() + " made valid moves, board has been updated");
+				messageToOtherPlayers(getCurPlayerName() + " made valid moves, board has been updated");
 				setOrigBoard();  //update original board to finalize
 				player.updateHand();  //update original hand to finalize
 				player.sortHand(); //sort the updated hand
@@ -381,8 +381,8 @@ public class Game {
 			if (player.getHand().compare(player.getOrigHand())) {
 				println("Your moves are not valid", getCurPlayerIdx());
 				println("Three tiles have been added to your hand from deck", getCurPlayerIdx());
-				messageToOtherPlayers(getCurPlayer().getName() + " moves are invalid");
-				messageToOtherPlayers("Three tiles have been added to " + getCurPlayer().getName() + "'s hand");
+				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
+				messageToOtherPlayers("Three tiles have been added to " + getCurPlayerName() + "'s hand");
 				undo(player);
 				if (deck.getTiles().size() > 0) {
 					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
@@ -394,8 +394,8 @@ public class Game {
 			} else{
 				println("You ended your turn with out making any moves");
 				println("A tile has been added to your hand from deck", getCurPlayerIdx());
-				messageToOtherPlayers(getCurPlayer().getName() + "ended turn with out making any moves");
-				messageToOtherPlayers("A tile has been added to " + getCurPlayer().getName() + "'s hand");
+				messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+				messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
 				if (deck.getTiles().size() > 0) {
 					drawTile(player);
 				} else {
@@ -411,9 +411,9 @@ public class Game {
 			resetRound();
 		}
 		println("Your turn has ended", getCurPlayerIdx());
+		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
-		announcePlayersTurn(); // Will announce who's turn it is now
 		return true;
 	}
 
@@ -423,7 +423,7 @@ public class Game {
 		curPlayer.resetHand();
 		curPlayer.sortHand();
 		setBoard();
-		println("Your hand has been reset to it's original state", getCurPlayerIdx());
+		println("Your hand has been reset to its original state", getCurPlayerIdx());
 		return true;
 	}
 
@@ -444,7 +444,7 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addSet(playerTiles);
 			commandReceivedMessage();
-			messageToOtherPlayers(getCurPlayer().getName() + " placed a tile");
+			messageToOtherPlayers(getCurPlayerName() + " placed a tile");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -467,7 +467,7 @@ public class Game {
 			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage();
-			messageToOtherPlayers(getCurPlayer().getName() + " added a tile to row on the board");
+			messageToOtherPlayers(getCurPlayerName() + " added a tile to row on the board");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -494,7 +494,7 @@ public class Game {
 			}
 			board.combineCurrent(srcRow,dstRow,index);
 			commandReceivedMessage();
-			messageToOtherPlayers(getCurPlayer().getName() + " moved a tile from one row to another on the board");
+			messageToOtherPlayers(getCurPlayerName() + " moved a tile from one row to another on the board");
 			return true;
 		}
 		noSuchTileExistErrorMessage();
@@ -513,7 +513,7 @@ public class Game {
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
 		commandReceivedMessage();
-		messageToOtherPlayers(getCurPlayer().getName() + " splitted a row on the board");
+		messageToOtherPlayers(getCurPlayerName() + " splitted a row on the board");
 		return true;
 	}
 
@@ -612,7 +612,7 @@ public class Game {
 
 	public void messageToOtherPlayers(String message) {
 		for (int i = 0; i< players.size(); i ++) {
-			if (!players.get(i).equals(getCurPlayer())) {
+			if (i != getCurPlayerIdx()) {
 				println(message, i);
 			}
 		}
