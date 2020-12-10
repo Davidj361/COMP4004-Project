@@ -414,6 +414,7 @@ public class Game {
 		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
+		announcePlayersTurn(); // Will announce who's turn it is now
 		return true;
 	}
 
