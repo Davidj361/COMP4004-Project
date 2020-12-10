@@ -151,7 +151,7 @@ public class StepDefinitions {
         game = new Game(int1, true); // setup the game in testing mode
         assertEquals(1, game.getTurn());
     }
-    
+
 
     @Given("Game has {int} players")
     public void game_has_players(int int1) {

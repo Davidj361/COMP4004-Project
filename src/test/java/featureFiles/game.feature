@@ -1,7 +1,7 @@
 @gameFeature
 Feature: Testing for functions in Game Class
 
-
+  @checkWinnerAndPoints
   Scenario: checking get winner and points functionality
     Given New game is started
     And New game is started with 3 players
@@ -12,7 +12,7 @@ Feature: Testing for functions in Game Class
     And Player 2 finishes the round with -23 points
     And Player 3 finishes the round with -45 points
 
-
+  @joker_1
   Scenario: Using joker to complete a run
     Given New game is started
     And Player starts turn (not first placement)
@@ -21,6 +21,7 @@ Feature: Testing for functions in Game Class
     And Player sends a command to end turn
     Then Tiles placed on board successfully
 
+  @joker_2
   Scenario: Using joker to complete a group
     Given New game is started
     And Player starts turn (not first placement)
@@ -29,6 +30,7 @@ Feature: Testing for functions in Game Class
     And Player sends a command to end turn
     Then Tiles placed on board successfully
 
+  @joker_3
   Scenario: Using a joker for First Placement
     Given New game is started
     And First tile has not been placed
@@ -37,6 +39,7 @@ Feature: Testing for functions in Game Class
     And Player sends a command to end turn
     Then First placement is successful
 
+  @joker_4
   Scenario: Player retrieves joker from board
     Given New game is started
     And Player starts turn (not first placement)
