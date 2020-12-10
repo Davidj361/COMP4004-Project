@@ -6,7 +6,6 @@ public class Tile implements Comparable<Tile> {
     private int value;
     private String state = " ";
 
-    //each tile
     public Tile(int value, Colors color) {
         this.value = value;
         this.color = color;
@@ -23,15 +22,15 @@ public class Tile implements Comparable<Tile> {
     public void setValue(int value) {
         this.value = value;
     }
-//Check all tiles colours and values
+
+    // Check all tiles colours and values
     @Override
     public String toString() {
         return String.format(this.state+ "  " + this.value + "   " + this.color.name() + "}");
     }
 
-    //Compare tiles with each other 8will be used for checking if tiles are allowed to be placed
+    // Compare tiles with each other 8will be used for checking if tiles are allowed to be placed
     public int compareTo(Tile that) {
-        // TODO Auto-generated method stub
         Integer thisValue = value;
         Integer thatValue = value;
         int compare = thisValue.compareTo(thatValue);
@@ -40,7 +39,5 @@ public class Tile implements Comparable<Tile> {
         }
         return compare;
     }
-
-
 }
 

@@ -15,7 +15,7 @@ Feature: Testing user draws a tile scenario
     And Player has "(6 red)" in their hand
     When Player sends a command for placing a tile of "(6 red)" on board but fails
     And Player finishes turn by sending end turn command
-    Then Tile is given to player from the deck so player has 2 tiles
+    Then Tile is given to player from the deck so player has 4 tiles
     And There are 2 total turns
 
   Scenario: Play Turn - places multiple tiles but it is an invalid placement, tiles return to rack, then finishes turn
@@ -24,5 +24,5 @@ Feature: Testing user draws a tile scenario
     And Player has "(3 red),(5 blue),(7 black)" in their hand
     When Player sends a command for placing tiles of "(3 red),(5 blue),(7 black)" on board but fails
     And Player finishes turn by sending end turn command
-    Then Tile is given to player from the deck so player has 4 tiles
+    Then Tile is given to player from the deck so player has 6 tiles
     And There are 2 total turns

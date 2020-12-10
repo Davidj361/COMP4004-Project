@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -114,6 +113,24 @@ public class StepDefinitions {
         return tiles;
     }
 
+    // Gets the index of the first tile the is different
+    private int findDifferentTile(Hand bigHand, Hand smallHand) {
+        int ret = -1;
+        smallHand.sort();
+        for (int i=0; i<smallHand.size(); i++) {
+            Tile t1 = bigHand.getTile(i);
+            Tile t2 = smallHand.getTile(i);
+            if (t1 != t2) {
+                ret = i;
+                break;
+            }
+        }
+        // Must be the last element
+        if (ret == -1)
+            ret = bigHand.size()-1;
+        return ret;
+    }
+
     // Helper functions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -185,7 +202,7 @@ public class StepDefinitions {
     public void player1_has_placed_all_tiles() {
         tiles = new ArrayList<Tile>();
         Hand hand = new Hand(tiles);
-        game.getPlayers().get(0).setHand(hand);
+        game.getPlayer(0).setHand(hand);
         System.out.println(game.getPlayers().get(0).getTileNumber());
     }
 
@@ -279,7 +296,7 @@ public class StepDefinitions {
 
     @Then("Tile is given to player from the deck")
     public void tile_is_given_to_player_from_the_deck() {
-        assertEquals(15, game.curPlayerHand().getSize());
+        assertEquals(15, game.curPlayerHand().size());
     }
 
     @Then("Players turn ends")
@@ -319,7 +336,7 @@ public class StepDefinitions {
     @Then("Tile is given to player from the deck so player has {int} tiles")
     public void tile_is_given_to_player_from_the_deck_so_player_has_tiles(int int1) {
         game.println(game.curPlayerHand().toString());
-        assertEquals(int1, game.curPlayerHand().getSize());
+        assertEquals(int1, game.curPlayerHand().size());
     }
 
     @When("Player sends a command for placing tiles of {string} on board but fails")
@@ -367,6 +384,18 @@ public class StepDefinitions {
         game.command(arg0-1, "e");
     }
 
+    @When("Player {int} sends a command for ending current turn and receives {string}")
+    public void playerSendsACommandForEndingCurrentTurnAndReceives(int arg0, String arg1) throws IOException {
+        int idx = arg0-1;
+        Hand h1 = new Hand(game.getPlayer(idx).getHand());
+        game.command(idx, "e");
+        // Re-assign the random drawn tile to our hard coded tile given by arg1
+        Hand h2 = game.getPlayer(idx).getHand();
+        int i = findDifferentTile(h2, h1);
+        Tile t = parseTile(arg1);
+        h2.getTiles().set(i, t);
+    }
+
     @Then("Tiles placed on board successfully")
     public void tiles_placed_on_board_successfully() {
         assertTrue(game.getBoard().checkBoard());
@@ -375,6 +404,11 @@ public class StepDefinitions {
     @Then("There are {int} total turns")
     public void thereAreTotalTurns(int arg0) {
         assertEquals(arg0, game.getTurn());
+    }
+
+    @Then("There are {int} total rounds")
+    public void thereAreTotalRounds(int arg0) {
+        assertEquals(arg0, game.getRound());
     }
 
     @Given("There already exists a group of {string} on board")
@@ -447,7 +481,7 @@ public class StepDefinitions {
     @Then("Player has {int} tiles")
     public void player_has_tiles(int int1) {
         game.println(game.curPlayerHand().toString());
-        assertEquals(int1, game.curPlayerHand().getSize());
+        assertEquals(int1, game.curPlayerHand().size());
     }
 
     @When("Player sends a command for undoing the previous action")
@@ -481,7 +515,7 @@ public class StepDefinitions {
     @Then("Player has {int} tile")
     public void player_has_tile(int int1) {
         game.println(game.curPlayerHand().toString());
-        assertEquals(int1, game.curPlayerHand().getSize());
+        assertEquals(int1, game.curPlayerHand().size());
     }
 
     @When("Player sends a command for splitting tiles of {string} into a new row")
@@ -572,4 +606,5 @@ public class StepDefinitions {
             assertEquals(arg1, scr);
         }
     }
+
 }

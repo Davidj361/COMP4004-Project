@@ -12,6 +12,7 @@ public class Game {
 	private Server server;
     private boolean gameRunning = false;
     private int turn = 0;
+    private int round = 0;
     private int gameEndingScore = 0;
     private boolean endRound = false;
     public Deck deck;
@@ -66,6 +67,7 @@ public class Game {
 		setOrigBoard();
 		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
+		round = 1;
 
 		if (server != null) { // Multiplayer mode
 			for (String name : server.getNames())
@@ -82,6 +84,7 @@ public class Game {
 		board = new Board();
 		setOrigBoard();
 		turn = 1;
+		round++;
 	}
 
 	// Helper function for Game.reset(..)
@@ -512,9 +515,9 @@ public class Game {
 	}
 
 	// Return current turn number
-	public int getTurn() {
-		return turn;
-	}
+	public int getTurn() {  return turn; }
+
+	public int getRound() {  return round; }
 
 	// Update current board with the given board
 	public void setOrigBoard() {
@@ -565,6 +568,5 @@ public class Game {
 		// Show their hand
 		printCurPlayerHand();
 	}
-
 
 }

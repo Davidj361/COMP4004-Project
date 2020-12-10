@@ -18,11 +18,11 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     And Player 1 sends a command for ending current turn
     # Added duplicate end turns for each player for testing
     And Player 1 sends a command for ending current turn
+    And Player 2 sends a command for ending current turn and receives "(9 red)"
     And Player 2 sends a command for ending current turn
-    And Player 2 sends a command for ending current turn
+    And Player 3 sends a command for ending current turn and receives "(9 red)"
     And Player 3 sends a command for ending current turn
-    And Player 3 sends a command for ending current turn
-    And Player 4 sends a command for ending current turn
+    And Player 4 sends a command for ending current turn and receives "(9 red)"
     And Player 4 sends a command for ending current turn
     And Player 1 sends a command for placing a run of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
     # Player should have no more tiles so he wins the round and the game since 5 points
@@ -32,6 +32,6 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     Then Player 1 has won the game
     # And The game is finished # Previous line does this but might add this back in
     # TODO Change points
-    And Player 1 has 999999 points
-    And All other players but player 1 have -9999 points
-    And There are 9 total turns
+    And Player 1 has 225 points
+    And All other players but player 1 have -75 points
+    And There are 2 total rounds

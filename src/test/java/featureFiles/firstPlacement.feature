@@ -11,8 +11,8 @@ Feature: Testing for use cases
     Then First placement is successful
 
   Scenario: First placement - success with two placements
-    And New game is started
-    Given First tile has not been placed
+    Given New game is started
+    And First tile has not been placed
     And Player has "(8 red),(9 red),(10 red),(3 red),(3 black),(3 blue)" in their hand
     When Player sends a command for placing "(8 red),(9 red),(10 red)" tiles on board
     And Player sends a command for placing "(3 red),(3 black),(3 blue)" tiles on board
