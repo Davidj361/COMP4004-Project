@@ -269,21 +269,11 @@ public class StepDefinitions {
         game.getPlayer(i-1).setHand(hand);
     }
 
-    @Given("There already exists a run of {string} on board")
-    public void there_already_exists_a_run_of_on_board(String string) {
-        Board board = new Board();
-        ArrayList<Tile> tiles = createTiles(string);
-        assertTrue(game.isRun(tiles));
-        board.addSet(tiles);
-        game.println(board.printHelper());
-        game.setBoardState(board);
-    }
-
-    @Given("There already exists a group of {string} on board")
+    @Given("There already exists tiles of {string} on board")
     public void there_already_exists_a_group_of_on_board(String string) {
         Board board = new Board();
         ArrayList<Tile> tiles = createTiles(string);
-        assertTrue(game.isGroup(tiles));
+        assertTrue(game.getBoard().checkBoard());
         board.addSet(tiles);
         game.println(board.printHelper());
         game.setBoardState(board);
@@ -302,14 +292,9 @@ public class StepDefinitions {
         game.getCurPlayer().setFirstPlacement();
     }
 
-    @When("Placed tiles form a run on row {int}")
-    public void placed_tile_form_a_run_on_row(int int1) {
-        assertTrue(game.isRun(game.getBoard().board.get(int1)));
-    }
-
-    @When("Placed tiles form a group on row {int}")
-    public void placed_tile_form_a_group(int int1) {
-        assertTrue(game.isGroup(game.getBoard().board.get(int1)));
+    @When("Board is valid")
+    public void boardIsValid() {
+        assertTrue(game.getBoard().checkBoard());
     }
 
     @When("Player sends a command for ending current turn")
@@ -320,6 +305,11 @@ public class StepDefinitions {
     @When("Player {int} sends a command for ending current turn")
     public void playerSendsACommandForEndingCurrentTurn(int arg0) throws IOException {
         assertTrue(game.command(arg0-1, "e"));
+    }
+
+    @When("Player sends a command for ending current turn but fails")
+    public void player_sends_a_command_for_ending_current_turn_but_fails() throws IOException {
+        playerSendsACommandForEndingCurrentTurnButFails(1);
     }
 
     @When("Player {int} sends a command for ending current turn but fails")
@@ -374,7 +364,7 @@ public class StepDefinitions {
     // Doesn't check specifically if it's a run or group
     @When("Player sends a command for placing tiles of {string} on board")
     public void playerSendsACommandForPlacingTilesOfOnBoard(String arg0) throws IOException {
-        assertFalse(placeCommand(0, arg0));
+        assertTrue(placeCommand(0, arg0));
     }
 
     @When("Player sends a command for placing tiles of {string} on board but fails")
@@ -382,25 +372,9 @@ public class StepDefinitions {
         assertFalse(placeCommand(0, arg0));
     }
 
-    @When("Player sends a command for placing a run of {string} on board")
-    public void player_sends_a_command_for_placing_a_run_of_on_board(String string) throws IOException {
-        playerSendsACommandForPlacingARunOfOnBoard(1, string);
-    }
-
-    @When("Player {int} sends a command for placing a run of {string} on board")
+    @When("Player {int} sends a command for placing tiles of {string} on board")
     public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String str) throws IOException {
-        assertTrue(game.isRun(createTiles(str)));
-        assertTrue(placeCommand(arg0-1, str));
-    }
-
-    @When("Player sends a command for placing a group of {string} on board")
-    public void player_sends_a_command_for_placing_a_group_of_on_board(String string) throws IOException {
-        playerSendsACommandForPlacingAGroupOfOnBoard(1, string);
-    }
-
-    @When("Player {int} sends a command for placing a group of {string} on board")
-    public void playerSendsACommandForPlacingAGroupOfOnBoard(int arg0, String str) throws IOException {
-        assertTrue(game.isGroup(createTiles(str)));
+        assertTrue(game.getBoard().checkBoard());
         assertTrue(placeCommand(arg0-1, str));
     }
 

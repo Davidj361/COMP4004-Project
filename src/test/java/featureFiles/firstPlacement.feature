@@ -8,7 +8,7 @@ Feature: firstPlacementFeature,
     Given New game is started
     And Player has NOT done First Placement
     And Player has "(10 red),(12 red),(11 red),(3 red),(3 black),(3 blue)" in their hand
-    When Player sends a command for placing a run of "(10 red),(12 red),(11 red)" on board
+    When Player sends a command for placing tiles of "(10 red),(12 red),(11 red)" on board
     And Player sends a command for ending current turn
     Then Player has done First Placement
 
@@ -17,8 +17,8 @@ Feature: firstPlacementFeature,
     Given New game is started
     And Player has NOT done First Placement
     And Player has "(8 red),(9 red),(10 red),(3 red),(3 black),(3 blue)" in their hand
-    When Player sends a command for placing a run of "(8 red),(9 red),(10 red)" on board
-    And Player sends a command for placing a group of "(3 red),(3 black),(3 blue)" on board
+    When Player sends a command for placing tiles of "(8 red),(9 red),(10 red)" on board
+    And Player sends a command for placing tiles of "(3 red),(3 black),(3 blue)" on board
     And Player sends a command for ending current turn
     Then Player has done First Placement
 
@@ -27,7 +27,7 @@ Feature: firstPlacementFeature,
     Given New game is started
     And Player has NOT done First Placement
     And Player has "(6 red),(4 red),(5 red),(3 red),(3 black),(3 blue)" in their hand
-    When Player sends a command for placing a group of "(6 red),(4 red),(5 red)" on board
+    When Player sends a command for placing tiles of "(6 red),(4 red),(5 red)" on board
     And Player sends a command for ending current turn
     Then Player has NOT done First Placement
 
@@ -36,7 +36,7 @@ Feature: firstPlacementFeature,
     Given New game is started
     And Player has NOT done First Placement
     And Player has "(6 red),(4 red),(5 red),(3 red),(3 black),(3 blue)" in their hand
-    When Player sends a command for placing a run of "(6 red),(4 red),(5 red)" on board
-    And Player sends a command for placing a group of "(3 red),(3 red),(3 red)" on board
-    And Player sends a command for ending current turn
+    When Player sends a command for placing tiles of "(6 red),(4 red),(5 red)" on board
+    And Player sends a command for placing tiles of "(3 red),(3 red),(3 red)" on board
+    And Player sends a command for ending current turn but fails
     Then Player has NOT done First Placement
