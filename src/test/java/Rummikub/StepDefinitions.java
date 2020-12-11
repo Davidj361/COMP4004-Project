@@ -16,6 +16,7 @@ public class StepDefinitions {
     Server server;
     ArrayList<Client> clients;
     ArrayList<Tile> tiles = new ArrayList<Tile>();
+    ArrayList<App> apps; // For testing startGame use case
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +110,8 @@ public class StepDefinitions {
         return game.command(playerIdx, command.toString());
     }
 
+    private App getApp(int i) { return apps.get(i-1); }
+
     // Helper functions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -152,14 +155,13 @@ public class StepDefinitions {
         server.start();
     }
 
-    @Given("The other players connect to host")
+    @And("The clients are connected to host")
     public void The_other_players_connect_to_host() throws InterruptedException, IOException {
         clients = new ArrayList<Client>();
         for (int i = 0; i<server.getMaxClients(); i++) {
-            Client c = new Client("Player "+(i+2));
+            Client c = new Client("Client"+(i+1));
             clients.add(c);
             assertTrue(c.connect());
-            //c.start();
             c.sendName();
         }
         while (server.getNamesSet().size() != server.getMaxClients()+1) // Add host's name
@@ -167,14 +169,98 @@ public class StepDefinitions {
         assertEquals(server.getNumClients(), server.getMaxClients());
     }
 
-    @When("Everyone closes their connections")
+    @And("Everyone closes their connections")
     public void Everyone_closes_their_connections() throws IOException {
-        server.close();
-        assertFalse(server.isOpen());
+        if (server != null) {
+            server.close();
+            assertFalse(server.isOpen());
+            server = null;
+        }
+        if (clients != null && clients.size() > 0) {
+            for (Client c: clients)
+                c.disconnect();
+            clients = null;
+        }
     }
 
     // Network crud
     /////////////////
+
+    ////////////////
+    // startGame
+
+    // startGame.feature
+    @Given("{int} people startup Rummikub")
+    public void peopleStartupRummikub(int arg0) {
+        apps = new ArrayList<App>();
+        clients = new ArrayList<Client>();
+        game = null;
+        server = null;
+        for (int i=0; i<arg0; i++)
+            apps.add(new App(true));
+    }
+
+    // startGame.feature
+    @Given("Player {int} is named {string}")
+    public void playerIsNamed(int arg0, String arg1) {
+        getApp(arg0).name = arg1;
+    }
+
+    @Given("Player {int} chooses port {int}")
+    public void playerChoosesPort(int arg0, int arg1) {
+        getApp(arg0).port = arg1;
+    }
+
+    @When("Player {int} chooses to be host")
+    public void playerChoosesToBeHost(int arg0) {
+        getApp(arg0).state = 1;
+    }
+
+    @When("Player {int} chooses to be a client")
+    public void playerChoosesToBeAClient(int arg0) {
+        getApp(arg0).state = 2;
+    }
+
+    @When("Player {int} wants {int} players for their game")
+    public void playerWantsPlayersForTheirGame(int arg0, int arg1) {
+        getApp(arg0).numberOfPlayers = arg1;
+    }
+
+    @When("Player {int} wants the game to end at {int} points")
+    public void playerWantsTheGameToEndAtPoints(int arg0, int arg1) {
+        getApp(arg0).gameEndingScore = arg1;
+    }
+
+    @When("Player {int} chooses a destination IP of {string}")
+    public void playerChoosesADestinationIPOf(int arg0, String arg1) {
+        getApp(arg0).ip = arg1;
+    }
+
+    @Then("Everyone is connected")
+    public void everyoneIsConnected() throws InterruptedException {
+        assertEquals(server.getNumClients(), server.getMaxClients());
+        assertEquals(apps.size(), game.getNumPlayers());
+    }
+
+    @Then("Player {int} starts hosting and clients connect")
+    public void playerStartsHostingAndClientsConnect(int arg0) throws IOException, InterruptedException {
+        server = getApp(arg0).startHost();
+        for (int i = 0; i<apps.size(); i++) {
+            if (apps.get(i).state != 2) // Have they chose the client option?
+                continue;
+            assertTrue(apps.get(i).client());
+            clients.add(apps.get(i).client);
+        }
+        assertTrue(getApp(arg0).host());
+        game = getApp(arg0).game;
+    }
+
+    @Then("Player {int} tries to connect but fails")
+    public void playerTriesToConnectButFails(int arg0) throws IOException, InterruptedException {
+        assertFalse(getApp(arg0).client());
+    }
+    // startGame
+    ////////////////
 
     @And("Player has done First Placement")
     public void first_placement_is_successful() {
@@ -235,7 +321,6 @@ public class StepDefinitions {
 
     @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
     public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
-        game.println(game.curPlayerHand().toString());
         assertEquals(arg0, game.curPlayerHand().size());
     }
 
@@ -247,7 +332,6 @@ public class StepDefinitions {
     @Given("Player {int} has {string} in their hand")
     public void playerXHasInTheirHand(int i, String str) {
         Hand hand = new Hand(createTiles(str));
-        game.println(hand.toString());
         game.getPlayer(i-1).setHand(hand);
     }
 
@@ -403,13 +487,6 @@ public class StepDefinitions {
         }
     }
 
-    @When("Placed tiles form a run or a group on board")
-    public void placed_tiles_form_a_run_or_a_group_on_board() {
-        // Printed board shows new runs and groups
-        game.println(game.getBoard().printHelper());
-        assertTrue(game.getBoard().checkBoard());
-    }
-
     @When("Player sends a command for splitting row {int} at index {int}")
     public void player_sends_a_command_for_splitting_row_at_index(int int1, int int2) throws IOException {
         String command = String.format("s %d %d", int1, int2);
@@ -446,8 +523,8 @@ public class StepDefinitions {
         assertTrue(game.getFinalWinner().getTotalScore() >= game.getGameEndingScore());
     }
 
-    @And("Game ends when a player reaches a score of {int}")
-    public void gameEndsWhenAPlayerReachesAScoreOf(int arg0) {
+    @And("Game will end when a player reaches a score of {int}")
+    public void gameWillEndWhenAPlayerReachesAScoreOf(int arg0) {
         game.setGameEndingScore(arg0);
         assertEquals( arg0, game.getGameEndingScore());
     }
@@ -464,7 +541,12 @@ public class StepDefinitions {
 
     @And("Game goes to round {int}")
     public void gameGoesToRound(int arg0) {
-        assertEquals(arg0 - 1 ,game.getRound());
+        assertEquals(arg0 - 1, game.getRound());
+    }
+
+    @Then("The game has {int} players")
+    public void theGameHasPlayers(int arg0) {
+        assertEquals(arg0, game.getNumPlayers());
     }
 
     @And("Board is empty")
