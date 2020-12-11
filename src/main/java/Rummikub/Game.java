@@ -96,27 +96,32 @@ public class Game {
 		p.sortHand();
 	}
 
-    public Player getWinner() {
+	public Player getWinner() {
 		int highscore = 10000;
+		int sum;
 		Player p = null;
 		if(deck.getTiles().size() != 0){
 			for (int i = 0; i < players.size(); i ++ ) {
 				if (players.get(i).getTileNumber() == 0) {
 					p = players.get(i);
+					highscore = 0;
 				}
 			}
 		}
 		else{
 			for(int i = 0; i< players.size(); i++) {
-				if (players.get(i).getTotalScore() < highscore) {
+				sum = players.get(i).sumOfTiles();
+				if (players.get(i).hasJoker())
+					sum += 30;
+				if (sum < highscore) {
 					p = players.get(i);
-					highscore = players.get(i).getScore();
+					highscore = sum;
 				}
 			}
 		}
 		if (p != null) {
 			println("Winner: " + p.getName());
-			println("Score: " + p.getScore());
+			println("Score this round: " + highscore);
 		}
 		return p;
 	}
