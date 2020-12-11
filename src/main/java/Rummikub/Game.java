@@ -3,7 +3,6 @@ package Rummikub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 import Rummikub.Tile.Colors;
@@ -96,61 +95,6 @@ public class Game {
 		players.add(p);
 		p.sortHand();
 	}
-
-    public boolean isRun(ArrayList<Tile> run) {
-    	Colors color = run.get(0).getColor();
-    	int value = run.get(0).getValue() - 1;
-
-    	for (Tile t : run) {
-    		if (t.getColor() != color)
-    			return false;
-
-    		if (t.getValue() == value + 1)
-    			value++;
-    		else
-    			return false;
-    	}
-    	return true;
-    }
-
-    public boolean isGroup(ArrayList<Tile> group) {
-    	boolean red = false;
-    	boolean blue = false;
-    	boolean yellow = false;
-    	boolean black = false;
-    	int value = group.get(0).getValue();
-
-    	for (Tile t : group) {
-    		if (t.getValue() != value)
-    			return false;
-
-    		if (t.getColor() == Colors.RE) {
-    			if (!red)
-    				red = true;
-    			else
-    				return false;
-    		}
-    		else if (t.getColor() == Colors.BL) {
-    			if (!blue)
-    				blue = true;
-    			else
-    				return false;
-    		}
-    		else if (t.getColor() == Colors.YE) {
-    			if (!yellow)
-    				yellow = true;
-    			else
-    				return false;
-    		}
-    		else {
-    			if (!black)
-    				black = true;
-    			else
-    				return false;
-    		}
-    	}
-    	return true;
-    }
 
     public Player getWinner() {
 		int highscore = 10000;
@@ -287,17 +231,13 @@ public class Game {
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
-					placeTiles(args, curPlayer);
-					break;
+					return placeTiles(args, curPlayer);
 				case "g": // giving tiles to a row on the board
-					giveTiles(args, curPlayer);
-					break;
+					return giveTiles(args, curPlayer);
 				case "m": // moving tiles from one row to another on the board
-					moveTiles(args, curPlayer);
-					break;
+					return moveTiles(args, curPlayer);
 				case "s": // splitting rows on the board
-					splitRow(args, curPlayer);
-					break;
+					return splitRow(args, curPlayer);
 				default:
 					invalidCmd = true;
 					break;
@@ -320,8 +260,7 @@ public class Game {
 					undo(curPlayer);
 					break;
 				case "e": // end turn
-					endTurn();
-					break;
+					return endTurn();
 				default:
 					invalidCmd = true;
 					break;

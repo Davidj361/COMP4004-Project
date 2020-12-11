@@ -75,7 +75,7 @@ public class Board {
 		}
 	}
 
-	public String printBoard() {
+	public String printHelper() {
 		String printBoard = "";
 		int size = 0;
 		for (int i = 0; i < board.size(); i++) {
