@@ -510,9 +510,9 @@ public class StepDefinitions {
         game.println(game.getBoard().printHelper());
     }
 
-    @When("Player sends a command for giving tiles of index {string} to row {int} which doesn't exist")
-    public void player_sends_a_command_for_giving_tiles_of_index_to_row_which_doesn_t_exist(String string, Integer int1) throws IOException  {
-        String command = String.format("g %d %s", int1, string);
+    @When("Player sends a command for giving tiles of index {int} to row {int} which doesn't exist")
+    public void player_sends_a_command_for_giving_tiles_of_index_to_row_which_doesn_t_exist(int int0, int int1) throws IOException  {
+        String command = String.format("g %d %s", int1, int0);
         assertFalse(game.command(0, command));
         game.println(game.getBoard().printHelper());
     }
