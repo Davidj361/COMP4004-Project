@@ -18,9 +18,10 @@ public class Deck{
                 }
             }
         }
-        Tile joker = new Tile(0, Colors.values()[4]);
-        tiles.add(joker);
-        tiles.add(joker);
+        Tile joker1 = new Tile(0, Colors.values()[4]);
+        Tile joker2 = new Tile(0, Colors.values()[4]);
+        tiles.add(joker1);
+        tiles.add(joker2);
         //Shuffle all tiles
         this.shuffleTiles();
     }
