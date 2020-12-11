@@ -10,7 +10,7 @@ import Rummikub.Tile.Colors;
 public class Game {
 	private Server server;
     private boolean gameRunning = false;
-    private int turn, totalturns= 0;
+    private int turn, totalturns = 0;
     private int round = 0;
     private int gameEndingScore = 0;
     private boolean endRound = false;
@@ -622,6 +622,7 @@ public class Game {
 			}
 		}
 	}
+
 	public int sumOfTilesPlaced () {
 		int origBoardSize = origBoard.getBoardSize();
 		int currentBoardSize = board.getBoardSize();
@@ -634,5 +635,12 @@ public class Game {
 			sum += tilesPlaced.get(i).getValue();
 		}
 		return sum;
+	}
+
+	// Used in testing code
+	public int getNumPlayers() {
+		if (numPlayers != players.size())
+			throw new RuntimeException("Game's numPlayers != players.size()");
+		return numPlayers;
 	}
 }
