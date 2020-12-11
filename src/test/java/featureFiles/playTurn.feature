@@ -195,7 +195,7 @@ Feature: Testing user play a turn in various scenarios
     Given New game is started
     And Player starts turn (not first placement)
     And There already exists a run of "(3 red),(4 red),(5 red),(6 red)" on board
-    And There already exists another run of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
+    And There already exists a run of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
     And Player has "(6 black)" in their hand
     When Player sends a command for splitting a tile of "(6 red)" into a new row
     And Player sends a command for splitting the second tile of "(6 blue)" into a new row
@@ -210,7 +210,7 @@ Feature: Testing user play a turn in various scenarios
     Given New game is started
     And Player starts turn (not first placement)
     And There already exists a run of "(3 red),(4 red),(5 red)" on board
-    And There already exists another run of "(6 red),(7 red),(8 red)" on board
+    And There already exists a run of "(6 red),(7 red),(8 red)" on board
     And Player sends a command for moving the first row into the second row to combine them
     And Placed tiles form a run on row 0
     And Player sends a command for ending current turn

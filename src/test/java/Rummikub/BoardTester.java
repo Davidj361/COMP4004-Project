@@ -2,7 +2,6 @@ package Rummikub;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,7 +29,7 @@ public class BoardTester extends MyTestCase {
         assertTrue(board.checkBoard());
         board.addSet(hand);
         assertTrue(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -48,7 +47,7 @@ public class BoardTester extends MyTestCase {
         assertFalse(board.checkBoard());
         board.addSet(hand);
         assertFalse(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(1, Tile.Colors.BL));
         board.addSet(hand);
         assertFalse(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -73,11 +72,11 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(5, Tile.Colors.BL));
         hand.add( new Tile(6, Tile.Colors.BL));
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
         board.separateSet(0,3);
         assertTrue(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -93,11 +92,11 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(5, Tile.Colors.BL));
         hand.add( new Tile(6, Tile.Colors.BL));
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
         board.separateSet(row,tile);
         assertFalse(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -115,12 +114,12 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(3, Tile.Colors.BL));
         board.addSet(hand2);
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
         ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
         board.combineCurrent(row1,row2, index);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
     }
 
@@ -141,13 +140,13 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         board.addSet(hand2);
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
         ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
         board.combineCurrent(row1,row2, index);
         assertTrue(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -160,7 +159,7 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(6, Tile.Colors.BL));
 
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
 
         ArrayList<Tile> hand2 = new ArrayList<Tile>();
@@ -169,7 +168,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         board.addToCurrent(hand2,0);
         assertTrue(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -182,7 +181,7 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(6, Tile.Colors.BL));
 
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
 
         ArrayList<Tile> hand2 = new ArrayList<Tile>();
@@ -191,7 +190,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         board.addToCurrent(hand2,0);
         assertFalse(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -205,7 +204,7 @@ public class BoardTester extends MyTestCase {
         hand.add( new Tile(0, Tile.Colors.JOKER));
 
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
 
         ArrayList<Tile> hand2 = new ArrayList<Tile>();
@@ -214,7 +213,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         board.addToCurrent(hand2,0);
         assertTrue(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -232,13 +231,13 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(3, Tile.Colors.BL));
         board.addSet(hand2);
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
         ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
 
         board.combineCurrent(row1,row2,index);
         assertFalse(board.checkBoard());
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
     }
 
     @Test
@@ -256,7 +255,7 @@ public class BoardTester extends MyTestCase {
         assertTrue(board.checkBoard());
 
         board.addSet(hand);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
     }
     @Test
@@ -273,7 +272,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         hand2.add( new Tile(10, Tile.Colors.BL));
         board.addSet(hand2);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
     }
 
@@ -293,7 +292,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(13, Tile.Colors.BL));
 
         board.addSet(hand2);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
     }
 
@@ -313,7 +312,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(13, Tile.Colors.BL));
 
         board.addSet(hand2);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertTrue(board.checkBoard());
     }
 
@@ -333,7 +332,7 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(13, Tile.Colors.BL));
 
         board.addSet(hand2);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertFalse(board.checkBoard());
     }
 
@@ -349,7 +348,7 @@ public class BoardTester extends MyTestCase {
 
 
         board.addSet(hand2);
-        System.out.println(board.printBoard());
+        System.out.println(board.printHelper());
         assertFalse(board.checkBoard());
     }
 }
