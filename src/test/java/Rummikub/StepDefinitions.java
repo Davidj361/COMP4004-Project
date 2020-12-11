@@ -162,6 +162,12 @@ public class StepDefinitions {
     }
 
 
+    @Given("A game with {int} players is being played")
+    public void aGameWithPlayersIsBeingPlayed(int arg0) {
+        game = new Game(arg0, true); // setup the game in testing mode
+        assertEquals(1, game.getTurn());
+    }
+
     @Given("Game has {int} players")
     public void game_has_players(int int1) {
         assertEquals(int1, game.getPlayers().size());
@@ -236,7 +242,7 @@ public class StepDefinitions {
         System.out.println("score is " +game.getPlayer(int1 - 1).getTotalScore());
         game.scorePoints();
         System.out.println(game.getPlayer(int1 - 1).getTotalScore());
-        assertEquals(int2, game.getPlayer(int1 - 1).getScore());
+        assertEquals(int2, game.getPlayer(int1 - 1).getTotalScore());
     }
 
     // TODO DUPLICATED TEST FUNCTION
@@ -497,13 +503,36 @@ public class StepDefinitions {
         }
     }
 
-    @And("Winner and final scores are printed")
-    public void winnerAndFinalScoresArePrinted() {
-
-    }
-
     @And("Score reaches winning threshold")
     public void scoreReachesWinningThreshold() {
+        assertTrue(game.getFinalWinner().getTotalScore() >= game.getGameEndingScore());
+    }
 
+    @And("Game ends when a player reaches a score of {int}")
+    public void gameEndsWhenAPlayerReachesAScoreOf(int arg0) {
+        game.setGameEndingScore(arg0);
+        assertEquals( arg0, game.getGameEndingScore());
+    }
+
+    @And("Player {int} wins the game")
+    public void playerWinsTheGame(int arg0) {
+        assertEquals(game.getPlayer(arg0 - 1), game.getFinalWinner());
+    }
+
+    @And("Score does not reach winning threshold")
+    public void scoreDoesNotReachWinningThreshold() {
+        assertTrue(game.getFinalWinner().getTotalScore() < game.getGameEndingScore());
+    }
+
+    @And("Game goes to round {int}")
+    public void gameGoesToRound(int arg0) {
+        assertEquals(arg0 - 1 ,game.getRound());
+    }
+
+    @And("The deck is empty")
+    public void theDeckIsEmpty() {
+        ArrayList<Tile> emptyTiles = new ArrayList<Tile>();
+        game.deck.setDeck(emptyTiles);
+        assertEquals(0, game.deck.getTiles().size());
     }
 }

@@ -35,6 +35,8 @@ public class Deck{
         return tiles.size();
     }
 
+    public void setDeck (ArrayList<Tile> T) { tiles = T ;}
+
     //remove tile from deck
     public Tile dealTile() {
         Tile dealtTile = tiles.remove(0);
