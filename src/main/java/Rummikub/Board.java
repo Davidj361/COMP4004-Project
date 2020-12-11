@@ -205,4 +205,13 @@ public class Board {
 		}
 	}
 
+	// this function checks if there are tiles of indices
+	// this is used for checking indices for moving tiles
+	public boolean hasTiles(int srcRow, int[] tilesIndex) {
+		for (int index: tilesIndex) {
+			if (board.get(srcRow) == null || board.get(srcRow).get(index-1) == null)
+				return false;
+		}
+		return true;
+	}
 }

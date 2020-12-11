@@ -8,7 +8,7 @@ Feature: drawTileFeature,
     Given New game is started
     And Player starts turn (not first placement)
     When Player sends a command for ending current turn
-    Then Tile is given to player from the deck
+    Then Player has 15 tiles
     And There are 2 total turns
 
   @drawTile_2
