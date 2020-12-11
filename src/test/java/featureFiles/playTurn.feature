@@ -285,9 +285,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
     And Player has "(4 yellow),(5 yellow)" in their hand
-    When Player sends a command for giving tiles of index "5" to row 0 which doesn't exist
-    And Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 1
+    When Player sends a command for giving tiles of index "5" to row 1 which doesn't exist
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -299,8 +299,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
     And Player has "(4 yellow),(5 yellow)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of index "5" to row 0 which doesn't exist
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of index "5" to row 2 which doesn't exist
     And Player sends a command for ending current turn
     And There are 2 total turns
 
@@ -310,9 +310,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
     And Player has "(4 yellow),(5 yellow)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of index "5" to row 0 which doesn't exist
-    And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 1
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of index "5" to row 1 which doesn't exist
+    And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -324,12 +324,12 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
-    When Player sends a command for splitting row 0 at index 2
+    When Player sends a command for splitting row 1 at index 2
     And Player sends a command for giving tiles of index "5" to row 0 which doesn't exist
-    And Player sends a command for splitting row 1 at index 2
-    And Player sends a command for giving tiles of "(5 red)" to row 0
-    And Player sends a command for giving tiles of "(7 red)" to row 1
-    And Player sends a command for giving tiles of "(9 red)" to row 2
+    And Player sends a command for splitting row 2 at index 2
+    And Player sends a command for giving tiles of "(5 red)" to row 1
+    And Player sends a command for giving tiles of "(7 red)" to row 2
+    And Player sends a command for giving tiles of "(9 red)" to row 3
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
