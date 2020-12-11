@@ -210,7 +210,62 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
-    And Player sends a command for moving row 1 indices "1 2 3" to row 0
+    When Player sends a command for moving row 1 indices "1 2 3" to row 0
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
+
+  @playTurn_18
+  Scenario: Play Turn - move a run of tiles into another run, undo and place a tile to form a run
+    Given New game is started
+    And Player starts turn (not first placement)
+    And There already exists tiles of "(3 red),(4 red),(5 red)" on board
+    And There already exists additional tiles of "(9 red),(10 red),(11 red)" on board
+    And Player has "(6 red)" in their hand
+    When Player sends a command for moving row 1 indices "1 2 3" to row 0
+    And Player sends a command for undoing the previous action
+    And Player sends a command for giving tiles of "(6 red)" to row 0
+    And Placed tiles form a run or a group on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @playTurn_19
+  Scenario: Play Turn - split a group of tiles into two rows, undo and place a tile to form a group
+    Given New game is started
+    And Player starts turn (not first placement)
+    And There already exists tiles of "(3 red),(3 blue),(3 yellow)" on board
+    And Player has "(3 black)" in their hand
+    When Player sends a command for splitting row 0 at index 2
+    And Player sends a command for undoing the previous action
+    And Player sends a command for giving tiles of "(3 black)" to row 0
+    And Placed tiles form a run or a group on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @playTurn_20
+  Scenario: Play Turn - places a tile that does not exist, places an existing tile and form a run, then finishes turn
+    Given New game is started
+    And Player starts turn (not first placement)
+    And There already exists tiles of "(3 red),(4 red),(5 red)" on board
+    And Player has "(6 red)" in their hand
+    When Player sends a command for giving tiles of indices "4" to row 0
+    And Player sends a command for giving tiles of "(6 red)" to row 0
+    And Placed tiles form a run or a group on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @playTurn_21
+  Scenario: Play Turn - places a tile that does not exist, places an existing tile and form a group, then finishes turn
+    Given New game is started
+    And Player starts turn (not first placement)
+    And There already exists tiles of "(3 red),(3 blue),(3 black)" on board
+    And Player has "(3 yellow)" in their hand
+    When Player sends a command for giving tiles of indices "2" to row 0
+    And Player sends a command for giving tiles of "(3 yellow)" to row 0
+    And Placed tiles form a run or a group on board
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns

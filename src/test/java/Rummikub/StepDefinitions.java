@@ -420,5 +420,13 @@ public class StepDefinitions {
     public void player_sends_a_command_for_moving_row_indices_to_row(int int1, String string, int int3) throws IOException  {
         String command = String.format("m %d %d %s", int1, int3, string);
         assertTrue(game.command(0, command));
+        game.println(game.getBoard().printHelper());
+    }
+
+    @When("Player sends a command for giving tiles of indices {string} to row {int}")
+    public void player_sends_a_command_for_giving_tiles_of_indices_to_row(String string, int int1) throws IOException  {
+        String command = String.format("g %d %s", int1, string);
+        assertFalse(game.command(0, command));
+        game.println(game.getBoard().printHelper());
     }
 }
