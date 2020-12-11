@@ -85,6 +85,7 @@ public class Game {
 		setOrigBoard();
 		turn = 1;
 		round++;
+		endRound = false;
 	}
 
 	// Helper function for Game.reset(..)
@@ -154,7 +155,7 @@ public class Game {
     public Player getWinner() {
 		int highscore = 10000;
 		Player p = null;
-		if(deck.getTiles().size() == 0){
+		if(deck.getTiles().size() != 0){
 			for (int i = 0; i < players.size(); i ++ ) {
 				if (players.get(i).getTileNumber() == 0) {
 					p = players.get(i);
@@ -416,13 +417,14 @@ public class Game {
 			player.updateHand();  //update original hand to finalize
 			player.sortHand(); //sort the updated hand
 		}
+		println("Your turn has ended", getCurPlayerIdx());
+		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		if(isGameOver() || endRound){
 			println("Round is over, get ready for next Round!");
 			scorePoints();
 			resetRound();
 		}
-		println("Your turn has ended", getCurPlayerIdx());
-		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
+
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
