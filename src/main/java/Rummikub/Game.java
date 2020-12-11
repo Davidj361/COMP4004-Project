@@ -212,7 +212,7 @@ public class Game {
 		else
 			print(str, 0);
 	}
-	
+
 	public void println(String str) {
 		String out = str+'\n';
 		print(out);
@@ -373,15 +373,30 @@ public class Game {
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			} else {
 				println("You ended your turn with out making any moves");
-				println("A tile has been added to your hand from deck", getCurPlayerIdx());
-				messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
-				messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
-				if (deck.getTiles().size() > 0) {
-					drawTile(player);
+				if(board.checkBoard()) {
+					println("A tile has been added to your hand from deck", getCurPlayerIdx());
+					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+					messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
+					if (deck.getTiles().size() > 0) {
+						drawTile(player);
+					} else {
+						endRound = true;
+						println("This is the last turn because the deck is empty!");
+					}
 				} else {
-					endRound = true;
-					println("This is the last turn because the deck is empty!");
+					println("The board is not correct, 3 tiles have been added to your hand from deck", getCurPlayerIdx());
+					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+					messageToOtherPlayers("3 tiles has been added to " + getCurPlayerName() + "'s hand");
+					if (deck.getTiles().size() > 0) {
+						// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
+						for (int i=0; i<3; i++)
+							drawTile(player);
+					} else {
+						endRound = true;
+						println("This is the last turn because the deck is empty!");
+					}
 				}
+
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			}
 			player.updateHand();  //update original hand to finalize
