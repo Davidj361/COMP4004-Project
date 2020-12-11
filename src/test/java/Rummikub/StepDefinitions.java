@@ -316,6 +316,7 @@ public class StepDefinitions {
         assertEquals(arg0, game.getTotalTurns());
     }
 
+
     @Then("There are {int} total rounds")
     public void thereAreTotalRounds(int arg0) {
         assertEquals(arg0, game.getRound());
@@ -464,5 +465,11 @@ public class StepDefinitions {
     @And("Game goes to round {int}")
     public void gameGoesToRound(int arg0) {
         assertEquals(arg0 - 1 ,game.getRound());
+    }
+
+    @And("Board is empty")
+    public void boardIsEmpty() {
+        Board board = new Board();
+        game.setBoardState(board);
     }
 }
