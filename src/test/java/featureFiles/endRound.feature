@@ -3,8 +3,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
 
   @endRound_1
   Scenario: End round, then end game because player reaches the game ending score
-    Given New game is started
-    And New game is started with 3 players
+    Given New game is started with 3 players
     And Player 1 has placed all tiles
     And Player 2 has "(7 yellow),(11 blue),(5 red)" in their hand
     And Player 3 has "(6 red),(9 blue),(0 Joker)" in their hand
@@ -18,8 +17,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
 
   @endRound_2
   Scenario: End round and go to next round
-    Given New game is started
-    And New game is started with 2 players
+    Given New game is started with 2 players
     And Player 1 has placed all tiles
     And Player 2 has "(7 yellow),(11 blue),(5 red)" in their hand
     And Game ends when a player reaches a score of 50
@@ -30,7 +28,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
 
   @endRound_3
   Scenario: End round when the deck is empty and go to next round
-    Given A game with 2 players is being played
+    Given New game is started with 2 players
     And The deck is empty
     And Player 1 has "(7 yellow),(11 blue),(5 red)" in their hand
     And Player 2 has "(6 red),(9 blue),(5 red)" in their hand
@@ -42,7 +40,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
 
   @endRound_4
   Scenario: End round when the deck is empty and end game because player reaches the game ending score
-    Given A game with 2 players is being played
+    Given New game is started with 2 players
     And The deck is empty
     And Player 1 has "(7 yellow),(11 blue),(5 red),(10 blue),(11 red),(11 blue)" in their hand
     And Player 2 has "(6 red),(9 blue),(5 red)" in their hand

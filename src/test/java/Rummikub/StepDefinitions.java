@@ -21,6 +21,39 @@ public class StepDefinitions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Helper functions
 
+    private void tiles_are(String arg1) {
+        System.out.println("sequence is " + arg1);
+        String a [] = arg1.split(",");
+        for (int i = 0; i < a.length; i++) {
+            String tileIs = a[i].replace("(", "");
+            tileIs = tileIs.replace(")", "");
+            String b [] = tileIs.split(" ");
+            int value  = Integer.parseInt(b[0]);
+            String color = b[1];
+            Tile tile  = new Tile (value, parseColor(color));
+            tiles.add(tile);
+        }
+    }
+
+    private Tile.Colors parseColor(String color) {
+        Tile.Colors defaultColor = Tile.Colors.BL;
+        if(color.equalsIgnoreCase("blue"))
+            defaultColor = Tile.Colors.BL;
+
+        if(color.equalsIgnoreCase("red"))
+            defaultColor = Tile.Colors.RE;
+
+        if(color.equalsIgnoreCase("yellow"))
+            defaultColor = Tile.Colors.YE;
+
+        if(color.equalsIgnoreCase("black"))
+            defaultColor = Tile.Colors.BK;
+
+        if(color.equalsIgnoreCase("Joker"))
+            defaultColor = Tile.Colors.JOKER;
+        return defaultColor;
+    }
+
     // Helper function for parseTilesForIndexes
     // Gets the index of the first tile matching the same value and color
     // off the current player
@@ -127,14 +160,7 @@ public class StepDefinitions {
         game = new Game(int1, true); // setup the game in testing mode
         assertEquals(1, game.getTurn());
     }
-
-
-    @Given("A game with {int} players is being played")
-    public void aGameWithPlayersIsBeingPlayed(int arg0) {
-        game = new Game(arg0, true); // setup the game in testing mode
-        assertEquals(1, game.getTurn());
-    }
-
+    
     @Given("Game has {int} players")
     public void game_has_players(int int1) {
         assertEquals(int1, game.getPlayers().size());
@@ -225,24 +251,9 @@ public class StepDefinitions {
         assertTrue(game.playerTurn(0));
     }
 
-    @When("The deck is empty")
-    public void theDeckIsEmpty() {
-        game.deck.tiles = new ArrayList<Tile>();
-        assertEquals(0, game.deck.size());
-    }
-
-    // TODO Properly make dynamic
-    @When("The deck has {int} Tile")
-    public void theDeckHasTile(int arg0) {
-        game.deck.tiles = new ArrayList<Tile>();
-        game.deck.tiles.add(new Tile(1, Tile.Colors.RE));
-        assertEquals(arg0, game.deck.size());
-    }
-
-    @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
-    public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
-        game.println(game.curPlayerHand().toString());
-        assertEquals(arg0, game.curPlayerHand().size());
+    @Then("Tile is given to player from the deck")
+    public void tile_is_given_to_player_from_the_deck() {
+        assertEquals(15, game.curPlayerHand().size());
     }
 
     @Given("Player has {string} in their hand")
@@ -265,6 +276,12 @@ public class StepDefinitions {
         board.addSet(tiles);
         game.println(board.printHelper());
         game.setBoardState(board);
+    }
+
+    @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
+    public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
+        game.println(game.curPlayerHand().toString());
+        assertEquals(arg0, game.curPlayerHand().size());
     }
 
     @Given("Player starts turn \\(not first placement)")
@@ -374,6 +391,77 @@ public class StepDefinitions {
         game.printCurPlayerHand();
     }
 
+    // TODO Don't make it hard coded
+    @When("Player sends a command for placing a tile of {string} but fails")
+    public void player_sends_a_command_for_placing_a_tile_of_but_fails(String string) throws IOException {
+        assertTrue(game.command(0, "g 0 1"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for placing another tile of {string} on board")
+    public void player_sends_a_command_for_placing_another_tile_of_on_board(String string) throws IOException {
+        assertTrue(game.command(0, "g 0 2"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for splitting tiles at index {int}")
+    public void player_sends_a_command_for_splitting_tiles_at_index(int int1) throws IOException {
+        assertTrue(game.command(0,"s 0 "+ int1 ));
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for placing a tile of {string} together with splitted tiles")
+    public void player_sends_a_command_for_placing_a_tile_of_together_with_splitted_tiles(String string) throws IOException {
+        assertTrue(game.command(0, "g 1 1"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for splitting a tile of {string} into a new row")
+    public void player_sends_a_command_for_splitting_a_tile_of_into_a_new_row(String string) throws IOException {
+        assertTrue(game.command(0, "s 0 3"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    // TODO Break down the step
+    @When("Player sends a command for splitting the second tile of {string} into a new row")
+    public void player_sends_a_command_for_splitting_the_second_tile_of_into_a_new_row(String string) throws IOException {
+        assertTrue(game.command(0, "s 1 3"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    // TODO Break down the step
+    @When("Player sends a command for combining the second and third row and placing a tile of {string} together with the third row")
+    public void player_sends_a_command_for_placing_a_tile_of_together_with_the_third_row(String string) throws IOException {
+        assertTrue(game.command(0, "m 3 2 1"));
+        assertTrue(game.command(0, "g 2 1"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for placing tiles of {string} together with splitted tiles")
+    public void player_sends_a_command_for_placing_tiles_of_together_with_splitted_tiles(String string) throws IOException {
+        assertTrue(game.command(0, "g 1 1 2"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @When("Player sends a command for placing a tile of {string} together with the second row")
+    public void player_sends_a_command_for_placing_a_tile_of_together_with_the_second_row(String string) throws IOException {
+        assertTrue(game.command(0, "g 1 1"));
+        game.println(game.getBoard().printHelper());
+    }
+
+    // TODO Don't make it hard coded
+    @Given("Player sends a command for moving the first row into the second row to combine them")
+    public void player_sends_a_command_for_moving_the_first_row_into_the_second_row_to_combine_them() throws IOException {
+        assertTrue(game.command(0, "m 1 0 1 2 3"));
+    }
+
     @Given("The game has a game ending score at {int}")
     public void theGameHasAGameEndingScoreAt(int arg0) {
         assertEquals(arg0, game.getGameEndingScore());
@@ -439,42 +527,5 @@ public class StepDefinitions {
         ArrayList<Tile> emptyTiles = new ArrayList<Tile>();
         game.deck.setDeck(emptyTiles);
         assertEquals(0, game.deck.getTiles().size());
-
-    @When("Placed tiles form a run or a group on board")
-    public void placed_tiles_form_a_run_or_a_group_on_board() {
-        // Printed board shows new runs and groups
-        game.println(game.getBoard().printHelper());
-    }
-
-    @When("Player sends a command for splitting row {int} at index {int}")
-    public void player_sends_a_command_for_splitting_row_at_index(int int1, int int2) throws IOException {
-        String command = String.format("s %d %d", int1, int2);
-        assertTrue(game.command(0, command));
-        game.println(game.getBoard().printHelper());
-    }
-
-    @Given("There already exists additional tiles of {string} on board")
-    public void there_already_exists_additional_tiles_of_on_board(String string) {
-        Board board = game.getBoard();
-        ArrayList<Tile> tiles = createTiles(string);
-        assertTrue(game.getBoard().checkBoard());
-        board.addSet(tiles);
-        game.println(board.printHelper());
-        game.setBoardState(board);
-    }
-
-    @When("Player sends a command for moving row {int} indices {string} to row {int}")
-    public void player_sends_a_command_for_moving_row_indices_to_row(int int1, String string, int int3) throws IOException  {
-        String command = String.format("m %d %d %s", int1, int3, string);
-        assertTrue(game.command(0, command));
-        game.println(game.getBoard().printHelper());
-    }
-
-    @When("Player sends a command for giving tiles of indices {string} to row {int}")
-    public void player_sends_a_command_for_giving_tiles_of_indices_to_row(String string, int int1) throws IOException  {
-        String command = String.format("g %d %s", int1, string);
-        assertFalse(game.command(0, command));
-        game.println(game.getBoard().printHelper());
-
     }
 }
