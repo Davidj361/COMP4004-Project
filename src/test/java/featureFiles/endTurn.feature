@@ -8,7 +8,7 @@ Feature: Player ends turn scenarios
     And There are 1 total turns
     And Player has "(6 red),(7 red),(8 red)" in their hand
     When Player sends a command for placing tiles of "(6 red),(7 red),(8 red)" on board
-    And Placed tiles form a run or a group on board
+    And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
     And There are 2 total turns
