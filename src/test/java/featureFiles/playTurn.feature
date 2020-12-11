@@ -7,7 +7,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And Player has "(6 red)" in their hand
-    When Player sends a command for giving tiles of "(6 red)" to row 0
+    When Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -19,7 +19,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 black)" on board
     And Player has "(3 yellow)" in their hand
-    When Player sends a command for giving tiles of "(3 yellow)" to row 0
+    When Player sends a command for giving tiles of "(3 yellow)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -31,7 +31,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And Player has "(6 red),(7 red)" in their hand
-    When Player sends a command for giving tiles of "(6 red),(7 red)" to row 0
+    When Player sends a command for giving tiles of "(6 red),(7 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -127,9 +127,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And Player has "(1 black),(6 red)" in their hand
-    When Player sends a command for giving tiles of "(1 black)" to row 0
+    When Player sends a command for giving tiles of "(1 black)" to row 1
     And Player sends a command for undoing the previous action
-    And Player sends a command for giving tiles of "(6 red)" to row 0
+    And Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Player has 1 tiles
@@ -141,9 +141,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(8 blue),(8 red),(8 yellow)" on board
     And Player has "(1 black),(8 black)" in their hand
-    When Player sends a command for giving tiles of "(1 black)" to row 0
+    When Player sends a command for giving tiles of "(1 black)" to row 1
     And Player sends a command for undoing the previous action
-    And Player sends a command for giving tiles of "(8 black)" to row 0
+    And Player sends a command for giving tiles of "(8 black)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Player has 1 tiles
@@ -155,8 +155,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
     And Player has "(8 red)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of "(8 red)" to row 1
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -168,8 +168,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red)" on board
     And Player has "(7 red),(8 red)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of "(7 red),(8 red)" to row 1
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(7 red),(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -181,8 +181,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
     And Player has "(8 red)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for giving tiles of "(8 red)" to row 1
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -195,10 +195,10 @@ Feature: Testing user play a turn in various scenarios
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red)" on board
     And There already exists additional tiles of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
     And Player has "(6 black)" in their hand
-    When Player sends a command for splitting row 0 at index 3
-    And Player sends a command for splitting row 1 at index 3
-    And Player sends a command for moving row 3 indices "1" to row 2
-    And Player sends a command for giving tiles of "(6 black)" to row 2
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for splitting row 2 at index 3
+    And Player sends a command for moving row 4 indices "1" to row 3
+    And Player sends a command for giving tiles of "(6 black)" to row 3
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -210,7 +210,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
-    When Player sends a command for moving row 1 indices "1 2 3" to row 0
+    When Player sends a command for moving row 2 indices "1 2 3" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -222,9 +222,9 @@ Feature: Testing user play a turn in various scenarios
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And There already exists additional tiles of "(9 red),(10 red),(11 red)" on board
     And Player has "(6 red)" in their hand
-    When Player sends a command for moving row 1 indices "1 2 3" to row 0
+    When Player sends a command for moving row 2 indices "1 2 3" to row 1
     And Player sends a command for undoing the previous action
-    And Player sends a command for giving tiles of "(6 red)" to row 0
+    And Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -236,9 +236,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 yellow)" on board
     And Player has "(3 black)" in their hand
-    When Player sends a command for splitting row 0 at index 2
+    When Player sends a command for splitting row 1 at index 2
     And Player sends a command for undoing the previous action
-    And Player sends a command for giving tiles of "(3 black)" to row 0
+    And Player sends a command for giving tiles of "(3 black)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -250,8 +250,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And Player has "(6 red)" in their hand
-    When Player sends a command for giving tiles of index "4" to row 0 which doesn't exist
-    And Player sends a command for giving tiles of "(6 red)" to row 0
+    When Player sends a command for giving tiles of index "4" to row 1 which doesn't exist
+    And Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
@@ -263,8 +263,8 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(3 blue),(3 black)" on board
     And Player has "(3 yellow)" in their hand
-    When Player sends a command for giving tiles of index "2" to row 0 which doesn't exist
-    And Player sends a command for giving tiles of "(3 yellow)" to row 0
+    When Player sends a command for giving tiles of index "2" to row 1 which doesn't exist
+    And Player sends a command for giving tiles of "(3 yellow)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully

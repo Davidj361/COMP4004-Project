@@ -17,7 +17,7 @@ Feature: drawTileFeature,
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 blue),(4 blue),(5 blue)" on board
     And Player has "(6 red)" in their hand
-    When Player sends a command for giving tiles of "(6 red)" to row 0
+    When Player sends a command for giving tiles of "(6 red)" to row 1
     And Player sends a command for ending current turn
     Then Player draws tile(s) from the deck so player has 4 tiles
     And There are 2 total turns

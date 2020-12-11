@@ -20,7 +20,7 @@ Feature: Player ends turn scenarios
     And There are 1 total rounds
     And Player has "(6 blue),(7 red),(8 black)" in their hand
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
-    And Player sends a command for splitting row 0 at index 2
+    And Player sends a command for splitting row 1 at index 2
     And Player sends a command for ending current turn
     Then Player has 6 tiles
     And There are 2 total turns
