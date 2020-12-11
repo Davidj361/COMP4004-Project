@@ -263,13 +263,13 @@ public class StepDefinitions {
     ////////////////
 
     @And("Player has done First Placement")
-    public void first_placement_is_successful() {
+    public void playerHasDoneFirstPlacement() {
         // Write code here that turns the phrase above into concrete actions
         assertTrue(game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @And("Player has NOT done First Placement")
-    public void first_placement_is_not_successful() {
+    public void playerHasNotDoneFirstPlacement() {
         assertFalse(game.getCurPlayer().getDoneFirstPlacement());
     }
 
@@ -344,11 +344,10 @@ public class StepDefinitions {
         game.setBoardState(board);
     }
 
-    @Given("Player starts turn \\(not first placement)")
+    @Given("Player's first placement is done")
     public void player_starts_round_not_first_placement() {
-        assertEquals(1, game.getTurn());
-        assertTrue(game.playerTurn(0));
         game.getCurPlayer().setFirstPlacement();
+        assertEquals(true, game.getCurPlayer().getDoneFirstPlacement());
     }
 
     @When("Board is valid")
