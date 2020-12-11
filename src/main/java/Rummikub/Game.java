@@ -96,7 +96,7 @@ public class Game {
 		p.sortHand();
 	}
 
-    public Player getWinner() {
+	public Player getWinner() {
 		int highscore = 10000;
 		int sum;
 		Player p = null;
@@ -119,7 +119,6 @@ public class Game {
 				}
 			}
 		}
-
 		return p;
 	}
 
@@ -486,7 +485,7 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-2];
 		for (int i=2; i<sArr.length; i++)
 			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
-		if (player.hasTiles(tilesIdx)) {
+		if (board.hasTiles(srcRow, tilesIdx)) {
 			ArrayList<Integer> index = new ArrayList<Integer>();
 			for(int num:tilesIdx){
 				index.add(num);
