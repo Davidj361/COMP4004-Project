@@ -28,7 +28,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
     And Score does not reach winning threshold
     And Game goes to round 2
 
-  @endRound_1
+  @endRound_3
   Scenario: End round when the deck is empty and go to next round
     Given A game with 2 players is being played
     And The deck is empty
@@ -40,7 +40,7 @@ Feature: winGameFeature, Players can win the entire game if they pass the gameEn
     And Score does not reach winning threshold
     And Game goes to round 2
 
-  @endRound_1
+  @endRound_4
   Scenario: End round when the deck is empty and end game because player reaches the game ending score
     Given A game with 2 players is being played
     And The deck is empty
