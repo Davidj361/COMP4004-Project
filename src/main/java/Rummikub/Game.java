@@ -462,7 +462,7 @@ public class Game {
 			invalidCommandMessage();
 			return false;
 		}
-		int dstRow = Integer.parseInt(sArr[0]);
+		int dstRow = Integer.parseInt(sArr[0])-1;
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
@@ -486,8 +486,8 @@ public class Game {
 			invalidCommandMessage();
 			return false;
 		}
-		int srcRow = Integer.parseInt(sArr[0]);
-		int dstRow = Integer.parseInt(sArr[1]);
+		int srcRow = Integer.parseInt(sArr[0])-1;
+		int dstRow = Integer.parseInt(sArr[1])-1;
 		int[] tilesIdx = new int[sArr.length-2];
 		for (int i=2; i<sArr.length; i++)
 			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
@@ -515,7 +515,7 @@ public class Game {
 			invalidCommandMessage();
 			return false;
 		}
-		int srcRow = Integer.parseInt(sArr[0]);
+		int srcRow = Integer.parseInt(sArr[0])-1;
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
 		commandReceivedMessage("s");
