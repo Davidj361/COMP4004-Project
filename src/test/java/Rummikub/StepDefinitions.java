@@ -235,7 +235,6 @@ public class StepDefinitions {
 
     @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
     public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
-        game.println(game.curPlayerHand().toString());
         assertEquals(arg0, game.curPlayerHand().size());
     }
 
@@ -247,7 +246,6 @@ public class StepDefinitions {
     @Given("Player {int} has {string} in their hand")
     public void playerXHasInTheirHand(int i, String str) {
         Hand hand = new Hand(createTiles(str));
-        game.println(hand.toString());
         game.getPlayer(i-1).setHand(hand);
     }
 
