@@ -271,8 +271,13 @@ public class Game {
 	// Parses text given by a client to Server
 	public boolean command(int playerIdx, String input) throws IOException {
 		if (!playerTurn(playerIdx)) {
-			println("It is not your turn yet.", playerIdx);
-			return false;
+			if(input.equals("h") || input.equals("db") || input.equals("dh")){
+
+			}
+			else {
+				println("It is not your turn yet.", playerIdx);
+				return false;
+			}
 		}
 		Player curPlayer = getCurPlayer();
 
@@ -300,13 +305,16 @@ public class Game {
 		} else { // No arguments to commands
 			switch(sArr[0]) {
 				case "h": // display help message
-					help();
+					help(playerIdx);
 					break;
 				case "db": // display the board
-					println(board.printBoard());
+					println(board.printBoard(),playerIdx);
 					break;
 				case "dh": // display player's hand
-					printCurPlayerHand();
+					if (!playerTurn(playerIdx))
+						printPlayesrHand(playerIdx);
+					else
+						printCurPlayerHand();
 					break;
 				case "u": // undo
 					undo(curPlayer);
@@ -339,12 +347,12 @@ public class Game {
 
 
 	// Print from the help from a file
-	private void help() throws IOException {
+	private void help(int index) throws IOException {
 		File fHelp = new File("resources/help.txt");
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
 		String str;
 		while ((str = br.readLine()) != null) {
-			print(str+"\n");
+			print(str+"\n", index);
 		}
 	}
 
@@ -533,6 +541,10 @@ public class Game {
 
 	public void printCurPlayerHand() {
 		println(getCurPlayer().getHandStr(), getCurPlayerIdx());
+	}
+
+	public void printPlayesrHand(int Index) {
+		println(players.get(Index).getHandStr(), Index);
 	}
 
 	// Functions used by command(..)
