@@ -496,4 +496,33 @@ public class StepDefinitions {
             assertEquals(arg1, scr);
         }
     }
+
+    @When("Placed tiles form a run or a group on board")
+    public void placed_tiles_form_a_run_or_a_group_on_board() {
+        // Printed board shows new runs and groups
+        game.println(game.getBoard().printHelper());
+    }
+
+    @When("Player sends a command for splitting row {int} at index {int}")
+    public void player_sends_a_command_for_splitting_row_at_index(int int1, int int2) throws IOException {
+        String command = String.format("s %d %d", int1, int2);
+        assertTrue(game.command(0, command));
+        game.println(game.getBoard().printHelper());
+    }
+
+    @Given("There already exists additional tiles of {string} on board")
+    public void there_already_exists_additional_tiles_of_on_board(String string) {
+        Board board = game.getBoard();
+        ArrayList<Tile> tiles = createTiles(string);
+        assertTrue(game.getBoard().checkBoard());
+        board.addSet(tiles);
+        game.println(board.printHelper());
+        game.setBoardState(board);
+    }
+
+    @When("Player sends a command for moving row {int} index {int} to row {int}")
+    public void player_sends_a_command_for_moving_row_index_to_row(int int1, int int2, int int3) throws IOException  {
+        String command = String.format("m %d %d %d", int1, int3, int2);
+        assertTrue(game.command(0, command));
+    }
 }
