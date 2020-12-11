@@ -280,24 +280,7 @@ public class Game {
 		}
 		return true;
 	}
-	private int findDifferentTile(Hand bigHand, Hand smallHand) {
-		int ret = -1;
-		bigHand.sort();
-		smallHand.sort();
-		for (int i=0; i<smallHand.size(); i++) {
-			Tile t1 = bigHand.getTile(i);
-			Tile t2 = smallHand.getTile(i);
-			if (t1 != t2) {
-				ret = i;
-				break;
-			}
-		}
-		// Must be the last element
-		if (ret == -1)
-			ret = bigHand.size()-1;
-		return ret;
-	}
-
+	
 	//////////////////////////////////////////////////////////////////////
 	// Functions used by command(..)
 
