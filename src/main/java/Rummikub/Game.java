@@ -139,7 +139,7 @@ public class Game {
 
 	public void printFinalScores() {
 		String output;
-		output = "=========FINAL SCORES=========";
+		output = "=========FINAL SCORES=========\n";
 		for(int i = 0; i < players.size(); i++)
 			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
 		println(output);
@@ -380,12 +380,11 @@ public class Game {
 
 	// Reverts the player's hand and the board to the original state
 	// as when the turn started
-	private boolean undo(Player curPlayer) {
+	private void undo(Player curPlayer) {
 		curPlayer.resetHand();
 		curPlayer.sortHand();
 		setBoard();
 		println("Your hand has been reset to its original state", getCurPlayerIdx());
-		return true;
 	}
 
 	// Places tiles from active player's hand to the board
@@ -576,6 +575,8 @@ public class Game {
 	}
 
 	public void messageToOtherPlayers(String message) {
+		if (server == null)
+			return;
 		for (int i = 0; i< players.size(); i ++) {
 			if (i != getCurPlayerIdx()) {
 				println(message, i);
