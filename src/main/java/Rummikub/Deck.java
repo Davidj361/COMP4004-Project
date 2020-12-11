@@ -5,7 +5,7 @@ import java.util.Collections;
 import static Rummikub.Tile.Colors;
 
 public class Deck{
-    private ArrayList<Tile> tiles;
+    protected ArrayList<Tile> tiles;
 
     //Create full deck of all tiles
     public Deck() {

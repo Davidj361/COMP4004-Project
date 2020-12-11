@@ -252,9 +252,24 @@ public class StepDefinitions {
         assertTrue(game.playerTurn(0));
     }
 
-    @Then("Tile is given to player from the deck")
-    public void tile_is_given_to_player_from_the_deck() {
-        assertEquals(15, game.curPlayerHand().size());
+    @When("The deck is empty")
+    public void theDeckIsEmpty() {
+        game.deck.tiles = new ArrayList<Tile>();
+        assertEquals(0, game.deck.size());
+    }
+
+    // TODO Properly make dynamic
+    @When("The deck has {int} Tile")
+    public void theDeckHasTile(int arg0) {
+        game.deck.tiles = new ArrayList<Tile>();
+        game.deck.tiles.add(new Tile(1, Tile.Colors.RE));
+        assertEquals(arg0, game.deck.size());
+    }
+
+    @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
+    public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
+        game.println(game.curPlayerHand().toString());
+        assertEquals(arg0, game.curPlayerHand().size());
     }
 
     @Given("Player has {string} in their hand")
@@ -277,12 +292,6 @@ public class StepDefinitions {
         board.addSet(tiles);
         game.println(board.printHelper());
         game.setBoardState(board);
-    }
-
-    @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
-    public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
-        game.println(game.curPlayerHand().toString());
-        assertEquals(arg0, game.curPlayerHand().size());
     }
 
     @Given("Player starts turn \\(not first placement)")

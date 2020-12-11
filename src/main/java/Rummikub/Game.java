@@ -138,7 +138,7 @@ public class Game {
 
 	public void printFinalScores() {
 		String output;
-		output = "=========FINAL SCORES=========";
+		output = "=========FINAL SCORES=========\n";
 		for(int i = 0; i < players.size(); i++)
 			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
 		println(output);
