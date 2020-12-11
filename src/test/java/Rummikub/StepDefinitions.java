@@ -351,8 +351,8 @@ public class StepDefinitions {
 
     @When("Player {int} sends a command for placing tiles of {string} on board")
     public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String str) throws IOException {
-        assertTrue(game.getBoard().checkBoard());
         assertTrue(placeCommand(arg0-1, str));
+        assertTrue(game.getBoard().checkBoard());
     }
 
     @Then("Player has {int} tiles")
@@ -406,6 +406,7 @@ public class StepDefinitions {
     public void placed_tiles_form_a_run_or_a_group_on_board() {
         // Printed board shows new runs and groups
         game.println(game.getBoard().printHelper());
+        assertTrue(game.getBoard().checkBoard());
     }
 
     @When("Player sends a command for splitting row {int} at index {int}")
@@ -432,8 +433,8 @@ public class StepDefinitions {
         game.println(game.getBoard().printHelper());
     }
 
-    @When("Player sends a command for giving tiles of indices {string} to row {int}")
-    public void player_sends_a_command_for_giving_tiles_of_indices_to_row(String string, int int1) throws IOException  {
+    @When("Player sends a command for giving tiles of index {string} to row {int} which doesn't exist")
+    public void player_sends_a_command_for_giving_tiles_of_index_to_row_which_doesn_t_exist(String string, Integer int1) throws IOException  {
         String command = String.format("g %d %s", int1, string);
         assertFalse(game.command(0, command));
         game.println(game.getBoard().printHelper());
