@@ -321,7 +321,6 @@ public class StepDefinitions {
 
     @Then("Player draws tile\\(s) from the deck so player has {int} tiles")
     public void playerDrawsTileSFromTheDeckSoPlayerHasTiles(int arg0) {
-        game.println(game.curPlayerHand().toString());
         assertEquals(arg0, game.curPlayerHand().size());
     }
 
@@ -333,7 +332,6 @@ public class StepDefinitions {
     @Given("Player {int} has {string} in their hand")
     public void playerXHasInTheirHand(int i, String str) {
         Hand hand = new Hand(createTiles(str));
-        game.println(hand.toString());
         game.getPlayer(i-1).setHand(hand);
     }
 
@@ -437,8 +435,8 @@ public class StepDefinitions {
 
     @When("Player {int} sends a command for placing tiles of {string} on board")
     public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String str) throws IOException {
-        assertTrue(game.getBoard().checkBoard());
         assertTrue(placeCommand(arg0-1, str));
+        assertTrue(game.getBoard().checkBoard());
     }
 
     @Then("Player has {int} tiles")
@@ -512,8 +510,8 @@ public class StepDefinitions {
         game.println(game.getBoard().printHelper());
     }
 
-    @When("Player sends a command for giving tiles of indices {string} to row {int}")
-    public void player_sends_a_command_for_giving_tiles_of_indices_to_row(String string, int int1) throws IOException  {
+    @When("Player sends a command for giving tiles of index {string} to row {int} which doesn't exist")
+    public void player_sends_a_command_for_giving_tiles_of_index_to_row_which_doesn_t_exist(String string, Integer int1) throws IOException  {
         String command = String.format("g %d %s", int1, string);
         assertFalse(game.command(0, command));
         game.println(game.getBoard().printHelper());
