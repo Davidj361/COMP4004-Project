@@ -129,7 +129,7 @@ Feature: Testing user play a turn in various scenarios
     And Player has "(1 black),(6 red)" in their hand
     When Player sends a command for giving tiles of "(1 black)" to row 0
     And Player sends a command for undoing the previous action
-    And Player sends a command for placing another tile of "(6 red)" on board
+    And Player sends a command for giving tiles of "(6 red)" to row 0
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
     Then Player has 1 tiles
@@ -141,9 +141,9 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(8 blue),(8 red),(8 yellow)" on board
     And Player has "(1 black),(8 black)" in their hand
-    When Player sends a command for placing a tile of "(1 black)" but fails
+    When Player sends a command for giving tiles of "(1 black)" to row 0
     And Player sends a command for undoing the previous action
-    And Player sends a command for placing another tile of "(8 black)" on board
+    And Player sends a command for giving tiles of "(8 black)" to row 0
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
     Then Player has 1 tiles
@@ -197,7 +197,7 @@ Feature: Testing user play a turn in various scenarios
     And Player has "(6 black)" in their hand
     When Player sends a command for splitting row 0 at index 3
     And Player sends a command for splitting row 1 at index 3
-    And Player sends a command for moving row 3 index 1 to row 2
+    And Player sends a command for moving row 3 indices "1" to row 2
     And Player sends a command for giving tiles of "(6 black)" to row 2
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
@@ -210,7 +210,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
-    And Player sends a command for moving the first row into the second row to combine them
+    And Player sends a command for moving row 1 indices "1 2 3" to row 0
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
