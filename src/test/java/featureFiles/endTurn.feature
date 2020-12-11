@@ -1,5 +1,5 @@
 @endTurnFeature
-Feature: Player ends turn
+Feature: Player ends turn scenarios
 
   @endTurn_1
   Scenario: Player places a tile and form a run, then ends turn
@@ -26,7 +26,7 @@ Feature: Player ends turn
     And There are 2 total turns
     
   @endTurn_3
-  Scenario: Player makes an invalid placement on to board
+  Scenario: Player makes an invalid placement on to board, pick up 3 tiles
     Given New game is started
     And Player starts turn (not first placement)
     And There are 1 total rounds
@@ -39,7 +39,7 @@ Feature: Player ends turn
     And There are 2 total turns
 
   @endTurn_4
-  Scenario: Player ends turn with out making any moves
+  Scenario: Player ends turn with out making any moves, picks up 1 tile
     Given New game is started
     When Player starts turn (not first placement)
     And Player has "(6 blue),(7 red),(8 black)" in their hand
