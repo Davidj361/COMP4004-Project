@@ -31,7 +31,7 @@ Feature: Testing user play a turn in various scenarios
     And Player starts turn (not first placement)
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
     And Player has "(6 red),(7 red)" in their hand
-    When Player sends a command for placing tiles of "(6 red),(7 red)" on board
+    When Player sends a command for giving tiles of "(6 red),(7 red)" to row 0
     And Placed tiles form a run or a group on board
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
