@@ -316,6 +316,7 @@ public class StepDefinitions {
         assertTrue(game.command(arg0-1, "e"));
     }
 
+
     @When("Player sends a command for ending current turn but fails")
     public void player_sends_a_command_for_ending_current_turn_but_fails() throws IOException {
         playerSendsACommandForEndingCurrentTurnButFails(1);

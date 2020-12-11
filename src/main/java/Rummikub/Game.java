@@ -84,6 +84,7 @@ public class Game {
 		setOrigBoard();
 		turn = 1;
 		round++;
+		endRound = false;
 	}
 
 	// Helper function for Game.reset(..)
@@ -98,7 +99,7 @@ public class Game {
     public Player getWinner() {
 		int highscore = 10000;
 		Player p = null;
-		if(deck.getTiles().size() == 0){
+		if(deck.getTiles().size() != 0){
 			for (int i = 0; i < players.size(); i ++ ) {
 				if (players.get(i).getTileNumber() == 0) {
 					p = players.get(i);
@@ -214,8 +215,13 @@ public class Game {
 	// Parses text given by a client to Server
 	public boolean command(int playerIdx, String input) throws IOException {
 		if (!playerTurn(playerIdx)) {
-			println("It is not your turn yet.", playerIdx);
-			return false;
+			if(input.equals("h") || input.equals("db") || input.equals("dh")){
+
+			}
+			else {
+				println("It is not your turn yet.", playerIdx);
+				return false;
+			}
 		}
 		Player curPlayer = getCurPlayer();
 
@@ -239,13 +245,16 @@ public class Game {
 		} else { // No arguments to commands
 			switch(sArr[0]) {
 				case "h": // display help message
-					help();
+					help(playerIdx);
 					break;
 				case "db": // display the board
-					println(board.printHelper());
+					println(board.printHelper(),playerIdx);
 					break;
 				case "dh": // display player's hand
-					printCurPlayerHand();
+					if (!playerTurn(playerIdx))
+						printPlayesrHand(playerIdx);
+					else
+						printCurPlayerHand();
 					break;
 				case "u": // undo
 					undo(curPlayer);
@@ -277,12 +286,12 @@ public class Game {
 
 
 	// Print from the help from a file
-	private void help() throws IOException {
+	private void help(int index) throws IOException {
 		File fHelp = new File("resources/help.txt");
 		BufferedReader br = new BufferedReader(new FileReader(fHelp));
 		String str;
 		while ((str = br.readLine()) != null) {
-			print(str+"\n");
+			print(str+"\n", index);
 		}
 	}
 
@@ -302,8 +311,16 @@ public class Game {
 				//print error
 				undo(player);
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points", getCurPlayerIdx());
-				println("Try again", getCurPlayerIdx());
-				return false;
+				println("Three tiles have been added to your hand from deck", getCurPlayerIdx());
+				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
+				messageToOtherPlayers("Three tiles have been added to " + getCurPlayerName() + "'s hand");
+				if (deck.getTiles().size() > 0) {
+					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
+					for (int i=0; i<3; i++)
+						drawTile(player);
+				} else {
+					endRound = true;
+				}
 			}
 			else if (!firstPlacement && sum > 30) {
 				println("You have successfully completed your First placement", getCurPlayerIdx());
@@ -347,13 +364,14 @@ public class Game {
 			player.updateHand();  //update original hand to finalize
 			player.sortHand(); //sort the updated hand
 		}
+		println("Your turn has ended", getCurPlayerIdx());
+		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		if(isGameOver() || endRound){
 			println("Round is over, get ready for next Round!");
 			scorePoints();
 			resetRound();
 		}
-		println("Your turn has ended", getCurPlayerIdx());
-		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
+
 		players.get(getCurPlayerIdx()).nextTurn();
 		turn++;
 		announcePlayersTurn(); // Will announce who's turn it is now
@@ -461,6 +479,10 @@ public class Game {
 
 	public void printCurPlayerHand() {
 		println(getCurPlayer().getHandStr(), getCurPlayerIdx());
+	}
+
+	public void printPlayesrHand(int Index) {
+		println(players.get(Index).getHandStr(), Index);
 	}
 
 	// Functions used by command(..)
