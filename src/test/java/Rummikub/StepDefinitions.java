@@ -495,4 +495,14 @@ public class StepDefinitions {
             assertEquals(arg1, scr);
         }
     }
+
+    @And("Winner and final scores are printed")
+    public void winnerAndFinalScoresArePrinted() {
+
+    }
+
+    @And("Score reaches winning threshold")
+    public void scoreReachesWinningThreshold() {
+
+    }
 }
