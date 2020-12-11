@@ -3,7 +3,6 @@ package Rummikub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 import Rummikub.Tile.Colors;
@@ -281,17 +280,13 @@ public class Game {
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
-					placeTiles(args, curPlayer);
-					break;
+					return placeTiles(args, curPlayer);
 				case "g": // giving tiles to a row on the board
-					giveTiles(args, curPlayer);
-					break;
+					return giveTiles(args, curPlayer);
 				case "m": // moving tiles from one row to another on the board
-					moveTiles(args, curPlayer);
-					break;
+					return moveTiles(args, curPlayer);
 				case "s": // splitting rows on the board
-					splitRow(args, curPlayer);
-					break;
+					return splitRow(args, curPlayer);
 				default:
 					invalidCmd = true;
 					break;
@@ -302,7 +297,7 @@ public class Game {
 					help();
 					break;
 				case "db": // display the board
-					println(board.printBoard());
+					println(board.printHelper());
 					break;
 				case "dh": // display player's hand
 					printCurPlayerHand();
@@ -311,8 +306,7 @@ public class Game {
 					undo(curPlayer);
 					break;
 				case "e": // end turn
-					endTurn();
-					break;
+					return endTurn();
 				default:
 					invalidCmd = true;
 					break;

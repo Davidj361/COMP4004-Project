@@ -32,6 +32,8 @@ public class Hand{
 
     public Tile getTile(int i) { return tiles.get(i); }
 
+    public void setTile(int i, Tile t) { tiles.set(i, t); }
+
     //add Tile to players hand
     public void addTile(Tile tile) {
         this.tiles.add(tile);
