@@ -599,6 +599,7 @@ public class Game {
 
 	public void startText() {
 		println("Game has started!");
+		println("Total points needed to win is: " + getGameEndingScore());
 		announcePlayersTurn();
 	}
 
