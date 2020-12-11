@@ -248,7 +248,7 @@ public class Game {
 					help(playerIdx);
 					break;
 				case "db": // display the board
-					println(board.printBoard(),playerIdx);
+					println(board.printHelper(),playerIdx);
 					break;
 				case "dh": // display player's hand
 					if (!playerTurn(playerIdx))
