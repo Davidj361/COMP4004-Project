@@ -10,7 +10,7 @@ import Rummikub.Tile.Colors;
 public class Game {
 	private Server server;
     private boolean gameRunning = false;
-    private int turn = 0;
+    private int turn, totalturns= 0;
     private int round = 0;
     private int gameEndingScore = 0;
     private boolean endRound = false;
@@ -66,6 +66,7 @@ public class Game {
 		setOrigBoard();
 		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
+		totalturns = 1;
 		round = 1;
 
 		if (server != null) { // Multiplayer mode
@@ -83,6 +84,7 @@ public class Game {
 		board = new Board();
 		setOrigBoard();
 		turn = 1;
+		totalturns = 1;
 		round++;
 		endRound = false;
 	}
@@ -390,6 +392,7 @@ public class Game {
 			turn++;
 			players.get(getCurPlayerIdx()).nextTurn();
 		}
+		totalturns++;
 		announcePlayersTurn(); // Will announce who's turn it is now
 		return true;
 	}
@@ -531,6 +534,8 @@ public class Game {
 	}
 
 	// Return current turn number
+	public int getTotalTurns() {  return totalturns; }
+
 	public int getTurn() {  return turn; }
 
 	public int getRound() {  return round; }

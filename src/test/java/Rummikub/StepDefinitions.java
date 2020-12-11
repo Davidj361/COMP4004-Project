@@ -313,7 +313,7 @@ public class StepDefinitions {
 
     @Then("There are {int} total turns")
     public void thereAreTotalTurns(int arg0) {
-        assertEquals(arg0, game.getTurn());
+        assertEquals(arg0, game.getTotalTurns());
     }
 
     @Then("There are {int} total rounds")
