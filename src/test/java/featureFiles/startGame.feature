@@ -18,6 +18,7 @@ Feature: startGameFeature, Players can host or connect to a host
     Then Everyone is connected
     And The game has 2 players
     And The game has a game ending score at 50
+    And Everyone closes their connections
 
   @startGame-2
   Scenario: Player 1 chooses to be a client then tries to connects to an IP not hosting

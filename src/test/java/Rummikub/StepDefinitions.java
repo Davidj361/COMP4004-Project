@@ -169,10 +169,18 @@ public class StepDefinitions {
         assertEquals(server.getNumClients(), server.getMaxClients());
     }
 
-    @When("Everyone closes their connections")
+    @And("Everyone closes their connections")
     public void Everyone_closes_their_connections() throws IOException {
-        server.close();
-        assertFalse(server.isOpen());
+        if (server != null) {
+            server.close();
+            assertFalse(server.isOpen());
+            server = null;
+        }
+        if (clients != null && clients.size() > 0) {
+            for (Client c: clients)
+                c.disconnect();
+            clients = null;
+        }
     }
 
     // Network crud
