@@ -269,3 +269,12 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
     And There are 2 total turns
+
+  @playTurnNonRecursive-1
+  Scenario: Play Turn - It is player's turn, the player chooses to end their turn
+    Given New game is started
+    When It is player's turn
+    And Board is valid
+    And There are 1 total turns
+    And Player sends a command for ending current turn
+    Then There are 2 total turns

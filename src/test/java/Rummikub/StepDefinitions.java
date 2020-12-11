@@ -299,9 +299,8 @@ public class StepDefinitions {
         assertEquals(int2, game.getPlayer(int1 - 1).getScore());
     }
 
-    @Given("Player starts turn {int}")
-    public void player_starts_round(int int1) {
-        assertEquals(int1, game.getTurn());
+    @And("It is player's turn")
+    public void itIsPlayerSTurn() {
         assertTrue(game.playerTurn(0));
     }
 
@@ -395,7 +394,7 @@ public class StepDefinitions {
         assertTrue(game.getBoard().checkBoard());
     }
 
-    @Then("There are {int} total turns")
+    @And("There are {int} total turns")
     public void thereAreTotalTurns(int arg0) {
         assertEquals(arg0, game.getTotalTurns());
     }
@@ -548,5 +547,4 @@ public class StepDefinitions {
     public void theGameHasPlayers(int arg0) {
         assertEquals(arg0, game.getNumPlayers());
     }
-
 }
