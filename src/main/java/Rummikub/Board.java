@@ -80,9 +80,9 @@ public class Board {
 		int size = 0;
 		for (int i = 0; i < board.size(); i++) {
 			if(i < 9) {
-				printBoard += "0" + (Integer.toString(i)+1) + "|  ";
+				printBoard += "0" + Integer.toString(i+1) + "|  ";
 			}else {
-				printBoard += (Integer.toString(i)+1) + "|  ";
+				printBoard += Integer.toString(i+1) + "|  ";
 			}
 			if (board.get(i).size() > size){
 				size = board.get(i).size();
