@@ -549,9 +549,4 @@ public class StepDefinitions {
         assertEquals(arg0, game.getNumPlayers());
     }
 
-    @And("Board is empty")
-    public void boardIsEmpty() {
-        Board board = new Board();
-        game.setBoardState(board);
-    }
 }

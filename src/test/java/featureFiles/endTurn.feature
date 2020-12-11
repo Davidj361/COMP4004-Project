@@ -31,10 +31,10 @@ Feature: Player ends turn scenarios
     And Player starts turn (not first placement)
     And There are 1 total rounds
     And Player has "(6 blue),(7 red),(8 black)" in their hand
-    And Board is empty
+    And Board is valid
     When Player sends a command for placing tiles of "(6 blue),(7 red),(8 black)" on board
     And Player sends a command for ending current turn
-    Then Board is empty
+    Then Board is valid
     And Player has 6 tiles
     And There are 2 total turns
 
