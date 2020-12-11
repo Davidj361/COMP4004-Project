@@ -34,8 +34,8 @@ Feature: jokerFeature, The joker can be a wild tile that be used to create runs 
     And Player starts turn (not first placement)
     And Player 1 has "(8 blue),(7 black),(7 blue)" in their hand
     And There already exists tiles of "(8 red),(8 black),(0 Joker)" on board
-    When Player sends a command for splitting row 0 at index 2
-    And Player sends a command for giving tiles of "(8 blue)" to row 0
-    And Player sends a command for giving tiles of "(7 black),(7 blue)" to row 1
+    When Player sends a command for splitting row 1 at index 2
+    And Player sends a command for giving tiles of "(8 blue)" to row 1
+    And Player sends a command for giving tiles of "(7 black),(7 blue)" to row 2
     And Player sends a command for ending current turn
     Then Tiles placed on board successfully
