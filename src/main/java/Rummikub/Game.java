@@ -390,7 +390,7 @@ public class Game {
 				println("You ended your turn with out making any moves", getCurPlayerIdx());
 				if(board.checkBoard()) {
 					println("A tile has been added to your hand from deck", getCurPlayerIdx());
-					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+					messageToOtherPlayers(getCurPlayerName() + " ended their turn with out making any moves");
 					messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
 					if (deck.getTiles().size() > 0) {
 						drawTile(player);
