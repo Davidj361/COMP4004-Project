@@ -335,9 +335,10 @@ public class StepDefinitions {
     }
 
     @Given("There already exists tiles of {string} on board")
-    public void there_already_exists_a_group_of_on_board(String string) {
+    public void thereAlreadyExistsTilesOfXOnBoard(String string) {
         ArrayList<Tile> tiles = createTiles(string);
         game.getBoard().addSet(tiles);
+        game.setOrigBoard();
     }
 
     @Given("Player's first placement is done")
