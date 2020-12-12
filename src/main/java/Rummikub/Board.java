@@ -187,14 +187,6 @@ public class Board {
 		return row;
 	}
 
-	public ArrayList<Tile> getTiles(){
-		ArrayList<Tile> tiles = new ArrayList<>();
-		for(int i = 0; i < board.size(); i++){
-			tiles.addAll(board.get(i));
-		}
-		return tiles;
-	}
-
 	public ArrayList<Tile> getRow (int index) {
 		return board.get(index);
 	}
@@ -203,18 +195,12 @@ public class Board {
 		return board.size();
 	}
 
-	public void setTiles(ArrayList<Tile> tiles){
-		board.clear();
-		if(!tiles.isEmpty()) {
-			board.add(tiles);
-		}
-	}
 
 	// this function checks if there are tiles of indices
 	// this is used for checking indices for moving tiles
 	public boolean hasTiles(int srcRow, int[] tilesIndex) {
 		for (int index: tilesIndex) {
-			if (board.get(srcRow) == null || board.get(srcRow).get(index-1) == null)
+			if (board.size() < srcRow || board.get(srcRow).size() < index)
 				return false;
 		}
 		return true;
