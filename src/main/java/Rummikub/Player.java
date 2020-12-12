@@ -1,8 +1,6 @@
 package Rummikub;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Player {
     private int turn;
@@ -69,21 +67,12 @@ public class Player {
     }
 
     public boolean hasJoker () {
-        ArrayList<Tile> tiles = hand.getTiles();
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).getColor().equals(Tile.Colors.JOKER))
-                return true;
-        }
-        return false;
+        return hand.hasJoker();
     }
 
     // player put tiles from hand
-    public ArrayList<Tile> putTiles(int[] tilesIndex) {
-        ArrayList<Tile> tileSet = new ArrayList<Tile>();
-        for (int i=tilesIndex.length-1; i>=0; i--) {
-            tileSet.add(hand.putTile(tilesIndex[i] - 1));
-        }
-        return tileSet;
+    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+        return hand.placeTiles(tilesIndex);
     }
 
     public void resetHand() {

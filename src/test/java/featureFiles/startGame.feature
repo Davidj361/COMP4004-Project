@@ -20,6 +20,7 @@ Feature: startGameFeature, Players can host or connect to a host
     And The game has a game ending score at 50
     And Everyone closes their connections
 
+    # NOTE: This test will take a couple seconds to run because the client needs to timeout from trying to connect and then fail
   @startGame-2
   Scenario: Player 1 chooses to be a client then tries to connects to an IP not hosting
     Given 1 people startup Rummikub

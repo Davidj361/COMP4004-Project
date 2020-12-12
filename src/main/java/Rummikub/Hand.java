@@ -61,8 +61,24 @@ public class Hand{
         return false;
     }
 
+    public boolean hasJoker () {
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getColor().equals(Tile.Colors.JOKER))
+                return true;
+        }
+        return false;
+    }
+    
     public Tile putTile(int t) {
         return tiles.remove(t);
+    }
+
+    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+        for (int i=tilesIndex.length-1; i>=0; i--) {
+            tileSet.add(putTile(tilesIndex[i] - 1));
+        }
+        return tileSet;
     }
 
     // Good for debugging output
@@ -70,9 +86,7 @@ public class Hand{
             String string = "";
             int size = 0;
             for (int i = 0; i < tiles.size(); i++) {
-                if (tiles.get(i).getColor() != Tile.Colors.JOKER)
-                    string += tiles.get(i).getValue() + "  ";
-                string += tiles.get(i).getColor() + "}  ";
+                string = getString(string, i);
                 int sz = string.length() - size;
                 size = string.length();
             }
@@ -87,9 +101,7 @@ public class Hand{
         String index = ""; // A string having aligned indexes
         int size = 0;
         for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).getColor() != Tile.Colors.JOKER)
-                string += tiles.get(i).getValue() + "  ";
-            string += tiles.get(i).getColor() + "}  ";
+            string = getString(string, i);
             int sz = string.length() - size;
             index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
             size = string.length();
@@ -98,6 +110,13 @@ public class Hand{
         ret += index+'\n';
         ret += string;
         return ret;
+    }
+
+    private String getString(String string, int i) {
+        if (tiles.get(i).getColor() != Tile.Colors.JOKER)
+            string += tiles.get(i).getValue() + "  ";
+        string += tiles.get(i).getColor() + "}  ";
+        return string;
     }
 
     public boolean compare(Hand origHand){

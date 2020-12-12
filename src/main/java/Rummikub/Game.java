@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import Rummikub.Tile.Colors;
-
 public class Game {
 	private Server server;
     private boolean gameRunning = false;
@@ -105,9 +103,7 @@ public class Game {
 		}
 		else{
 			for(int i = 0; i< players.size(); i++) {
-				sum = players.get(i).sumOfTiles();
-				if (players.get(i).hasJoker())
-					sum += 30;
+				sum = getSum(i);
 				if (sum < highscore) {
 					p = players.get(i);
 					highscore = sum;
@@ -115,6 +111,14 @@ public class Game {
 			}
 		}
 		return p;
+	}
+
+	private int getSum(int i) {
+		int sum;
+		sum = players.get(i).sumOfTiles();
+		if (players.get(i).hasJoker())
+			sum += 30;
+		return sum;
 	}
 
 	public Player getFinalWinner() {
@@ -151,17 +155,7 @@ public class Game {
 	public void scorePoints() {
 		Player winner = getWinner();
 		int scoreForWinner = 0;
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i) != winner) {
-				int score = -players.get(i).sumOfTiles();
-				if (players.get(i).hasJoker())
-					score -= 30;
-				scoreForWinner += -score;
-				players.get(i).setScore(score);
-				println(players.get(i).getName() + ": " + players.get(i).getScore());
-				players.get(i).updateTotalScore(score);
-			}
-		}
+		scoreForWinner = getScoreForWinner(winner, scoreForWinner);
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) == winner) {
 				winner.setScore(scoreForWinner);
@@ -179,7 +173,27 @@ public class Game {
 		}
 	}
 
-    // returns true if player's hand is empty
+	private int getScoreForWinner(Player winner, int scoreForWinner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) != winner) {
+				int score = getScore(i);
+				scoreForWinner += -score;
+				players.get(i).setScore(score);
+				println(players.get(i).getName() + ": " + players.get(i).getScore());
+				players.get(i).updateTotalScore(score);
+			}
+		}
+		return scoreForWinner;
+	}
+
+	private int getScore(int i) {
+		int score = -players.get(i).sumOfTiles();
+		if (players.get(i).hasJoker())
+			score -= 30;
+		return score;
+	}
+
+	// returns true if player's hand is empty
     public boolean isGameOver() {
     	if (players.get(getCurPlayerIdx()).getTileNumber() == 0)
     		return true;
@@ -198,11 +212,10 @@ public class Game {
 
 	// Prints the same string to all players
 	public void print(String str) {
-		if(server != null) {
+		if (server != null) {
 			for (int i = 0; i < players.size(); i++)
 				print(str, i);
-			}
-		else
+		} else
 			print(str, 0);
 	}
 
@@ -434,7 +447,7 @@ public class Game {
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
 			Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
-			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addSet(playerTiles);
 			commandReceivedMessage("p");
 			messageToOtherPlayers(getCurPlayerName() + " placed tile(s)");
@@ -453,7 +466,7 @@ public class Game {
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
 		if (player.hasTiles(tilesIdx)) {
-			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage("g");
 			messageToOtherPlayers(getCurPlayerName() + " added a tile to row on the board");
