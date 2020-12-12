@@ -461,13 +461,33 @@ public class StepDefinitions {
         assertEquals(p, winner);
     }
 
-    @Then("Player {int} has {int} points")
+    @And("Player {int} has won the round")
+    public void playerHasWonTheRound(int arg0) {
+        Player winner = game.getWinner();
+        assertNotEquals(null, winner);
+        Player p = game.getPlayer(arg0-1);
+        assertEquals(p, winner);
+    }
+
+    @Then("Game is not won")
+    public void gameIsNotWon() {
+        Player winner = game.getFinalWinner();
+        assertNull(winner);
+    }
+
+    @Then("Player {int} has {int} points from this round")
     public void playerHasPoints(int arg0, int arg1) {
         int scr = game.getPlayer(arg0-1).getScore();
         assertEquals(arg1, scr);
     }
 
-    @Then("All other players but player {int} have {int} points")
+    @Then("Player {int} has {int} total points from the entire game")
+    public void playerHasTotalPointsFromTheEntireGame(int arg0, int arg1) {
+        int scr = game.getPlayer(arg0-1).getTotalScore();
+        assertEquals(arg1, scr);
+    }
+
+    @Then("All other players but player {int} have {int} points from this round")
     public void allOtherPlayersButPlayerHavePoints(int arg0, int arg1) {
         for (int i=0; i<game.getPlayers().size(); i++) {
             if (i == arg0-1)
@@ -476,6 +496,17 @@ public class StepDefinitions {
             assertEquals(arg1, scr);
         }
     }
+
+    @Then("All other players but player {int} have {int} total points from the entire game")
+    public void allOtherPlayersButPlayerHaveTotalPointsFromTheEntireGame(int arg0, int arg1) {
+        for (int i=0; i<game.getPlayers().size(); i++) {
+            if (i == arg0-1)
+                continue;
+            int scr = game.getPlayer(i).getTotalScore();
+            assertEquals(arg1, scr);
+        }
+    }
+
 
     @When("Player sends a command for splitting row {int} at index {int}")
     public void player_sends_a_command_for_splitting_row_at_index(int int1, int int2) throws IOException {
@@ -564,4 +595,5 @@ public class StepDefinitions {
         String command = String.format("dh");
         assertTrue(game.command(arg0 -1, command));
     }
+
 }
