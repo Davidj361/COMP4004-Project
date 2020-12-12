@@ -69,6 +69,14 @@ public class Hand{
         return false;
     }
 
+    public boolean hasJoker () {
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getColor().equals(Tile.Colors.JOKER))
+                return true;
+        }
+        return false;
+    }
+    
     public Tile putTile(int t) {
         return tiles.remove(t);
     }
