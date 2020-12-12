@@ -219,11 +219,10 @@ public class Game {
 
 	// Prints the same string to all players
 	public void print(String str) {
-		if(server != null) {
+		if (server != null) {
 			for (int i = 0; i < players.size(); i++)
 				print(str, i);
-			}
-		else
+		} else
 			print(str, 0);
 	}
 
