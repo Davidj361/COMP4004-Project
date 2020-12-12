@@ -340,13 +340,30 @@ Feature: Testing user play a turn in various scenarios
     Given New game is started
     When It is player's turn
     And Player's first placement is done
+    And There are 1 total turns
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    And There are 1 total turns
     When Player sends a command for splitting row 1 at index 2
-    And There are 1 total turns
     And Player sends a command for giving tiles of "(5 red)" to row 1
+    And Board is valid
+    And There are 1 total turns
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+
+  @playTurnRecursiveCategory2-5
+  Scenario: Play Turn - It is the player's turn, player splits a row, player gives tilts to new created row, player ends their turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(8 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends a command for splitting row 1 at index 2
+    And Player sends a command for giving tiles of "(5 red)" to row 1
+    And Player sends a command for placing tiles of "(7 red),(8 red),(9 red)" on board
+    And Board is valid
     And There are 1 total turns
     And Player sends a command for ending current turn
     Then There are 2 total turns
