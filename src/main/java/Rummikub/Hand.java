@@ -39,14 +39,6 @@ public class Hand{
         this.tiles.add(tile);
     }
 
-    //check to see if players hand is empty
-    public boolean isEmpty() {
-        if (tiles.size() < 1) {
-            return true;
-        }
-        return false;
-    }
-
     //sort tiles in players hand
     public void sort() {
         Collections.sort(getTiles(), new Comparator<Tile>() {

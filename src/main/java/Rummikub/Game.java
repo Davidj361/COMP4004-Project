@@ -26,23 +26,16 @@ public class Game {
 
 
 	// Constructors
-	//For testing
-	public Game() {
-		this(false);
-	}
 	// Single player
-	public Game(boolean b) {
-		testing = b;
+	public Game(boolean test) {
+		testing = test;
 		numPlayers = 1;
 		reset();
 	}
 
-	public Game(int i) {
-		this(i, false);
-	}
 	// Multiplayer with dummy players
-	public Game(int i, boolean b) {
-		testing = b;
+	public Game(int i, boolean test) {
+		testing = test;
 		numPlayers = i;
 		reset();
 	}
@@ -50,8 +43,8 @@ public class Game {
 		this(s, false);
 	}
 	// Multiplayer and networked
-	public Game(Server s, boolean b) {
-		testing = b;
+	public Game(Server s, boolean test) {
+		testing = test;
 		server = s;
 		server.game = this;
 		numPlayers = server.getNumClients()+1; // Add the host
@@ -255,6 +248,7 @@ public class Game {
 					return splitRow(args, curPlayer);
 				default:
 					invalidCmd = true;
+					invalidCommandMessage();
 					break;
 			}
 		} else { // No arguments to commands
@@ -278,6 +272,7 @@ public class Game {
 					return endTurn();
 				default:
 					invalidCmd = true;
+					invalidCommandMessage();
 					break;
 			}
 		}
@@ -432,11 +427,7 @@ public class Game {
 	// Places tiles from active player's hand to the board
 	// “p 1 3 4 7”
 	public boolean placeTiles(String[] sArr, Player player) {
-		// Needs at least 1 tile to place
-		if (sArr.length < 1) {
-			invalidCommandMessage();
-			return false;
-		}
+
 		// Integer index of tiles on hand
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
@@ -457,11 +448,6 @@ public class Game {
 	// Give tiles from your hand onto a row on the board
 	// “g 1 2 3”
 	private boolean giveTiles(String[] sArr, Player player) {
-		// Needs at least 1 tile to place and dstRow
-		if (sArr.length < 2) {
-			invalidCommandMessage();
-			return false;
-		}
 		int dstRow = Integer.parseInt(sArr[0])-1;
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
@@ -481,11 +467,6 @@ public class Game {
 	// Move tiles from one row on the board to another row on the board
 	// “m 1 2 5 6”
 	private boolean moveTiles(String[] sArr, Player player) {
-		// Needs at least 1 tile to place and dstRow & srcRow
-		if (sArr.length < 3) {
-			invalidCommandMessage();
-			return false;
-		}
 		int srcRow = Integer.parseInt(sArr[0])-1;
 		int dstRow = Integer.parseInt(sArr[1])-1;
 		int[] tilesIdx = new int[sArr.length-2];
@@ -510,11 +491,6 @@ public class Game {
 	// Split a row on the board into 2 rows
 	// “s 1 4”
 	private boolean splitRow(String[] sArr, Player player) {
-		// Needs a split index and srcRow
-		if (sArr.length != 2) {
-			invalidCommandMessage();
-			return false;
-		}
 		int srcRow = Integer.parseInt(sArr[0])-1;
 		int splitIdx = Integer.parseInt(sArr[1]);
 		board.separateSet(srcRow,splitIdx);
