@@ -84,9 +84,7 @@ public class Board {
 			}else {
 				printBoard += Integer.toString(i+1) + "|  ";
 			}
-			if (board.get(i).size() > size) {
-				size = board.get(i).size();
-			}
+			size = getSize(size, i);
 			for (int j = 0; j < board.get(i).size(); j++) {
 				if (getTile(i, j).getColor() == Tile.Colors.JOKER) {
 					printBoard += getTile(i, j).getColor() + "}  ";
@@ -101,6 +99,13 @@ public class Board {
 			printBoard+="-";
 		}
 		return printBoard;
+	}
+
+	private int getSize(int size, int i) {
+		if (board.get(i).size() > size){
+			size = board.get(i).size();
+		}
+		return size;
 	}
 
 
@@ -119,7 +124,10 @@ public class Board {
 				if (color == null)
 					color = getColorIfNotJoker(i,j);
 				colors.add(getTile(i, j).color);
-				if ( getTile(i, j).getValue() == board.get(i).get(j + 1).getValue() - 1 && (getTile(i, j).getColor() == Tile.Colors.JOKER || (getTile(i, j).getColor() == color && board.get(i).get(j+1).getColor() == color ||  board.get(i).get(j+1).getColor() == Tile.Colors.JOKER)) && (type == 0 || type == 1)) {
+				if ( getTile(i, j).getValue() == board.get(i).get(j + 1).getValue() - 1 && (getTile(i, j).getColor() == Tile.Colors.JOKER
+						|| (getTile(i, j).getColor() == color && board.get(i).get(j+1).getColor() == color
+						||  board.get(i).get(j+1).getColor() == Tile.Colors.JOKER)) && (type == 0
+						|| type == 1)) {
 					valueCorrect++;
 					type = 1;
 				} else {
