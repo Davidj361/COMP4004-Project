@@ -74,11 +74,7 @@ public class Player {
 
     // player put tiles from hand
     public ArrayList<Tile> putTiles(int[] tilesIndex) {
-        ArrayList<Tile> tileSet = new ArrayList<Tile>();
-        for (int i=tilesIndex.length-1; i>=0; i--) {
-            tileSet.add(hand.putTile(tilesIndex[i] - 1));
-        }
-        return tileSet;
+        return hand.putTiles(tilesIndex);
     }
 
     public void resetHand() {
