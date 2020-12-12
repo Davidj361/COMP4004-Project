@@ -1,5 +1,5 @@
 @playTurnFeature
-Feature: Testing user play a turn in various scenarios
+Feature: playTurnFeature, playTurn use case test scenarios
 
   @playTurn_1
   Scenario: Play Turn - places a tile and form a run, then finishes turn
@@ -10,7 +10,7 @@ Feature: Testing user play a turn in various scenarios
     When Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_2
@@ -22,7 +22,7 @@ Feature: Testing user play a turn in various scenarios
     When Player sends a command for giving tiles of "(3 yellow)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_3
@@ -34,7 +34,7 @@ Feature: Testing user play a turn in various scenarios
     When Player sends a command for giving tiles of "(6 red),(7 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_4
@@ -45,7 +45,7 @@ Feature: Testing user play a turn in various scenarios
     When Player sends a command for placing tiles of "(3 red),(4 red),(5 red),(6 red)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_5
@@ -56,7 +56,7 @@ Feature: Testing user play a turn in various scenarios
     When Player sends a command for placing tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_6
@@ -68,7 +68,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for placing tiles of "(8 blue),(9 blue),(10 blue)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_7
@@ -80,7 +80,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for placing tiles of "(8 blue),(8 black),(8 yellow)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_8
@@ -92,7 +92,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for placing tiles of "(8 blue),(9 blue),(10 blue)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_9
@@ -159,7 +159,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_14
@@ -172,7 +172,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(7 red),(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_15
@@ -185,7 +185,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(8 red)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_16
@@ -193,7 +193,7 @@ Feature: Testing user play a turn in various scenarios
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red)" on board
-    And There already exists additional tiles of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
+    And There already exists tiles of "(3 blue),(4 blue),(5 blue),(6 blue)" on board
     And Player has "(6 black)" in their hand
     When Player sends a command for splitting row 1 at index 3
     And Player sends a command for splitting row 2 at index 3
@@ -201,7 +201,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(6 black)" to row 3
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_17
@@ -209,25 +209,25 @@ Feature: Testing user play a turn in various scenarios
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
-    And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(6 red),(7 red),(8 red)" on board
     When Player sends a command for moving row 2 indices "1 2 3" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
 
   @playTurn_18
   Scenario: Play Turn - move a run of tiles into another run, undo and place a tile to form a run
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
-    And There already exists additional tiles of "(9 red),(10 red),(11 red)" on board
+    And There already exists tiles of "(9 red),(10 red),(11 red)" on board
     And Player has "(6 red)" in their hand
     When Player sends a command for moving row 2 indices "1 2 3" to row 1
     And Player sends a command for undoing the previous action
     And Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_19
@@ -241,7 +241,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(3 black)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_20
@@ -254,7 +254,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(6 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_21
@@ -267,7 +267,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(3 yellow)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurnNonRecursive-1
@@ -290,7 +290,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn_23
@@ -305,7 +305,7 @@ Feature: Testing user play a turn in various scenarios
     And There are 2 total turns
 
   @playTurn24
-  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, places an existing tile and form a group, then finished turn
+  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, places an existing tile and form a group or run, then finished turn
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
@@ -315,11 +315,11 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(4 yellow),(5 yellow)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @playTurn25
-  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, places an existing tile and form a group, then finished turn
+  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, player manipulates board again, places existing tiles and form a group or run, then finished turn
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
@@ -332,11 +332,80 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(9 red)" to row 3
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
+  @playTurn_26
+  Scenario: PlayTurn - places a tile that doesn't exist, then finishes turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red)" on board
+    And Player sends a command for splitting row 1 at index 2
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+
+  @playTurn_27
+  Scenario: PlayTurn - player places, places an existing tile and form a group or run, player ends turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Player sends a command for placing tiles of "(5 red),(7 red),(9 red)" on board
+    Then It is player's turn
+    And Player sends a command for ending current turn
+    And There are 2 total turns
+
+  @playTurn_28
+  Scenario: PlayTurn - places multiple tiles that form a run, and places multiple tiles that form another run, then finishes turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue),(10 blue)" on board
+    And Player has "(3 red),(4 red),(5 red),(11 blue),(12 blue)" in their hand
+    And Player sends a command for placing tiles of "(3 red),(4 red),(5 red)" on board
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(11 blue),(12 blue)" to row 3
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @playTurn_29
+  Scenario: PlayTurn - player manipulates board, places tiles, undoes previos action, place tiles that form a group or run, ends turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue),(10 blue)" on board
+    And Player has "(3 red),(4 red),(5 red)" in their hand
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for placing tiles of "(3 red),(4 red),(5 red)" on board
+    And Player sends a command for undoing the previous action
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for placing tiles of "(3 red),(4 red),(5 red)" on board
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @playTurn_30
+  Scenario: PlayTurn - player manipulates board, places tiles, undoes previos action, manipulates the board, place tiles that form a group or run, ends turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue),(10 blue)" on board
+    And Player has "(10 red),(10 yellow)" in their hand
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(10 red),(10 yellow)" to row 2
+    And Player sends a command for undoing the previous action
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(10 red),(10 yellow)" to row 2
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+
   @playTurnRecursiveCategory2-4
-  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to new created row, then ends their turn
+  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to newly created row, then ends their turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -344,7 +413,7 @@ Feature: Testing user play a turn in various scenarios
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    When Player sends a command for splitting row 1 at index 2
+    And Player sends a command for splitting row 1 at index 2
     And Player sends a command for giving tiles of "(5 red)" to row 1
     And Board is valid
     And There are 1 total turns
@@ -353,7 +422,7 @@ Feature: Testing user play a turn in various scenarios
     And Board is valid
 
   @playTurnRecursiveCategory2-5
-  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to new created row, places tiles, then ends their turn
+  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to newly created row, places tiles, then ends their turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -361,7 +430,7 @@ Feature: Testing user play a turn in various scenarios
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(8 red),(9 red)" in their hand
     And Board is valid
-    When Player sends a command for splitting row 1 at index 2
+    And Player sends a command for splitting row 1 at index 2
     And Player sends a command for giving tiles of "(5 red)" to row 1
     And Player sends a command for placing tiles of "(7 red),(8 red),(9 red)" on board
     And Board is valid
@@ -371,7 +440,47 @@ Feature: Testing user play a turn in various scenarios
     And Board is valid
 
   @playTurnRecursiveCategory2-6
-  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to new created row, places tiles, then ends their turn
+  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to newly created row, splits another row, places tiles on board, then ends their turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
+    And Player has "(5 red),(6 red),(7 red),(8 red),(9 red)" in their hand
+    And Board is valid
+    And Player sends a command for splitting row 1 at index 2
+    And Player sends a command for giving tiles of "(5 red)" to row 1
+    And Player sends a command for splitting row 2 at index 3
+    And Player sends a command for placing tiles of "(7 red),(8 red),(9 red)" on board
+    And Board is valid
+    And There are 1 total turns
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+    And Board is valid
+
+  @playTurnRecursiveCategory3_7
+  Scenario: Play Turn - It is the player's turn, player splits a row, undoes their turn, then ends their turn
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
+    And Player has "(5 red),(6 red),(7 red),(8 red),(9 red)" in their hand
+    And Board is valid
+    And Player sends a command for splitting row 1 at index 2
+    And Player sends a command for undoing the previous action
+    And Board is valid
+    And There are 1 total turns
+    And Player has 5 tiles
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+    And Board is valid
+    And Player has 6 tiles
+
+  @playTurnRecursiveCategory3_9
+  Scenario: Play Turn - It is the player's turn, splits a row, undoes their turn, splits another row, places tiles on board, then ends their turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -381,8 +490,8 @@ Feature: Testing user play a turn in various scenarios
     And Player has "(5 red),(6 red),(7 red),(8 red),(9 red)" in their hand
     And Board is valid
     When Player sends a command for splitting row 1 at index 2
-    And Player sends a command for giving tiles of "(5 red)" to row 1
-    When Player sends a command for splitting row 2 at index 3
+    And Player sends a command for undoing the previous action
+    And Player sends a command for splitting row 1 at index 3
     And Player sends a command for placing tiles of "(7 red),(8 red),(9 red)" on board
     And Board is valid
     And There are 1 total turns
@@ -410,7 +519,7 @@ Feature: Testing user play a turn in various scenarios
     And Player's first placement is done
     And There are 1 total turns
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
-    And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(6 red),(7 red),(8 red)" on board
     And Player has "(2 black),(2 red)" in their hand
     When Player sends a command for giving tiles of "(2 black)" to row 1
     And Player sends a command for undoing the previous action
@@ -418,7 +527,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(2 red)" to row 1
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @Recursive_Category_3-3
@@ -435,7 +544,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(8 black)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @Recursive_Category_3-4
@@ -445,7 +554,7 @@ Feature: Testing user play a turn in various scenarios
     And Player's first placement is done
     And There are 1 total turns
     And There already exists tiles of "(3 red),(3 blue),(3 yellow)" on board
-    And There already exists additional tiles of "(3 black),(4 black),(5 black)" on board
+    And There already exists tiles of "(3 black),(4 black),(5 black)" on board
     And Player has "(6 black),(11 red)" in their hand
     When Player sends a command for giving tiles of "(11 red)" to row 1
     And Player sends a command for undoing the previous action
@@ -453,7 +562,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(6 black)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @Recursive_Category_3-5
@@ -470,7 +579,7 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for giving tiles of "(6 red),(6 blue)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @Recursive_Category_3-6

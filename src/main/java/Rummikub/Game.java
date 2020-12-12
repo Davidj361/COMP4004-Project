@@ -535,19 +535,6 @@ public class Game {
 	// Functions used by command(..)
 	//////////////////////////////////////////////////////////////////////
 
-
-	// initialize the board status for debugging
-	public void setBoardState(Board b) {
-		origBoard = new Board();
-		board = new Board();
-		for (ArrayList<Tile> row: b.board) {
-			ArrayList<Tile> temp = new ArrayList<Tile>();
-			temp.addAll(row);
-			origBoard.addSet(temp);
-		}
-		setBoard();
-	}
-
 	// Return current player's hand
 	public Hand curPlayerHand() {
 		return players.get(getCurPlayerIdx()).getHand();
