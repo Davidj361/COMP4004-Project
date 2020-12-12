@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Game {
 	private Server server;
-    private boolean gameRunning = false;
     private int turn, totalturns = 0;
     private int round = 0;
     private int gameEndingScore = 0;
@@ -51,7 +50,6 @@ public class Game {
 
 	// Useful for testing and restarting the game
 	public void reset() {
-		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
 		setOrigBoard();
@@ -70,7 +68,6 @@ public class Game {
 	}
 
 	public void resetRound() {
-		gameRunning = true;
 		deck = new Deck();
 		board = new Board();
 		setOrigBoard();
@@ -123,11 +120,12 @@ public class Game {
 
 	public Player getFinalWinner() {
 		Player p = null;
-		int totalscore = 0;
+		int totalScore = 0;
 		for (int i = 0; i < players.size(); i ++ ) {
-			if (players.get(i).getTotalScore() > totalscore) {
-				p = players.get(i);
-				totalscore = players.get(i).getTotalScore();
+			int scr = players.get(i).getTotalScore();
+			if (scr >= gameEndingScore && scr > totalScore) {
+				p = getPlayer(i);
+				totalScore = scr;
 			}
 		}
 		if (p != null) {
@@ -137,16 +135,13 @@ public class Game {
 		return p;
 	}
 
-	public void printFinalScores() {
-		String output;
-		output = "=========FINAL SCORES=========\n";
-		for(int i = 0; i < players.size(); i++)
-			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
-		println(output);
-	}
-	public void printCurrentTotalScores() {
-		String output;
-		output = "=========CURRENT SCORES=========\n";
+	// Is the game won? Change header
+	public void printTotalScores(boolean won) {
+		String output = "";
+		if (won)
+			output += "=========FINAL SCORES=========\n";
+		else
+			output += "=========CURRENT SCORES=========\n";
 		for(int i = 0; i < players.size(); i++)
 			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
 		println(output);
@@ -163,14 +158,8 @@ public class Game {
 				winner.updateTotalScore(scoreForWinner);
 			}
 		}
-		printCurrentTotalScores();
-		// Final round ending for multiple rounds
-		for (int i = 0; i < players.size(); i++) {
-			if(players.get(i).getTotalScore() >= gameEndingScore){
-				getFinalWinner();
-				printFinalScores();
-			}
-		}
+		Player finalWinner = getFinalWinner();
+		printTotalScores(finalWinner != null);
 	}
 
 	private int getScoreForWinner(Player winner, int scoreForWinner) {

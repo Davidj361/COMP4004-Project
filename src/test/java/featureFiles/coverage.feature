@@ -1,5 +1,5 @@
 @coverageFeature
-Feature: testing extra code to please code coverage
+Feature: coverageFeature, testing extra code to please code coverage
 
   @codecoverage_1
   Scenario: Tests printing the board with more than 10 rows
@@ -102,7 +102,7 @@ Feature: testing extra code to please code coverage
     And Set game ending score to 50
     Then Player 2 wins the round with score 42 points
     And Player 1 finishes the round with -42 points
-    And Score does not reach winning threshold
+    And Game is not won
     And Game goes to round 2
 
   @codecoverage_board
