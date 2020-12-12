@@ -112,9 +112,7 @@ public class Game {
 		}
 		else{
 			for(int i = 0; i< players.size(); i++) {
-				sum = players.get(i).sumOfTiles();
-				if (players.get(i).hasJoker())
-					sum += 30;
+				sum = getSum(i);
 				if (sum < highscore) {
 					p = players.get(i);
 					highscore = sum;
@@ -122,6 +120,14 @@ public class Game {
 			}
 		}
 		return p;
+	}
+
+	private int getSum(int i) {
+		int sum;
+		sum = players.get(i).sumOfTiles();
+		if (players.get(i).hasJoker())
+			sum += 30;
+		return sum;
 	}
 
 	public Player getFinalWinner() {
@@ -158,17 +164,7 @@ public class Game {
 	public void scorePoints() {
 		Player winner = getWinner();
 		int scoreForWinner = 0;
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i) != winner) {
-				int score = -players.get(i).sumOfTiles();
-				if (players.get(i).hasJoker())
-					score -= 30;
-				scoreForWinner += -score;
-				players.get(i).setScore(score);
-				println(players.get(i).getName() + ": " + players.get(i).getScore());
-				players.get(i).updateTotalScore(score);
-			}
-		}
+		scoreForWinner = getScoreForWinner(winner, scoreForWinner);
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) == winner) {
 				winner.setScore(scoreForWinner);
@@ -186,7 +182,27 @@ public class Game {
 		}
 	}
 
-    // returns true if player's hand is empty
+	private int getScoreForWinner(Player winner, int scoreForWinner) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i) != winner) {
+				int score = getScore(i);
+				scoreForWinner += -score;
+				players.get(i).setScore(score);
+				println(players.get(i).getName() + ": " + players.get(i).getScore());
+				players.get(i).updateTotalScore(score);
+			}
+		}
+		return scoreForWinner;
+	}
+
+	private int getScore(int i) {
+		int score = -players.get(i).sumOfTiles();
+		if (players.get(i).hasJoker())
+			score -= 30;
+		return score;
+	}
+
+	// returns true if player's hand is empty
     public boolean isGameOver() {
     	if (players.get(getCurPlayerIdx()).getTileNumber() == 0)
     		return true;
