@@ -36,3 +36,15 @@ Feature: bugs that need to be tested against
     Then Player has NOT done First Placement
     And Player has 7 tiles
     And There are 2 total turns
+
+  @bug3
+  Scenario: BUG when sorting a give if the give tile indexes are backwards
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(10 black),(11 black),(12 black)" on board
+    And Player has "(1 yellow),(2 blue),(3 red),(13 black),(12 black),(1 yellow),(2 blue),(3 red),(1 yellow),(2 blue),(3 red),(8 black),(9 black),(3 red)" in their hand
+    When Player sends a command for giving tiles of "(9 black),(8 black)" to row 1
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
