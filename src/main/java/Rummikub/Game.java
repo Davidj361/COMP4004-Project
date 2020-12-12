@@ -474,6 +474,7 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
+			Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
