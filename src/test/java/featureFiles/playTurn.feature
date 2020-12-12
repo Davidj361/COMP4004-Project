@@ -389,3 +389,101 @@ Feature: Testing user play a turn in various scenarios
     And Player sends a command for ending current turn
     Then There are 2 total turns
     And Board is valid
+
+  @Recursive_Category_3-1
+  Scenario: PlayTurn - player places tiles on board, undoes the change, then finishes turn and draw a tile
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    When Player sends a command for placing tiles of "(5 red),(7 red),(9 red)" on board
+    And Player sends a command for undoing the previous action
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+    And Player draws tile(s) from the deck so player has 4 tiles
+
+  @Recursive_Category_3-2
+  Scenario: PlayTurn - player places tiles on board, undoes the change, move tiles, places different tiles on board that form a run, then finishes turn
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 red),(4 red),(5 red)" on board
+    And There already exists additional tiles of "(6 red),(7 red),(8 red)" on board
+    And Player has "(2 black),(2 red)" in their hand
+    When Player sends a command for giving tiles of "(2 black)" to row 1
+    And Player sends a command for undoing the previous action
+    And Player sends a command for moving row 2 indices "1 2 3" to row 1
+    And Player sends a command for giving tiles of "(2 red)" to row 1
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @Recursive_Category_3-3
+  Scenario: PlayTurn - player places tiles on board, undoes the change, split tiles, places different tiles on board that form a run, then finishes turn
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black)" on board
+    And Player has "(8 black),(11 red)" in their hand
+    When Player sends a command for giving tiles of "(11 red)" to row 1
+    And Player sends a command for undoing the previous action
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(8 black)" to row 2
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @Recursive_Category_3-4
+  Scenario: PlayTurn - player places tiles on board, undoes the change, move tiles, places different tiles on board that form a group, then finishes turn
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 red),(3 blue),(3 yellow)" on board
+    And There already exists additional tiles of "(3 black),(4 black),(5 black)" on board
+    And Player has "(6 black),(11 red)" in their hand
+    When Player sends a command for giving tiles of "(11 red)" to row 1
+    And Player sends a command for undoing the previous action
+    And Player sends a command for moving row 2 indices "1" to row 1
+    And Player sends a command for giving tiles of "(6 black)" to row 2
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @Recursive_Category_3-5
+  Scenario: PlayTurn - player places tiles on board, undoes the change, split tiles, places different tiles on board that form a group, then finishes turn
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Player has "(6 red),(6 blue),(7 black)" in their hand
+    When Player sends a command for giving tiles of "(7 black)" to row 1
+    And Player sends a command for undoing the previous action
+    And Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(6 red),(6 blue)" to row 2
+    And Board is valid
+    And Player sends a command for ending current turn
+    Then Tiles placed on board successfully
+    And There are 2 total turns
+
+  @Recursive_Category_3-6
+  Scenario: PlayTurn - player split tiles, places tiles on board, undoes the change, then finishes turn and draw a tile
+    Given New game is started
+    And It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    When Player sends a command for splitting row 1 at index 3
+    And Player sends a command for giving tiles of "(5 red),(7 red),(9 red)" to row 2
+    And Player sends a command for undoing the previous action
+    And Player sends a command for ending current turn
+    Then There are 2 total turns
+    And Player draws tile(s) from the deck so player has 4 tiles
