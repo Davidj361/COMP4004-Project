@@ -11,9 +11,8 @@ Feature: endRoundFeature, Players can win the entire game if they pass the gameE
     Then Player 1 wins the round with score 68 points
     And Player 2 finishes the round with -23 points
     And Player 3 finishes the round with -45 points
-    And Score reaches winning threshold
+    And Game is won
     And Player 1 wins the game
-#   And Game closes
 
   @endRound_2
   Scenario: End round and go to next round
@@ -23,7 +22,7 @@ Feature: endRoundFeature, Players can win the entire game if they pass the gameE
     And Set game ending score to 50
     Then Player 1 wins the round with score 23 points
     And Player 2 finishes the round with -23 points
-    And Score does not reach winning threshold
+    And Game is not won
     And Game goes to round 2
 
   @endRound_3
@@ -35,7 +34,7 @@ Feature: endRoundFeature, Players can win the entire game if they pass the gameE
     And Set game ending score to 50
     Then Player 2 wins the round with score 23 points
     And Player 1 finishes the round with -23 points
-    And Score does not reach winning threshold
+    And Game is not won
     And Game goes to round 2
 
   @endRound_4
@@ -47,6 +46,6 @@ Feature: endRoundFeature, Players can win the entire game if they pass the gameE
     And Set game ending score to 50
     Then Player 2 wins the round with score 55 points
     And Player 1 finishes the round with -55 points
-    And Score reaches winning threshold
+    And Game is won
     And Player 2 wins the game
 

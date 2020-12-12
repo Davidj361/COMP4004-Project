@@ -475,6 +475,12 @@ public class StepDefinitions {
         assertNull(winner);
     }
 
+    @Then("Game is won")
+    public void gameIsWon() {
+        Player winner = game.getFinalWinner();
+        assertNotNull(winner);
+    }
+
     @Then("Player {int} has {int} points from this round")
     public void playerHasPoints(int arg0, int arg1) {
         int scr = game.getPlayer(arg0-1).getScore();
@@ -529,11 +535,6 @@ public class StepDefinitions {
         game.println(game.getBoard().printHelper());
     }
 
-    @And("Score reaches winning threshold")
-    public void scoreReachesWinningThreshold() {
-        assertTrue(game.getFinalWinner().getTotalScore() >= game.getGameEndingScore());
-    }
-
     @And("Game will end when a player reaches a score of {int}")
     public void gameWillEndWhenAPlayerReachesAScoreOf(int arg0) {
         game.setGameEndingScore(arg0);
@@ -543,11 +544,6 @@ public class StepDefinitions {
     @And("Player {int} wins the game")
     public void playerWinsTheGame(int arg0) {
         assertEquals(game.getPlayer(arg0 - 1), game.getFinalWinner());
-    }
-
-    @And("Score does not reach winning threshold")
-    public void scoreDoesNotReachWinningThreshold() {
-        assertTrue(game.getFinalWinner().getTotalScore() < game.getGameEndingScore());
     }
 
     @And("Game goes to round {int}")
@@ -595,5 +591,4 @@ public class StepDefinitions {
         String command = String.format("dh");
         assertTrue(game.command(arg0 -1, command));
     }
-
 }
