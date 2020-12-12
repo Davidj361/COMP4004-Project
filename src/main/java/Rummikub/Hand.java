@@ -81,7 +81,7 @@ public class Hand{
         return tiles.remove(t);
     }
 
-    public ArrayList<Tile> putTiles(int[] tilesIndex) {
+    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
         ArrayList<Tile> tileSet = new ArrayList<Tile>();
         for (int i=tilesIndex.length-1; i>=0; i--) {
             tileSet.add(putTile(tilesIndex[i] - 1));

@@ -1,8 +1,6 @@
 package Rummikub;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Player {
     private int turn;
@@ -73,8 +71,8 @@ public class Player {
     }
 
     // player put tiles from hand
-    public ArrayList<Tile> putTiles(int[] tilesIndex) {
-        return hand.putTiles(tilesIndex);
+    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+        return hand.placeTiles(tilesIndex);
     }
 
     public void resetHand() {
