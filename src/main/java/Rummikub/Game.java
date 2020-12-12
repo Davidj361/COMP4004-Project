@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Game {
 	private Server server;
     private int turn, totalturns = 0;
+    boolean won = false;
     private int round = 0;
     private int gameEndingScore = 0;
     private boolean endRound = false;
@@ -57,6 +58,7 @@ public class Game {
 		turn = 1;
 		totalturns = 1;
 		round = 1;
+		won = false;
 
 		if (server != null) { // Multiplayer mode
 			for (String name : server.getNames())
@@ -131,6 +133,16 @@ public class Game {
 		if (p != null) {
 			println("Winner: " + p.getName());
 			println("Score: " + p.getScore());
+			won = true;
+			if (server != null) {
+				try {
+					println("Server shutting down");
+					server.close();
+					server = null;
+				} catch (IOException e) {
+					System.out.println("Was unable to close server in Game.getFinalWinner(..).");
+				}
+			}
 		}
 		return p;
 	}
@@ -231,6 +243,8 @@ public class Game {
 	// The command handler
 	// Parses text given by a client to Server
 	public boolean command(int playerIdx, String input) throws IOException {
+		if (won) // Needed for non-networked tests and as a safeguard
+			return false;
 		if (!playerTurn(playerIdx)) {
 			if (!input.equals("h") && !input.equals("db") && !input.equals("dh")) {
 				println("It is not your turn yet.", playerIdx);

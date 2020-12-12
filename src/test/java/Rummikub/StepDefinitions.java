@@ -15,6 +15,7 @@ public class StepDefinitions {
     Game game;
     Server server;
     ArrayList<Client> clients;
+    // TODO Remove tiles, should be handled via argument passing with functions and returns
     ArrayList<Tile> tiles = new ArrayList<Tile>();
     ArrayList<App> apps; // For testing startGame use case
 
@@ -112,6 +113,14 @@ public class StepDefinitions {
 
     private App getApp(int i) { return apps.get(i-1); }
 
+    private void reset() {
+        tiles = new ArrayList<Tile>();
+        apps = null;
+        clients = null;
+        game = null;
+        server = null;
+    }
+
     // Helper functions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,12 +130,14 @@ public class StepDefinitions {
 
     @Given("New game is started")
     public void new_game_is_started() {
+        reset();
         game = new Game(true); // setup the game in testing mode
         assertEquals(1, game.getTurn());
     }
 
     @Given("New game is started with {int} players")
     public void new_game_is_started_with_players(int int1) {
+        reset();
         game = new Game(int1, true); // setup the game in testing mode
         assertEquals(1, game.getTurn());
     }
@@ -148,6 +159,7 @@ public class StepDefinitions {
 
     @Given("The host hosts a game")
     public void TheHostHostsAGame() throws IOException {
+        reset();
         // Server(String name, int port, int numPlayers, boolean b)
         server = new Server("HostPlayer", 27015, 4);
         // Setup network
@@ -192,6 +204,7 @@ public class StepDefinitions {
     // startGame.feature
     @Given("{int} people startup Rummikub")
     public void peopleStartupRummikub(int arg0) {
+        reset();
         apps = new ArrayList<App>();
         clients = new ArrayList<Client>();
         game = null;
