@@ -404,12 +404,11 @@ public class Game {
 						println("This is the last turn because the deck is empty!");
 					}
 				}
-
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			}
-			player.updateHand();  //update original hand to finalize
-			player.sortHand(); //sort the updated hand
 		}
+		player.updateHand();  //update original hand to finalize
+		player.sortHand(); //sort the updated hand
 		println("Your turn has ended", getCurPlayerIdx());
 		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		if(isGameOver() || endRound){
