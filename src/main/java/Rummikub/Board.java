@@ -84,9 +84,7 @@ public class Board {
 			}else {
 				printBoard += Integer.toString(i+1) + "|  ";
 			}
-			if (board.get(i).size() > size){
-				size = board.get(i).size();
-			}
+			size = getSize(size, i);
 			for (int j = 0; j < board.get(i).size(); j++) {
 				if (board.get(i).get(j).getColor() == Tile.Colors.JOKER) {
 					printBoard += board.get(i).get(j).getColor() + "}  ";
@@ -103,6 +101,13 @@ public class Board {
 		return printBoard;
 	}
 
+	private int getSize(int size, int i) {
+		if (board.get(i).size() > size){
+			size = board.get(i).size();
+		}
+		return size;
+	}
+
 
 	// Checks if the board is valid with all the modified rows
 	// Used for ending turns to see if what player did is valid
@@ -116,9 +121,7 @@ public class Board {
 				return false;
 			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
-				if(board.get(i).get(j).getColor() != Tile.Colors.JOKER && color == null){
-					color = board.get(i).get(j).getColor();
-				}
+				color = getColors(i, color, j);
 				colors.add(board.get(i).get(j).color);
 				if( board.get(i).get(j).getValue() == board.get(i).get(j + 1).getValue() - 1 && (board.get(i).get(j).getColor() == Tile.Colors.JOKER || (board.get(i).get(j).getColor() == color && board.get(i).get(j+1).getColor() == color ||  board.get(i).get(j+1).getColor() == Tile.Colors.JOKER)) && (type == 0 || type == 1)) {
 					valueCorrect++;
@@ -135,6 +138,13 @@ public class Board {
 			}
 		}
 		return true;
+	}
+
+	private Tile.Colors getColors(int i, Tile.Colors color, int j) {
+		if(board.get(i).get(j).getColor() != Tile.Colors.JOKER && color == null){
+			color = board.get(i).get(j).getColor();
+		}
+		return color;
 	}
 
 

@@ -112,9 +112,7 @@ public class Game {
 		}
 		else{
 			for(int i = 0; i< players.size(); i++) {
-				sum = players.get(i).sumOfTiles();
-				if (players.get(i).hasJoker())
-					sum += 30;
+				sum = getSum(i);
 				if (sum < highscore) {
 					p = players.get(i);
 					highscore = sum;
@@ -122,6 +120,14 @@ public class Game {
 			}
 		}
 		return p;
+	}
+
+	private int getSum(int i) {
+		int sum;
+		sum = players.get(i).sumOfTiles();
+		if (players.get(i).hasJoker())
+			sum += 30;
+		return sum;
 	}
 
 	public Player getFinalWinner() {
@@ -141,18 +147,29 @@ public class Game {
 	}
 
 	public void printFinalScores() {
-		String output;
-		output = "=========FINAL SCORES=========\n";
-		for(int i = 0; i < players.size(); i++)
-			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
+		String output = getString("=========FINAL SCORES=========\n");
 		println(output);
 	}
-	public void printCurrentTotalScores() {
+
+	private String getString(String s) {
 		String output;
-		output = "=========CURRENT SCORES=========\n";
-		for(int i = 0; i < players.size(); i++)
-			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
+		output = s;
+		for (int i = 0; i < players.size(); i++)
+			output += players.get(i).getName() + ": " + players.get(i).getTotalScore() + "\n";
+		return output;
+	}
+
+	public void printCurrentTotalScores() {
+		String output = getString("=========CURRENT SCORES=========\n");
 		println(output);
+	}
+
+	private String getString(String s) {
+		String output;
+		output = s;
+		for (int i = 0; i < players.size(); i++)
+			output += players.get(i).getName() + ": " + players.get(i).getTotalScore() + "\n";
+		return output;
 	}
 
 	public void scorePoints() {
