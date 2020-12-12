@@ -7,8 +7,8 @@ Feature: startGameFeature, Players can host or connect to a host
     Given 2 people startup Rummikub
     And Player 1 is named "HostPlayer"
     And Player 2 is named "Client1"
-    And Player 1 chooses port 1337
-    And Player 2 chooses port 1337
+    And Player 1 chooses port 27018
+    And Player 2 chooses port 27018
     When Player 1 chooses to be host
     And Player 1 wants 2 players for their game
     And Player 1 wants the game to end at 50 points
@@ -24,7 +24,7 @@ Feature: startGameFeature, Players can host or connect to a host
   Scenario: Player 1 chooses to be a client then tries to connects to an IP not hosting
     Given 1 people startup Rummikub
     And Player 1 is named "Client1"
-    And Player 1 chooses port 1338
+    And Player 1 chooses port 27019
     And Player 1 chooses a destination IP of "127.0.0.2"
     And Player 1 chooses to be a client
     Then Player 1 tries to connect but fails
