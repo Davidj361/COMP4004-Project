@@ -176,13 +176,13 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn_15
-  Scenario: Play Turn - splits tiles and places a tile with them to form a group
+  Scenario: Play Turn - splits tiles and places tiles with them to form a group
     Given New game is started
     And Player's first placement is done
-    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red)" on board
-    And Player has "(8 red)" in their hand
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red)" on board
+    And Player has "(6 yellow),(6 blue)" in their hand
     When Player sends a command for splitting row 1 at index 3
-    And Player sends a command for giving tiles of "(8 red)" to row 2
+    And Player sends a command for giving tiles of "(6 yellow),(6 blue)" to row 2
     And Board is valid
     And Player sends a command for ending current turn
     Then Board is valid
@@ -280,7 +280,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     Then There are 2 total turns
 
   @playTurn_22
-  Scenario: PlayTurn - places a tile that does not exist, manipultes board, places an existing tile and form a group, then finishes turn
+  Scenario: PlayTurn - places a tile that does not exist, manipulates board, places an existing tile and form a group, then finishes turn
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
@@ -305,7 +305,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn24
-  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, places an existing tile and form a group or run, then finished turn
+  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, places an existing tile and form a group or run, then finishes turn
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(3 blue),(3 black),(3 yellow)" on board
@@ -357,7 +357,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn_28
-  Scenario: PlayTurn - places multiple tiles that form a run, and places multiple tiles that form another run, then finishes turn
+  Scenario: PlayTurn - places multiple tiles that form a run, manipulates board, and places multiple tiles that form another run, then finishes turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -372,7 +372,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn_29
-  Scenario: PlayTurn - player manipulates board, places tiles, undoes previos action, place tiles that form a group or run, ends turn
+  Scenario: PlayTurn - player manipulates board, places tiles, undoes previous action, place tiles that form a group or run, ends turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -388,7 +388,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn_30
-  Scenario: PlayTurn - player manipulates board, places tiles, undoes previos action, manipulates the board, place tiles that form a group or run, ends turn
+  Scenario: PlayTurn - player manipulates board, places tiles, undoes previous action, manipulates the board, place tiles that form a group or run, ends turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
