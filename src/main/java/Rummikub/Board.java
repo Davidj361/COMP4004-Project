@@ -141,6 +141,11 @@ public class Board {
 	public ArrayList<Tile> addJoker(ArrayList<Tile> row){
 		for(int i = 0; i < row.size(); i++) {
 			if (row.get(i).getColor() == Tile.Colors.JOKER){
+				if(row.size() == 1){
+					Tile tile = new Tile(1, Tile.Colors.JOKER);
+					row.add(tile);
+					return row;
+				}
 				if(i == 0 &&row.get(1).getValue() == row.get(2).getValue()) {
 						row.get(i).setValue(row.get(i + 1).getValue());
 						return row;

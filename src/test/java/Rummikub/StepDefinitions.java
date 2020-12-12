@@ -528,4 +528,27 @@ public class StepDefinitions {
     public void theGameHasPlayers(int arg0) {
         assertEquals(arg0, game.getNumPlayers());
     }
+
+    @When("Player sends a command for displaying board")
+    public void player_sends_a_command_for_displaying_board() throws IOException {
+        String command = String.format("db");
+        assertTrue(game.command(0, command));
+    }
+
+    @And("Player sends a command for displaying hand")
+    public void playerSendsACommandForDisplayingHand() throws IOException {
+        String command = String.format("dh");
+        assertTrue(game.command(0, command));
+    }
+    @And("Player sends a command for displaying help")
+    public void playerSendsACommandForDisplayingHelp() throws IOException {
+        String command = String.format("h");
+        assertTrue(game.command(0, command));
+    }
+
+    @When("Player sends the command {string} which fails")
+    public void playerSendsTheCommand(String arg0) throws IOException {
+        String command = String.format(arg0);
+        assertFalse(game.command(0, command));
+    }
 }
