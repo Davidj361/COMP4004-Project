@@ -391,7 +391,7 @@ Feature: Testing user play a turn in various scenarios
     And Board is valid
 
   @playTurnRecursiveCategory3_7
-  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to new created row, places tiles, then ends their turn
+  Scenario: Play Turn - It is the player's turn, player splits a row, undoes their turn, then ends their turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -411,7 +411,7 @@ Feature: Testing user play a turn in various scenarios
     And Player has 6 tiles
 
   @playTurnRecursiveCategory3_9
-  Scenario: Play Turn - It is the player's turn, player splits a row, gives tiles to new created row, places tiles, then ends their turn
+  Scenario: Play Turn - It is the player's turn, splits a row, undoes their turn, splits another row, places tiles on board, then ends their turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
@@ -422,7 +422,7 @@ Feature: Testing user play a turn in various scenarios
     And Board is valid
     When Player sends a command for splitting row 1 at index 2
     And Player sends a command for undoing the previous action
-    And Player sends a command for splitting row 2 at index 3
+    And Player sends a command for splitting row 1 at index 3
     And Player sends a command for placing tiles of "(7 red),(8 red),(9 red)" on board
     And Board is valid
     And There are 1 total turns
