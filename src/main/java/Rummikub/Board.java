@@ -8,9 +8,6 @@ import java.util.Comparator;
 public class Board {
 	protected ArrayList<ArrayList<Tile>> board = new ArrayList<ArrayList<Tile>>();
 
-	public Board() {
-	}
-
 	//Add a new set to the board
 	public void addSet(ArrayList<Tile> set) {
 		set = addJoker(set);
@@ -37,13 +34,11 @@ public class Board {
 	public void separateSet(int row, int tileNum) {
 		ArrayList<Tile> newSet = new ArrayList<Tile>();
 		if (row < board.size() && board.get(row).size() > tileNum) {
-			for (int i = tileNum; i < board.get(row).size(); i++) {
+			for (int i = tileNum; i < board.get(row).size(); i++)
 				newSet.add(board.get(row).get(i));
-			}
 			int size = board.get(row).size();
-			for (int i = tileNum; i < size; i++) {
+			for (int i = tileNum; i < size; i++)
 				board.get(row).remove(tileNum);
-			}
 			board.add(newSet);
 		}
 	}
@@ -51,12 +46,10 @@ public class Board {
 	//combine two sets that's are currently on the board
 	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tiles) {
 		ArrayList<Tile> moving = new ArrayList<Tile>();
-		for(int i = 0; i < tiles.size(); i++) {
+		for (int i = 0; i < tiles.size(); i++)
 			moving.add(board.get(sourceRow).get(tiles.get(i)-1));
-		}
-		for(int i = 0; i < tiles.size(); i++) {
+		for (int i = 0; i < tiles.size(); i++)
 			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i -1));
-		}
 		ArrayList<Tile> checkDestination = board.get(destinationRow);
 		checkDestination.addAll(moving);
 		checkDestination = addJoker(checkDestination);
@@ -65,7 +58,7 @@ public class Board {
 		if (board.get(sourceRow).size() == 0) {
 			board.remove(sourceRow);
 		}
-		for(int i = 0; i < board.size(); i++) {
+		for (int i = 0; i < board.size(); i++) {
 			Collections.sort(board.get(i), new Comparator<Tile>() {
 				@Override
 				public int compare(Tile tile1, Tile tile2) {
@@ -76,35 +69,33 @@ public class Board {
 	}
 
 	public String printHelper() {
-		String printBoard = "";
+		StringBuilder printBoard = new StringBuilder();
 		int size = 0;
 		for (int i = 0; i < board.size(); i++) {
 			if (i < 9) {
-				printBoard += "0" + Integer.toString(i+1) + "|  ";
+				printBoard.append("0").append(Integer.toString(i + 1)).append("|  ");
 			}else {
-				printBoard += Integer.toString(i+1) + "|  ";
+				printBoard.append(Integer.toString(i + 1)).append("|  ");
 			}
 			size = getSize(size, i);
 			for (int j = 0; j < board.get(i).size(); j++) {
 				if (getTile(i, j).getColor() == Tile.Colors.JOKER) {
-					printBoard += getTile(i, j).getColor() + "}  ";
+					printBoard.append(getTile(i, j).getColor()).append("}  ");
 				} else {
-					printBoard += getTile(i, j).getValue() + "  ";
-					printBoard += getTile(i, j).getColor() + "}  ";
+					printBoard.append(getTile(i, j).getValue()).append("  ");
+					printBoard.append(getTile(i, j).getColor()).append("}  ");
 				}
 			}
-			printBoard += "\n";
+			printBoard.append("\n");
 		}
-		for(int i = 0; i < ((size * 18) + 1); i++) {
-			printBoard+="-";
-		}
-		return printBoard;
+		for (int i = 0; i < (size * 18) + 1; i++)
+			printBoard.append("-");
+		return printBoard.toString();
 	}
 
 	private int getSize(int size, int i) {
-		if (board.get(i).size() > size){
+		if (board.get(i).size() > size)
 			size = board.get(i).size();
-		}
 		return size;
 	}
 
@@ -117,9 +108,8 @@ public class Board {
 			int valueCorrect = 0;
 			Tile.Colors color = null;
 			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
-			if (board.get(i).size() < 3) {
+			if (board.get(i).size() < 3)
 				return false;
-			}
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
 				if (color == null)
 					color = getColorIfNotJoker(i,j);
@@ -127,11 +117,13 @@ public class Board {
 				if ( getTile(i, j).getValue() == board.get(i).get(j + 1).getValue() - 1 && (getTile(i, j).getColor() == Tile.Colors.JOKER
 						|| (getTile(i, j).getColor() == color && board.get(i).get(j+1).getColor() == color
 						||  board.get(i).get(j+1).getColor() == Tile.Colors.JOKER)) && (type == 0
-						|| type == 1)) {
+						|| type == 1) ) {
 					valueCorrect++;
 					type = 1;
 				} else {
-					if (getTile(i, j).getValue() == board.get(i).get(j + 1).getValue() && (!colors.contains(board.get(i).get(j+1).getColor()) && colors.size() < 4) && (type == 0 || type == 2)) {
+					if (getTile(i, j).getValue() == board.get(i).get(j + 1).getValue()
+							&& (!colors.contains(board.get(i).get(j+1).getColor())
+							&& colors.size() < 4) && (type == 0 || type == 2)) {
 						valueCorrect++;
 						type = 2;
 					}
@@ -152,7 +144,7 @@ public class Board {
 	}
 
 	private Tile getTile(int i, int j) {
-      return board.get(i).get(j);
+		return board.get(i).get(j);
 	}
 
 
@@ -160,13 +152,13 @@ public class Board {
 		for(int i = 0; i < row.size(); i++) {
 			if (row.get(i).getColor() == Tile.Colors.JOKER) {
 				if (i == 0 &&row.get(1).getValue() == row.get(2).getValue()) {
-						row.get(i).setValue(row.get(i + 1).getValue());
-						return row;
+					row.get(i).setValue(row.get(i + 1).getValue());
+					return row;
 				}
 				else if (i == 1 && row.get(0).getValue() == row.get(2).getValue()) {
-						row.get(i).setValue(row.get(i + 1).getValue());
-						return row;
-					}
+					row.get(i).setValue(row.get(i + 1).getValue());
+					return row;
+				}
 				else if (i == 2 && row.get(0).getValue() == row.get(1).getValue()) {
 					row.get(i).setValue(row.get(i - 1).getValue());
 					return row;
@@ -202,9 +194,8 @@ public class Board {
 
 	public ArrayList<Tile> getTiles() {
 		ArrayList<Tile> tiles = new ArrayList<>();
-		for (int i = 0; i < board.size(); i++) {
+		for (int i = 0; i < board.size(); i++)
 			tiles.addAll(board.get(i));
-		}
 		return tiles;
 	}
 
@@ -218,9 +209,8 @@ public class Board {
 
 	public void setTiles(ArrayList<Tile> tiles) {
 		board.clear();
-		if (!tiles.isEmpty()) {
+		if (!tiles.isEmpty())
 			board.add(tiles);
-		}
 	}
 
 	// this function checks if there are tiles of indices
