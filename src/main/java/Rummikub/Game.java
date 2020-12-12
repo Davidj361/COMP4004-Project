@@ -352,7 +352,7 @@ public class Game {
 			}
 		} else {
 			if (player.getHand().compare(player.getOrigHand())) {
-				undo(player); // This is needed here - David & Tom
+				undo(player);
 				println("Your moves are not valid", getCurPlayerIdx());
 				println("3 tiles have been added to your hand from deck", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
@@ -544,11 +544,6 @@ public class Game {
 	// return board
 	public Board getBoard() {
 		return board;
-	}
-
-	// Set current player's hand
-	public void setCurHand(Hand hand) {
-		players.get(getCurPlayerIdx()).setHand(hand);
 	}
 
 	// return players

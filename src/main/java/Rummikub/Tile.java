@@ -1,6 +1,6 @@
 package Rummikub;
 
-public class Tile implements Comparable<Tile> {
+public class Tile{
     public static enum Colors {BL, RE, YE, BK, JOKER};
     Colors color;
     private int value;
@@ -29,15 +29,5 @@ public class Tile implements Comparable<Tile> {
         return String.format(this.state+ "  " + this.value + "   " + this.color.name() + "}");
     }
 
-    // Compare tiles with each other 8will be used for checking if tiles are allowed to be placed
-    public int compareTo(Tile that) {
-        Integer thisValue = value;
-        Integer thatValue = value;
-        int compare = thisValue.compareTo(thatValue);
-        if(compare == 0) {
-            return this.color.toString().compareTo(that.color.toString());
-        }
-        return compare;
-    }
 }
 
