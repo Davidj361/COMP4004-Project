@@ -387,7 +387,7 @@ public class Game {
 				}
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			} else {
-				println("You ended your turn with out making any moves");
+				println("You ended your turn with out making any moves", getCurPlayerIdx());
 				if(board.checkBoard()) {
 					println("A tile has been added to your hand from deck", getCurPlayerIdx());
 					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
