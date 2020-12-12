@@ -39,3 +39,40 @@ Feature: jokerFeature, The joker can be a wild tile that be used to create runs 
     And Player sends a command for giving tiles of "(7 black),(7 blue)" to row 2
     And Player sends a command for ending current turn
     Then Board is valid
+
+  @joker_5
+  Scenario: Using joker to complete a run where highest value is 13
+    Given New game is started
+    And Player's first placement is done
+    And Player 1 has "(12 blue),(13 blue),(0 Joker)" in their hand
+    When Player sends a command for placing tiles of "(12 blue),(13 blue),(0 Joker)" on board
+    And Player sends a command for ending current turn
+    Then Board is valid
+
+
+  @joker_6
+  Scenario: Using joker to complete a run with joker in the middle
+    Given New game is started
+    And Player's first placement is done
+    And Player 1 has "(10 blue),(12 blue),(0 Joker)" in their hand
+    When Player sends a command for placing tiles of "(10 blue),(12 blue),(0 Joker)" on board
+    And Player sends a command for ending current turn
+    Then Board is valid
+
+  @joker_7
+  Scenario: Using joker to complete a group with joker in the middle
+    Given New game is started
+    And Player's first placement is done
+    And Player 1 has "(9 blue),(0 Joker),(9 Green)" in their hand
+    When Player sends a command for placing tiles of "(9 blue),(0 Joker),(9 Green)" on board
+    And Player sends a command for ending current turn
+    Then Board is valid
+
+  @joker_8
+  Scenario: Using joker as only tile
+    Given New game is started
+    And Player's first placement is done
+    And Player 1 has "(9 blue),(0 Joker),(9 Green)" in their hand
+    When Player sends a command for placing tiles of "(0 Joker)" on board
+    And Player sends a command for ending current turn
+    Then Board is valid

@@ -151,9 +151,14 @@ public class Board {
 	public ArrayList<Tile> addJoker(ArrayList<Tile> row) {
 		for(int i = 0; i < row.size(); i++) {
 			if (row.get(i).getColor() == Tile.Colors.JOKER) {
-				if (i == 0 &&row.get(1).getValue() == row.get(2).getValue()) {
-					row.get(i).setValue(row.get(i + 1).getValue());
+				if (row.size() == 1) {
+					Tile tile = new Tile(1, Tile.Colors.JOKER);
+					row.add(tile);
 					return row;
+				}
+				if (i == 0 && row.get(1).getValue() == row.get(2).getValue()) {
+						row.get(i).setValue(row.get(i + 1).getValue());
+						return row;
 				}
 				else if (i == 1 && row.get(0).getValue() == row.get(2).getValue()) {
 					row.get(i).setValue(row.get(i + 1).getValue());
@@ -192,13 +197,6 @@ public class Board {
 		return row;
 	}
 
-	public ArrayList<Tile> getTiles() {
-		ArrayList<Tile> tiles = new ArrayList<>();
-		for (int i = 0; i < board.size(); i++)
-			tiles.addAll(board.get(i));
-		return tiles;
-	}
-
 	public ArrayList<Tile> getRow (int index) {
 		return board.get(index);
 	}
@@ -207,17 +205,11 @@ public class Board {
 		return board.size();
 	}
 
-	public void setTiles(ArrayList<Tile> tiles) {
-		board.clear();
-		if (!tiles.isEmpty())
-			board.add(tiles);
-	}
-
 	// this function checks if there are tiles of indices
 	// this is used for checking indices for moving tiles
 	public boolean hasTiles(int srcRow, int[] tilesIndex) {
 		for (int index: tilesIndex) {
-			if (board.get(srcRow) == null || board.get(srcRow).get(index-1) == null)
+			if (board.size() < srcRow || board.get(srcRow).size() < index)
 				return false;
 		}
 		return true;

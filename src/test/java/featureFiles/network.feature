@@ -19,6 +19,8 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     And Player 1 sends a command for ending current turn
     # Added duplicate end turns for each player for testing
     And Player 1 sends a command for ending current turn but fails
+    #Added testing for printing to player when not their turn
+    And Player 1 sends a command for displaying hand
     And Player 2 sends a command for ending current turn and receives "(9 red)"
     And Player 2 sends a command for ending current turn but fails
     And Player 3 sends a command for ending current turn and receives "(9 red)"
