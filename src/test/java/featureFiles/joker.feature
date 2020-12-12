@@ -8,7 +8,7 @@ Feature: jokerFeature, The joker can be a wild tile that be used to create runs 
     And Player 1 has "(7 yellow),(8 yellow),(0 Joker)" in their hand
     When Player sends a command for placing tiles of "(7 yellow),(8 yellow),(0 Joker)" on board
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
 
   @joker_2
   Scenario: Using joker to complete a group
@@ -17,7 +17,7 @@ Feature: jokerFeature, The joker can be a wild tile that be used to create runs 
     And Player 1 has "(9 blue),(9 green),(0 Joker)" in their hand
     When Player sends a command for placing tiles of "(9 blue),(9 green),(0 Joker)" on board
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
 
   @joker_3
   Scenario: Using a joker for First Placement
@@ -38,4 +38,4 @@ Feature: jokerFeature, The joker can be a wild tile that be used to create runs 
     And Player sends a command for giving tiles of "(8 blue)" to row 1
     And Player sends a command for giving tiles of "(7 black),(7 blue)" to row 2
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid

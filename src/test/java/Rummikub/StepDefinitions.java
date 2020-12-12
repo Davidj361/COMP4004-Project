@@ -385,11 +385,6 @@ public class StepDefinitions {
         h2.setTile(i, t);
     }
 
-    @Then("Tiles placed on board successfully")
-    public void tiles_placed_on_board_successfully() {
-        assertTrue(game.getBoard().checkBoard());
-    }
-
     @And("There are {int} total turns")
     public void thereAreTotalTurns(int arg0) {
         assertEquals(arg0, game.getTotalTurns());
@@ -487,16 +482,6 @@ public class StepDefinitions {
         String command = String.format("s %d %d", int1, int2);
         assertTrue(game.command(0, command));
         game.println(game.getBoard().printHelper());
-    }
-
-    @Given("There already exists additional tiles of {string} on board")
-    public void there_already_exists_additional_tiles_of_on_board(String string) {
-        Board board = game.getBoard();
-        ArrayList<Tile> tiles = createTiles(string);
-        assertTrue(game.getBoard().checkBoard());
-        board.addSet(tiles);
-        game.println(board.printHelper());
-        game.setBoardState(board);
     }
 
     @When("Player sends a command for moving row {int} indices {string} to row {int}")

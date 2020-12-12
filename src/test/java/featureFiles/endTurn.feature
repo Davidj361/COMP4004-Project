@@ -10,7 +10,7 @@ Feature: Player ends turn scenarios
     When Player sends a command for placing tiles of "(6 red),(7 red),(8 red)" on board
     And Board is valid
     And Player sends a command for ending current turn
-    Then Tiles placed on board successfully
+    Then Board is valid
     And There are 2 total turns
 
   @endTurn_2
