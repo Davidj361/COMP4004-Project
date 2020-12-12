@@ -81,6 +81,14 @@ public class Hand{
         return tiles.remove(t);
     }
 
+    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+        for (int i=tilesIndex.length-1; i>=0; i--) {
+            tileSet.add(putTile(tilesIndex[i] - 1));
+        }
+        return tileSet;
+    }
+
     // Good for debugging output
     public String toString() {
             String string = "";

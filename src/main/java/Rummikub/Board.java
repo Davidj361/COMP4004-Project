@@ -34,10 +34,10 @@ public class Board {
 	public void separateSet(int row, int tileNum) {
 		ArrayList<Tile> newSet = new ArrayList<Tile>();
 		if (row < board.size() && board.get(row).size() > tileNum) {
-			for (int i = tileNum; i < board.get(row).size(); i++)
-				newSet.add(board.get(row).get(i));
+			for (int col = tileNum; col < board.get(row).size(); col++)
+				newSet.add(board.get(row).get(col));
 			int size = board.get(row).size();
-			for (int i = tileNum; i < size; i++)
+			for (int col = tileNum; col < size; col++)
 				board.get(row).remove(tileNum);
 			board.add(newSet);
 		}

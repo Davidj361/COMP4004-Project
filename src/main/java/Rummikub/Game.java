@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import Rummikub.Tile.Colors;
-
 public class Game {
 	private Server server;
     private boolean gameRunning = false;
@@ -221,11 +219,10 @@ public class Game {
 
 	// Prints the same string to all players
 	public void print(String str) {
-		if(server != null) {
+		if (server != null) {
 			for (int i = 0; i < players.size(); i++)
 				print(str, i);
-			}
-		else
+		} else
 			print(str, 0);
 	}
 
@@ -459,7 +456,7 @@ public class Game {
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
 			Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
-			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addSet(playerTiles);
 			commandReceivedMessage("p");
 			messageToOtherPlayers(getCurPlayerName() + " placed tile(s)");
@@ -483,7 +480,7 @@ public class Game {
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
 		if (player.hasTiles(tilesIdx)) {
-			ArrayList<Tile> playerTiles = player.putTiles(tilesIdx);
+			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage("g");
 			messageToOtherPlayers(getCurPlayerName() + " added a tile to row on the board");
