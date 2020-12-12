@@ -149,6 +149,7 @@ public class Game {
 
 	public void scorePoints() {
 		Player winner = getWinner();
+		println(winner.getName() + " won the round");
 		int scoreForWinner = 0;
 		scoreForWinner = getScoreForWinner(winner, scoreForWinner);
 		for (int i = 0; i < players.size(); i++) {
@@ -184,8 +185,11 @@ public class Game {
 
 	// returns true if player's hand is empty
     public boolean isGameOver() {
-    	if (players.get(getCurPlayerIdx()).getTileNumber() == 0)
-    		return true;
+    	if (players.get(getCurPlayerIdx()).getTileNumber() == 0) {
+			println("Round is over, and because a player emptied their hand");
+			println(players.get(getCurPlayerIdx()).getName() + " won the round");
+			return true;
+		}
     	return false;
 	}
 
@@ -401,6 +405,9 @@ public class Game {
 		println("Your turn has ended", getCurPlayerIdx());
 		messageToOtherPlayers(getCurPlayerName() + "'s turn has ended");
 		if(isGameOver() || endRound){
+			if(endRound){
+				println("The round is over because the deck was emptied");
+			}
 			println("Round is over, get ready for next Round!");
 			scorePoints();
 			resetRound();
@@ -559,6 +566,7 @@ public class Game {
 	public void startText() {
 		println("Game has started!");
 		println("Total points needed to win is: " + getGameEndingScore());
+		println("Type h to get help on playing the game");
 		announcePlayersTurn();
 	}
 
