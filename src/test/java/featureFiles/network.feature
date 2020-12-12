@@ -31,7 +31,7 @@ Feature: networkFeature, The game is networked and can have up to 4 players play
     And All other players but player 1 have -75 total points from the entire game
     And There are 2 total rounds
 
-  @networkFeature-1
+  @networkFeature-2
   Scenario: Networked game of 4 players start, a player wins the game on the 2nd round
     Given The host hosts a game
     And The clients are connected to host
