@@ -68,7 +68,7 @@ public class Hand{
         }
         return false;
     }
-    
+
     public Tile putTile(int t) {
         return tiles.remove(t);
     }
