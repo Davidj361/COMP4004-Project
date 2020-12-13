@@ -3,14 +3,13 @@ package Rummikub;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class Client extends Thread implements AutoCloseable {
 
-    String hostName = "127.0.0.1";
+    private String hostName = "127.0.0.1";
     int port = 27015;
-    String name;
-    Socket socket;
+    private String name;
+    private Socket socket;
     boolean testing = false;
     String lastResponse = "";
 
@@ -31,7 +30,7 @@ public class Client extends Thread implements AutoCloseable {
         while (isOpen()) {
             try {
                 String str = read();
-                if (str != null && str != "") {
+                if (str != null && !str.equals("")) {
                     if (testing)
                         lastResponse = str;
                     System.out.print(str);
@@ -126,7 +125,7 @@ public class Client extends Thread implements AutoCloseable {
 
     public void sendName() throws IOException {
         String out = "Name: "+name; // Needed to avoid double send?
-        out.trim();
+        out = out.trim();
         send(out);
     }
 

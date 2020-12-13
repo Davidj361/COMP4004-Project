@@ -9,7 +9,7 @@ public class Deck{
 
     //Create full deck of all tiles
     public Deck() {
-        tiles = new ArrayList<Tile>();
+        tiles = new ArrayList<>();
         for (int j = 0; j < 4; j++) {
             for (int x = 0; x < 2; x++){
                 for (int i = 1; i < 14; i++) {
@@ -37,8 +37,7 @@ public class Deck{
 
     //remove tile from deck
     public Tile dealTile() {
-        Tile dealtTile = tiles.remove(0);
-        return dealtTile;
+        return tiles.remove(0);
     }
 
     //shuffle tiles in the deck

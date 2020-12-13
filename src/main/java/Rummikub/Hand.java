@@ -1,7 +1,6 @@
 package Rummikub;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Hand{
@@ -9,16 +8,16 @@ public class Hand{
 
     // Constructor for generating a hand
     public Hand(Deck deck) {
-        tiles = new ArrayList<Tile>();
+        tiles = new ArrayList<>();
         //Deal 14 tiles to each player
         for (int j = 0; j < 14; j++)
             addTile(deck.dealTile());
     }
     public Hand(ArrayList<Tile> tiles) {
-        this.tiles = new ArrayList<Tile>(tiles);
+        this.tiles = new ArrayList<>(tiles);
     }
     public Hand(Hand h) {
-        this.tiles = new ArrayList<Tile>(h.tiles);
+        this.tiles = new ArrayList<>(h.tiles);
     }
 
     //get number of tiles in hand
@@ -41,9 +40,11 @@ public class Hand{
 
     //sort tiles in players hand
     public void sort() {
-        Collections.sort(getTiles(), new Comparator<Tile>() {
+        getTiles().sort(new Comparator<>() {
             @Override
-            public int compare(Tile tile1, Tile tile2){return  Integer.compare(tile1.getValue(), tile2.getValue());}
+            public int compare(Tile tile1, Tile tile2) {
+                return Integer.compare(tile1.getValue(), tile2.getValue());
+            }
         });
     }
 
@@ -56,14 +57,12 @@ public class Hand{
     }
 
     public boolean hasTile(int index) {
-        if (tiles.size() >= index && tiles.get(index - 1) != null)
-            return true;
-        return false;
+        return tiles.size() >= index && tiles.get(index - 1) != null;
     }
 
     public boolean hasJoker () {
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).getColor().equals(Tile.Colors.JOKER))
+        for (Tile tile : tiles) {
+            if (tile.getColor().equals(Tile.Colors.JOKER))
                 return true;
         }
         return false;
@@ -74,7 +73,7 @@ public class Hand{
     }
 
     public ArrayList<Tile> placeTiles(int[] tilesIndex) {
-        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+        ArrayList<Tile> tileSet = new ArrayList<>();
         for (int i=tilesIndex.length-1; i>=0; i--) {
             tileSet.add(putTile(tilesIndex[i] - 1));
         }
@@ -84,12 +83,9 @@ public class Hand{
     // Good for debugging output
     public String toString() {
             String string = "";
-            int size = 0;
-            for (int i = 0; i < tiles.size(); i++) {
+        for (int i = 0; i < tiles.size(); i++) {
                 string = getString(string, i);
-                int sz = string.length() - size;
-                size = string.length();
-            }
+        }
             String ret = "";
             ret += string;
             return ret;
@@ -98,16 +94,16 @@ public class Hand{
     // Used by the game
     public String printHelper() {
         String string = "";
-        String index = ""; // A string having aligned indexes
+        StringBuilder index = new StringBuilder(); // A string having aligned indexes
         int size = 0;
         for (int i = 0; i < tiles.size(); i++) {
             string = getString(string, i);
             int sz = string.length() - size;
-            index += String.format("%-"+sz+"s", "["+ (i+1) +"]");
+            index.append(String.format("%-" + sz + "s", "[" + (i + 1) + "]"));
             size = string.length();
         }
         String ret = "";
-        ret += index+'\n';
+        ret += index.toString() +'\n';
         ret += string;
         return ret;
     }
@@ -120,11 +116,7 @@ public class Hand{
     }
 
     public boolean compare(Hand origHand){
-        if(tiles.size() < origHand.size()){
-            return true;
-        }else {
-            return false;
-        }
+        return tiles.size() < origHand.size();
     }
 }
 
