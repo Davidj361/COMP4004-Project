@@ -216,7 +216,7 @@ Feature: bugs that need to be tested against
 
 
   @Split_out_of_bounds_1
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles in negative row number
+  Scenario: Split_out_of_bounds_1 - player tries to enter a wrong command that splits tiles in negative row number
     Given New game is started
     And It is player's turn
     And Player's first placement is done
@@ -229,7 +229,7 @@ Feature: bugs that need to be tested against
     And There are 2 total turns
 
   @Split_out_of_bounds_2
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles at negative index
+  Scenario: Split_out_of_bounds_2 - player tries to enter a wrong command that splits tiles at negative index
     Given New game is started
     And It is player's turn
     And Player's first placement is done
@@ -242,7 +242,7 @@ Feature: bugs that need to be tested against
     And There are 2 total turns
 
   @Split_out_of_bounds_3
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles in row number that is greater than the last row number
+  Scenario: Split_out_of_bounds_3 - player tries to enter a wrong command that splits tiles in row number that is greater than the last row number
     Given New game is started
     And It is player's turn
     And Player's first placement is done
@@ -255,7 +255,7 @@ Feature: bugs that need to be tested against
     And There are 2 total turns
 
   @Split_out_of_bounds_4
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles at index that is greater than the last index
+  Scenario: Split_out_of_bounds_4 - player tries to enter a wrong command that splits tiles at index that is greater than the last index
     Given New game is started
     And It is player's turn
     And Player's first placement is done
@@ -268,7 +268,7 @@ Feature: bugs that need to be tested against
     And There are 2 total turns
 
   @Split_out_of_bounds_5
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles with an non-integer row
+  Scenario: Split_out_of_bounds_5 - player tries to enter a wrong command that splits tiles with an non-integer row
     Given New game is started
     And It is player's turn
     And Player's first placement is done
@@ -281,7 +281,7 @@ Feature: bugs that need to be tested against
     And There are 2 total turns
 
   @Split_out_of_bounds_6
-  Scenario: PlayTurn - player tries to enter a wrong command that splits tiles with an non-integer index
+  Scenario: Split_out_of_bounds_6 - player tries to enter a wrong command that splits tiles with an non-integer index
     Given New game is started
     And It is player's turn
     And Player's first placement is done
