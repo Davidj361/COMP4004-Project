@@ -624,8 +624,15 @@ public class Game {
 		int origBoardSize = origBoard.getBoardSize();
 		int currentBoardSize = board.getBoardSize();
 		ArrayList<Tile> tilesPlaced = new ArrayList<Tile>();
-		for (int i = origBoardSize; i < currentBoardSize; i++ ) {
+		ArrayList<Tile> tilesThereAlready = new ArrayList<Tile>();
+		for (int i = 0; i < origBoardSize; i++ ) {
+			tilesThereAlready.addAll(origBoard.getRow(i));
+		}
+		for (int i = 0; i < currentBoardSize; i++) {
 			tilesPlaced.addAll(board.getRow(i));
+		}
+		for (int i = 0; i < tilesThereAlready.size(); i++) {
+			tilesPlaced.remove(tilesThereAlready.get(i));
 		}
 		int sum = 0;
 		for (int i = 0; i < tilesPlaced.size(); i++) {
