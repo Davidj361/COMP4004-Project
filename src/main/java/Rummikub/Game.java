@@ -255,6 +255,10 @@ public class Game {
 		boolean invalidCmd = false;
 		if (sArr.length > 1) { // Commands with input arguments
 			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			if(!checkint(args)){
+				invalidCommandMessage();
+				return false;
+			}
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
 					return placeTiles(args, curPlayer);
@@ -300,7 +304,27 @@ public class Game {
 		}
 		return true;
 	}
-	
+
+	private boolean checkint(String[] args) {
+		for (String integer : args){
+			if (!isInteger(integer)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch(NumberFormatException e) {
+			return false;
+		}
+		// only got here if we didn't return false
+		return true;
+	}
+
+
 	//////////////////////////////////////////////////////////////////////
 	// Functions used by command(..)
 
