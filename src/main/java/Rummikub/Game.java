@@ -1,6 +1,7 @@
 package Rummikub;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -316,13 +317,16 @@ public class Game {
 
 	// Print from the help from a file
 	private void help(int index) {
-		try {
-			File fHelp = new File("resources/help.txt");
-			BufferedReader br = new BufferedReader(new FileReader(fHelp));
-			String str;
-			while ((str = br.readLine()) != null) {
-				print(str + "\n", index);
+		String fileName = "help.txt";
+		ClassLoader classLoader = getClass().getClassLoader();
+		try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
+			 InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+			 BufferedReader reader = new BufferedReader(streamReader)) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				println(line, index);
 			}
+
 		} catch (IOException e) {
 			System.out.println("Unable to open help.txt in Game.help(..)");
 			e.printStackTrace();
