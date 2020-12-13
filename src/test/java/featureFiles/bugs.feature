@@ -78,7 +78,6 @@ Feature: bugs that need to be tested against
   @bug6
   Scenario: Bug - Player should be able to get first placement done with exactly 30 points
     Given New game is started
-    And Player's first placement is done
     And Player has "(2 blue),(3 red),(4 red),(5 yellow),(7 black),(7 blue),(8 black),(8 yellow),(9 red),(9 blue),(10 blue),(10 yellow),(11 blue),(12 black)" in their hand
     When Player sends a command for displaying hand
     And Player sends a command for placing tiles of "(9 blue),(10 blue),(11 blue)" on board
