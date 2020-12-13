@@ -32,7 +32,8 @@ public class Board {
 	public void addToCurrent(ArrayList<Tile> tiles, int row) {
 		ArrayList<Tile> checkRow = board.get(row);
 		checkRow.addAll(tiles);
-		checkRow = addJoker(checkRow);
+		if (hasJoker(checkRow))
+			checkRow = addJoker(checkRow);
 		board.set(row,checkRow);
 		board.get(row).sort(new Comparator<>() {
 			@Override
@@ -63,7 +64,8 @@ public class Board {
 			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i -1));
 		ArrayList<Tile> checkDestination = board.get(destinationRow);
 		checkDestination.addAll(moving);
-		checkDestination = addJoker(checkDestination);
+		if (hasJoker(checkDestination))
+			checkDestination = addJoker(checkDestination);
 		board.set(destinationRow,checkDestination);
 		// if moving all tiles from source row, remove the empty row
 		if (board.get(sourceRow).size() == 0) {
