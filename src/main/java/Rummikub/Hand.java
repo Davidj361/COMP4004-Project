@@ -57,7 +57,7 @@ public class Hand{
     }
 
     public boolean hasTile(int index) {
-        return tiles.size() >= index && index <= 0 && tiles.get(index - 1) != null;
+        return tiles.size() >= index && index >=0 && tiles.get(index - 1) != null;
     }
 
     public boolean hasJoker () {
