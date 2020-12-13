@@ -3,11 +3,10 @@ package Rummikub;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Game {
 	private Server server;
-    private int turn, totalturns = 0;
+    private int turn, totalTurns = 0;
     boolean won = false;
     private int round = 0;
     private int gameEndingScore = 0;
@@ -15,7 +14,6 @@ public class Game {
     public Deck deck;
     private Board board = new Board();
     private Board origBoard = new Board();
-    private Scanner scanner = new Scanner(System.in);
 	// players and clients indices should match
 	// i.e. client[0] -> player[0]
 	private int numPlayers; // Needed for testing both offline and online
@@ -56,7 +54,7 @@ public class Game {
 		setOrigBoard();
 		players = new ArrayList<Player>(); // Also reset the player list and re-add them
 		turn = 1;
-		totalturns = 1;
+		totalTurns = 1;
 		round = 1;
 		won = false;
 
@@ -74,7 +72,7 @@ public class Game {
 		board = new Board();
 		setOrigBoard();
 		turn = 1;
-		totalturns = 1;
+		totalTurns = 1;
 		round++;
 		endRound = false;
 	}
@@ -140,7 +138,8 @@ public class Game {
 					server.close();
 					server = null;
 				} catch (IOException e) {
-					System.out.println("Was unable to close server in Game.getFinalWinner(..).");
+					System.out.println("Unable to close server in Game.getFinalWinner(..).");
+					e.printStackTrace();
 				}
 			}
 		}
@@ -149,14 +148,14 @@ public class Game {
 
 	// Is the game won? Change header
 	public void printTotalScores(boolean won) {
-		String output = "";
+		StringBuilder output = new StringBuilder();
 		if (won)
-			output += "=========FINAL SCORES=========\n";
+			output.append("=========FINAL SCORES=========\n");
 		else
-			output += "=========CURRENT SCORES=========\n";
-		for(int i = 0; i < players.size(); i++)
-			output += players.get(i).getName() + ": "+ players.get(i).getTotalScore() + "\n";
-		println(output);
+			output.append("=========CURRENT SCORES=========\n");
+		for (Player player : players)
+			output.append(player.getName()).append(": ").append(player.getTotalScore()).append("\n");
+		println(output.toString());
 	}
 
 	public void scorePoints() {
@@ -164,10 +163,10 @@ public class Game {
 		println(winner.getName() + " won the round");
 		int scoreForWinner = 0;
 		scoreForWinner = getScoreForWinner(winner, scoreForWinner);
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i) == winner) {
+		for (Player player : players) {
+			if (player == winner) {
 				winner.setScore(scoreForWinner);
-				println(players.get(i).getName() + ": " + players.get(i).getScore());
+				println(player.getName() + ": " + player.getScore());
 				winner.updateTotalScore(scoreForWinner);
 			}
 		}
@@ -242,7 +241,7 @@ public class Game {
 
 	// The command handler
 	// Parses text given by a client to Server
-	public boolean command(int playerIdx, String input) throws IOException {
+	public boolean command(int playerIdx, String input) {
 		if (won) // Needed for non-networked tests and as a safeguard
 			return false;
 		if (!playerTurn(playerIdx)) {
@@ -281,7 +280,7 @@ public class Game {
 					break;
 				case "dh": // display player's hand
 					if (!playerTurn(playerIdx))
-						printPlayesrHand(playerIdx);
+						printPlayersHand(playerIdx);
 					else
 						printCurPlayerHand();
 					break;
@@ -318,12 +317,17 @@ public class Game {
 
 
 	// Print from the help from a file
-	private void help(int index) throws IOException {
-		File fHelp = new File("resources/help.txt");
-		BufferedReader br = new BufferedReader(new FileReader(fHelp));
-		String str;
-		while ((str = br.readLine()) != null) {
-			print(str+"\n", index);
+	private void help(int index) {
+		try {
+			File fHelp = new File("resources/help.txt");
+			BufferedReader br = new BufferedReader(new FileReader(fHelp));
+			String str;
+			while ((str = br.readLine()) != null) {
+				print(str + "\n", index);
+			}
+		} catch (IOException e) {
+			System.out.println("Unable to open help.txt in Game.help(..)");
+			e.printStackTrace();
 		}
 	}
 
@@ -429,7 +433,7 @@ public class Game {
 			turn++;
 			players.get(getCurPlayerIdx()).nextTurn();
 		}
-		totalturns++;
+		totalTurns++;
 		announcePlayersTurn(); // Will announce who's turn it is now
 		return true;
 	}
@@ -526,8 +530,8 @@ public class Game {
 		println(getCurPlayer().getHandStr(), getCurPlayerIdx());
 	}
 
-	public void printPlayesrHand(int Index) {
-		println(players.get(Index).getHandStr(), Index);
+	public void printPlayersHand(int Index) {
+		println(getPlayer(Index).getHandStr(), Index);
 	}
 
 	// Functions used by command(..)
@@ -539,7 +543,7 @@ public class Game {
 	}
 
 	// Return current turn number
-	public int getTotalTurns() {  return totalturns; }
+	public int getTotalTurns() {  return totalTurns; }
 
 	public int getTurn() {  return turn; }
 
@@ -623,14 +627,13 @@ public class Game {
 	public int sumOfTilesPlaced () {
 		int origBoardSize = origBoard.getBoardSize();
 		int currentBoardSize = board.getBoardSize();
-		ArrayList<Tile> tilesPlaced = new ArrayList<Tile>();
+		ArrayList<Tile> tilesPlaced = new ArrayList<>();
 		for (int i = origBoardSize; i < currentBoardSize; i++ ) {
 			tilesPlaced.addAll(board.getRow(i));
 		}
 		int sum = 0;
-		for (int i = 0; i < tilesPlaced.size(); i++) {
-			sum += tilesPlaced.get(i).getValue();
-		}
+		for (Tile tile : tilesPlaced)
+			sum += tile.getValue();
 		return sum;
 	}
 

@@ -15,10 +15,10 @@ public class ClientHandler extends Thread {
     private String name = "unnamed";
     boolean testing;
 
-    ClientHandler(Server s, Socket ss, int i) throws IOException {
+    ClientHandler(Server s, Socket ss, int i) {
         this(s, ss, i, false);
     }
-    ClientHandler(Server s, Socket ss, int i, boolean b) throws IOException {
+    ClientHandler(Server s, Socket ss, int i, boolean b) {
         if (s == null)
             throw new IllegalArgumentException();
         server = s;
@@ -44,10 +44,7 @@ public class ClientHandler extends Thread {
                         server.command(clientId, str);
                 }
             }
-            catch (SocketException e) {
-                // Not a big deal
-            }
-            catch (EOFException e) {
+            catch (EOFException | SocketException e) {
                 // Not a big deal
             }
             catch (IOException e) {
@@ -69,12 +66,18 @@ public class ClientHandler extends Thread {
         return socket != null && !socket.isClosed();
     }
 
-    public boolean send(String str) throws IOException {
+    public boolean send(String str) {
         if (socket == null || socket.isClosed())
             return false;
-        ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
-        dOut.writeUTF(str);
-        dOut.flush();
+        try {
+            ObjectOutputStream dOut = new ObjectOutputStream(socket.getOutputStream());
+            dOut.writeUTF(str);
+            dOut.flush();
+        } catch (IOException e) {
+            System.out.print("ClientHandler.send(..) is unable to send to clientID: "+clientId);
+            System.out.println(", Player name is: "+name);
+            e.printStackTrace();
+        }
         return true;
     }
 

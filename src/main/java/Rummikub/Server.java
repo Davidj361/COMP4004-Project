@@ -1,12 +1,10 @@
 package Rummikub;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class Server extends Thread implements AutoCloseable {
@@ -15,7 +13,7 @@ public class Server extends Thread implements AutoCloseable {
     private int port = 27015;
     private String name = "unnamed"; // Name for the host player
     private ServerSocket socket;
-    ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
+    ArrayList<ClientHandler> clients = new ArrayList<>();
     Game game = null;
     boolean testing;
 
@@ -104,7 +102,7 @@ public class Server extends Thread implements AutoCloseable {
     public boolean isBound() { return socket.isBound(); }
     public boolean isClosed() { return socket.isClosed(); }
 
-    public boolean send(final int iClient, String str) throws IOException {
+    public boolean send(final int iClient, String str) {
         if (clients.get(iClient) == null)
             throw new IllegalStateException();
         return clients.get(iClient).send(str);
@@ -146,7 +144,7 @@ public class Server extends Thread implements AutoCloseable {
 	*/
 
     // When the host asks for a command
-    public boolean command(String str) throws IOException {
+    public boolean command(String str) {
         if (!commHelper(0, str)) {
             return false;
         }
@@ -154,7 +152,7 @@ public class Server extends Thread implements AutoCloseable {
     }
 
     // When client asks for a command
-    public boolean command(int clientId, String str) throws IOException {
+    public boolean command(int clientId, String str) {
         final int player = clientId+1;
         if (game == null) {
             print("Game hasn't started yet.", player);
@@ -166,7 +164,7 @@ public class Server extends Thread implements AutoCloseable {
         return true;
     }
 
-    private boolean commHelper(int player, String str) throws IOException {
+    private boolean commHelper(int player, String str) {
         return game.command(player, str);
     }
 
@@ -179,7 +177,7 @@ public class Server extends Thread implements AutoCloseable {
     }
 
     public ArrayList<String> getNames() {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         names.add(name);
         for (ClientHandler h: clients)
             names.add(h.getPlayerName());
@@ -188,7 +186,7 @@ public class Server extends Thread implements AutoCloseable {
 
     // Needed because we need to wait for all clients to send their names for checking syncing
     public ArrayList<String> getNamesSet() {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         names.add(name);
         for (ClientHandler h: clients) {
             String name = h.getPlayerName();
