@@ -142,46 +142,46 @@ Feature: bugs that need to be tested against
   @bug-moveOutOfBound1
   Scenario: @bug-moveOutOfBound1 - Player types out of bound row index above
     Given New game is started
-    And Player's first placement is done
+    When Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    When Player sends the command "m 14 1 1" with no out of bounds exception
+    Then Player sends the command "m 14 1 1" with no out of bounds exception
     And Player sends a command for ending current turn
-    Then Board is valid
+    And Board is valid
     And There are 2 total turns
 
   @bug-moveOutOfBound2
   Scenario: @bug-moveOutOfBound2 - Player types out of bound row index below, -1
     Given New game is started
-    And Player's first placement is done
+    When Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    When Player sends the command "m -1 1 1" with no out of bounds exception
+    Then Player sends the command "m -1 1 1" with no out of bounds exception
     And Player sends a command for ending current turn
-    Then Board is valid
+    And Board is valid
     And There are 2 total turns
 
   @bug-moveOutOfBound3
   Scenario: @bug-moveOutOfBound3 - Player types out of bound row index below, 0
     Given New game is started
-    And Player's first placement is done
+    When Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    When Player sends the command "m 0 1 1" with no out of bounds exception
+    Then Player sends the command "m 0 1 1" with no out of bounds exception
     And Player sends a command for ending current turn
-    Then Board is valid
+    And Board is valid
     And There are 2 total turns
 
   @bug-moveOutOfBound4
   Scenario: @bug-moveOutOfBound4 - Player types out of bound tile index below, -1
     Given New game is started
-    And Player's first placement is done
+    When Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
