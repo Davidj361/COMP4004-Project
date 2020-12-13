@@ -8,7 +8,8 @@ public class Board {
 
 	//Add a new set to the board
 	public void addSet(ArrayList<Tile> set) {
-		set = addJoker(set);
+		if (hasJoker(set))
+			set = addJoker(set);
 		board.add(set);
 		board.get(board.size() - 1).sort(new Comparator<>() {
 			@Override
@@ -16,6 +17,15 @@ public class Board {
 				return Integer.compare(tile1.getValue(), tile2.getValue());
 			}
 		});
+	}
+
+	// Checks if a row has a joker
+	public boolean hasJoker(ArrayList<Tile> set) {
+		for (Tile t: set) {
+			if (t.isJoker())
+				return true;
+		}
+		return false;
 	}
 
 	//Add specific tiles from hand to board
@@ -151,21 +161,31 @@ public class Board {
 
 	public ArrayList<Tile> addJoker(ArrayList<Tile> row) {
 		for(int i = 0; i < row.size(); i++) {
-			if (row.get(i).getColor() == Tile.Colors.JOKER) {
+			if (row.get(i).isJoker()) {
+				// Joker by itself to a row
 				if (row.size() == 1) {
 					Tile tile = new Tile(1, Tile.Colors.JOKER);
 					row.add(tile);
 					return row;
 				}
+				// Apparently you need four i== checks to check all colours
+				// Joker is on 0th index and checks next 2 tiles for matching value
 				if (i == 0 && row.get(1).getValue() == row.get(2).getValue()) {
 						row.get(i).setValue(row.get(i + 1).getValue());
 						return row;
 				}
+				// Joker is on 1st index and checks tiles on both sides of it for matching value
 				else if (i == 1 && row.get(0).getValue() == row.get(2).getValue()) {
 					row.get(i).setValue(row.get(i + 1).getValue());
 					return row;
 				}
+				// Joker is on 2nd index and checks tiles left of joker they match eachother's values
 				else if (i == 2 && row.get(0).getValue() == row.get(1).getValue()) {
+					row.get(i).setValue(row.get(i - 1).getValue());
+					return row;
+				}
+				// Joker is on 3nd index and checks tiles left of joker they match eachother's values
+				else if (i == 3 && row.get(0).getValue() == row.get(1).getValue()) {
 					row.get(i).setValue(row.get(i - 1).getValue());
 					return row;
 				} else {
