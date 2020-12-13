@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -593,12 +594,6 @@ public class StepDefinitions {
         assertTrue(game.command(0, command));
     }
 
-    @When("Player sends the command {string} which fails")
-    public void playerSendsTheCommandWhichFails(String arg0) throws IOException {
-        String command = String.format(arg0);
-        assertFalse(game.command(0, command));
-    }
-
     @And("Player {int} sends a command for displaying hand")
     public void playerSendsACommandForDisplayingHand(int arg0) throws IOException {
         String command = String.format("dh");
@@ -609,6 +604,12 @@ public class StepDefinitions {
     public void playerSendsTheCommand(String arg0) {
         String command = String.format(arg0);
         assertTrue(game.command(0, command));
+    }
+
+    @When("Player sends the command {string} which fails")
+    public void playerSendsTheCommandWhichFails(String arg0) throws IOException {
+        String command = String.format(arg0);
+        assertFalse(game.command(0, command));
     }
 
     @When("Player sends the command {string} with no out of bounds exception")
