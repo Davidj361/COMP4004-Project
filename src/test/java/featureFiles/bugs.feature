@@ -59,3 +59,18 @@ Feature: bugs that need to be tested against
     And Board is valid
     And Player sends a command for ending current turn
     Then Board is valid
+
+  @bug5
+  Scenario: Bug - Player should be able to give joker to groups on board
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(9 blue),(10 blue),(11 blue)" on board
+    And There already exists tiles of "(12 blue),(12 yellow),(12 red)" on board
+    And There already exists tiles of "(4 red),(4 yellow),(4 blue)" on board
+    And There already exists tiles of "(7 blue),(7 red),(7 yellow)" on board
+    And There already exists tiles of "(5 blue),(5 red),(5 black)" on board
+    And Player has "(0 joker),(1 red),(5 black),(5 red),(5 blue),(6 black),(6 yellow),(8 red),(8 blue),(9 black),(9 blue),(10 red),(11 yellow),(13 blue)" in their hand
+    And Board is valid
+    When Player sends a command for displaying hand
+    And Player sends a command for giving tiles of "(0 joker)" to row 2
+    Then Board is valid
