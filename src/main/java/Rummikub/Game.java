@@ -387,10 +387,10 @@ public class Game {
 				}
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			} else {
-				println("You ended your turn with out making any moves");
+				println("You ended your turn with out making any moves", getCurPlayerIdx());
 				if(board.checkBoard()) {
 					println("A tile has been added to your hand from deck", getCurPlayerIdx());
-					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+					messageToOtherPlayers(getCurPlayerName() + " ended their turn with out making any moves");
 					messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
 					if (deck.getTiles().size() > 0) {
 						drawTile(player);
@@ -454,7 +454,7 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length];
 		for (int i=0; i<sArr.length; i++)
 			tilesIdx[i] = Integer.parseInt(sArr[i]);
-			Arrays.sort(tilesIdx);
+		Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addSet(playerTiles);
@@ -474,6 +474,7 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-1];
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
+		Arrays.sort(tilesIdx);
 		if (player.hasTiles(tilesIdx)) {
 			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
@@ -494,6 +495,7 @@ public class Game {
 		int[] tilesIdx = new int[sArr.length-2];
 		for (int i=2; i<sArr.length; i++)
 			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
+		Arrays.sort(tilesIdx);
 		if (board.hasTiles(srcRow, tilesIdx)) {
 			ArrayList<Integer> index = new ArrayList<Integer>();
 			for(int num:tilesIdx){
