@@ -413,7 +413,8 @@ public class Game {
 					}
 				} else {
 					println("The board is not correct, 3 tiles have been added to your hand from deck", getCurPlayerIdx());
-					messageToOtherPlayers(getCurPlayerName() + "ended their turn with out making any moves");
+					undo(player);
+					messageToOtherPlayers(getCurPlayerName() + " ended their turn with out making any moves");
 					messageToOtherPlayers("3 tiles has been added to " + getCurPlayerName() + "'s hand");
 					if (deck.getTiles().size() > 0) {
 						// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying

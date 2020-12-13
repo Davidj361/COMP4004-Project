@@ -360,3 +360,16 @@ Feature: bugs that need to be tested against
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
+
+  @Bug_Splitting_And_Not_Resetting
+  Scenario: Bug_Splitting_And_Not_Resetting - Board doesn't get reset when ending turn when splitting
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    And Player sends a command for splitting row 1 at index 2
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
