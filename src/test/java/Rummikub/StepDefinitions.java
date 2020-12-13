@@ -594,8 +594,6 @@ public class StepDefinitions {
         assertTrue(game.command(0, command));
     }
 
-
-
     @And("Player {int} sends a command for displaying hand")
     public void playerSendsACommandForDisplayingHand(int arg0) throws IOException {
         String command = String.format("dh");
