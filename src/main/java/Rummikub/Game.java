@@ -155,7 +155,8 @@ public class Game {
 			output.append("=========CURRENT SCORES=========\n");
 		for (Player player : players)
 			output.append(player.getName()).append(": ").append(player.getTotalScore()).append("\n");
-		println(output.toString());
+		messageToOtherPlayers(output.toString());
+		println(output.toString(),getCurPlayerIdx());
 	}
 
 	public void scorePoints() {
@@ -356,10 +357,10 @@ public class Game {
 				//print error
 				undo(player);
 				println("Sorry you can't place those Tiles! Your First Placement must add up to 30 points", getCurPlayerIdx());
-				println("3 tiles have been added to your hand from deck", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
-				messageToOtherPlayers("3 tiles have been added to " + getCurPlayerName() + "'s hand");
 				if (deck.getTiles().size() > 0) {
+					println("Multiple tiles have been added to your hand from deck", getCurPlayerIdx());
+					messageToOtherPlayers("Multiple tiles have been added to " + getCurPlayerName() + "'s hand");
 					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
 					for (int i=0; i<3; i++)
 						drawTile(player);
@@ -387,10 +388,10 @@ public class Game {
 			if (player.getHand().compare(player.getOrigHand())) {
 				undo(player);
 				println("Your moves are not valid", getCurPlayerIdx());
-				println("3 tiles have been added to your hand from deck", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + "'s moves are invalid");
-				messageToOtherPlayers("3 tiles have been added to " + getCurPlayerName() + "'s hand");
 				if (deck.getTiles().size() > 0) {
+					println("Multiple tiles have been added to your hand from deck", getCurPlayerIdx());
+					messageToOtherPlayers("Multiple tiles have been added to " + getCurPlayerName() + "'s hand");
 					// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
 					for (int i=0; i<3; i++)
 						drawTile(player);
@@ -402,21 +403,21 @@ public class Game {
 			} else {
 				println("You ended your turn with out making any moves", getCurPlayerIdx());
 				if(board.checkBoard()) {
-					println("A tile has been added to your hand from deck", getCurPlayerIdx());
 					messageToOtherPlayers(getCurPlayerName() + " ended their turn with out making any moves");
-					messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
 					if (deck.getTiles().size() > 0) {
+						println("A tile has been added to your hand from deck", getCurPlayerIdx());
+						messageToOtherPlayers("A tile has been added to " + getCurPlayerName() + "'s hand");
 						drawTile(player);
 					} else {
 						endRound = true;
 						println("This is the last turn because the deck is empty!");
 					}
 				} else {
-					println("The board is not correct, 3 tiles have been added to your hand from deck", getCurPlayerIdx());
 					undo(player);
 					messageToOtherPlayers(getCurPlayerName() + " ended their turn with out making any moves");
-					messageToOtherPlayers("3 tiles has been added to " + getCurPlayerName() + "'s hand");
 					if (deck.getTiles().size() > 0) {
+						println("The board is not correct, multiple tiles have been added to your hand from deck", getCurPlayerIdx());
+						messageToOtherPlayers("Multiple tiles has been added to " + getCurPlayerName() + "'s hand");
 						// Game rules says to pickup 3 tiles if tried to modify board but didn't end up successfully modifying
 						for (int i=0; i<3; i++)
 							drawTile(player);
