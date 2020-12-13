@@ -268,3 +268,82 @@ Feature: bugs that need to be tested against
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
+
+
+  @Split_out_of_bounds_1
+  Scenario: Split_out_of_bounds_1 - player tries to enter a wrong command that splits tiles in negative row number
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
+    And Board is valid
+    Then Player sends the command "s -10 3" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_2
+  Scenario: Split_out_of_bounds_2 - player tries to enter a wrong command that splits tiles at negative index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 -20" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_3
+  Scenario: Split_out_of_bounds_3 - player tries to enter a wrong command that splits tiles in row number that is greater than the last row number
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 10 3" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_4
+  Scenario: Split_out_of_bounds_4 - player tries to enter a wrong command that splits tiles at index that is greater than the last index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 20" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_5
+  Scenario: Split_out_of_bounds_5 - player tries to enter a wrong command that splits tiles with an non-integer row
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s bad 3" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_6
+  Scenario: Split_out_of_bounds_6 - player tries to enter a wrong command that splits tiles with an non-integer index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 bad" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
