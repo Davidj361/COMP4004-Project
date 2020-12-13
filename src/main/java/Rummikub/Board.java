@@ -58,11 +58,15 @@ public class Board {
 	}
 
 	//combine two sets that's are currently on the board
-	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tiles) {
+	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tilesToRemove) {
+		// tilesToRemove should be sorted from greatest to smallest by Game
 		ArrayList<Tile> moving = new ArrayList<>();
-		for (Integer tile : tiles) moving.add(board.get(sourceRow).get(tile - 1));
-		for (int i = 0; i < tiles.size(); i++)
-			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i -1));
+		for (Integer tile : tilesToRemove) moving.add(board.get(sourceRow).get(tile));
+		for (int i = 0; i < tilesToRemove.size(); i++) {
+			ArrayList<Tile> srcRow = board.get(sourceRow);
+			int iTileToRemove = tilesToRemove.get(i);
+			srcRow.remove(iTileToRemove);
+		}
 		ArrayList<Tile> checkDestination = board.get(destinationRow);
 		checkDestination.addAll(moving);
 		if (hasJoker(checkDestination))
@@ -231,10 +235,12 @@ public class Board {
 
 	// this function checks if there are tiles of indices
 	// this is used for checking indices for moving tiles
-	public boolean hasTiles(int srcRow, int[] tilesIndex) {
+	public boolean hasTiles(int srcRow, ArrayList<Integer> tilesIndex) {
 		for (int index: tilesIndex) {
 			try {
-				board.get(srcRow).get(index);
+				ArrayList<Tile> set = board.get(srcRow);
+				//noinspection ResultOfMethodCallIgnored
+				set.get(index);
 			} catch (IndexOutOfBoundsException e) {
 				return false;
 			}
@@ -243,9 +249,12 @@ public class Board {
 	}
 
 	public boolean hasRow(int dstRow) {
-		if(board.size() > dstRow && dstRow > -1)
-			return true;
-		else
+		try {
+			//noinspection ResultOfMethodCallIgnored
+			board.get(dstRow);
+		} catch (IndexOutOfBoundsException e) {
 			return false;
+		}
+		return true;
 	}
 }

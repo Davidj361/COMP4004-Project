@@ -58,7 +58,7 @@ public class Player {
         return hand.sumOfTiles();
     }
 
-    public boolean hasTiles(int[] tilesIndex) {
+    public boolean hasTiles(ArrayList<Integer> tilesIndex) {
         for (int index: tilesIndex) {
             if (!hand.hasTile(index))
                 return false;
@@ -71,7 +71,7 @@ public class Player {
     }
 
     // player put tiles from hand
-    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+    public ArrayList<Tile> placeTiles(ArrayList<Integer> tilesIndex) {
         return hand.placeTiles(tilesIndex);
     }
 

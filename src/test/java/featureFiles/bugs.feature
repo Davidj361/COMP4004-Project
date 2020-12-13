@@ -199,6 +199,19 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
+    Then Player sends the command "m 1 2 0" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound5_2
+  Scenario: @bug-moveOutOfBound5_2 - Player types out of bound tile index below, 0, also same row dst and src
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
     Then Player sends the command "m 1 1 0" with no out of bounds exception
     And Player sends a command for ending current turn
     And Board is valid
