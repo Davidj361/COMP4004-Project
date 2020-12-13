@@ -83,3 +83,134 @@ Feature: bugs that need to be tested against
     And Player sends a command for placing tiles of "(9 blue),(10 blue),(11 blue)" on board
     And Player sends a command for ending current turn
     Then Player has done First Placement
+
+  @bug-moveOutOfBound1
+  Scenario: @bug-moveOutOfBound1 - Player types out of bound row index above
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m 14 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound2
+  Scenario: @bug-moveOutOfBound2 - Player types out of bound row index below, -1
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m -1 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound3
+  Scenario: @bug-moveOutOfBound3 - Player types out of bound row index below, 0
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m 0 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound4
+  Scenario: @bug-moveOutOfBound4 - Player types out of bound tile index below, -1
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 -1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound5
+  Scenario: @bug-moveOutOfBound5 - Player types out of bound tile index below, 0
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 0" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound6
+  Scenario: @bug-moveOutOfBound6 - Player types out of bound tile index above
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 999" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException1
+  Scenario: @bug-moveNumberException1 - Player types asdf in all arguments of move
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m asdf asdf asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException2
+  Scenario: @bug-moveNumberException2 - Player types asdf in 1st arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m asdf 1 1" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException3
+  Scenario: @bug-moveNumberException3 - Player types asdf in 2nd arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 asdf 1" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException4
+  Scenario: @bug-moveNumberException4 - Player types asdf in 3rd arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
