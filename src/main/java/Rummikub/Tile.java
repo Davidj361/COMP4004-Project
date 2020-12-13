@@ -23,6 +23,8 @@ public class Tile{
         this.value = value;
     }
 
+    public boolean isJoker() { return getColor().equals(Tile.Colors.JOKER); }
+
     // Check all tiles colours and values
     @Override
     public String toString() {

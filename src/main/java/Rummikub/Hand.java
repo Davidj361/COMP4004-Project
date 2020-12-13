@@ -62,7 +62,7 @@ public class Hand{
 
     public boolean hasJoker () {
         for (Tile tile : tiles) {
-            if (tile.getColor().equals(Tile.Colors.JOKER))
+            if (tile.isJoker())
                 return true;
         }
         return false;
