@@ -1,6 +1,7 @@
 package Rummikub;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Board {
@@ -214,5 +215,12 @@ public class Board {
 				return false;
 		}
 		return true;
+	}
+
+	public boolean hasRow(int dstRow) {
+		if(board.size() > dstRow && dstRow > -1)
+			return true;
+		else
+			return false;
 	}
 }

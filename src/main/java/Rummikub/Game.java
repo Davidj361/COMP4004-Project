@@ -481,15 +481,17 @@ public class Game {
 		for (int i=1; i<sArr.length; i++)
 			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
 		Arrays.sort(tilesIdx);
-		if (player.hasTiles(tilesIdx)) {
+		if (player.hasTiles(tilesIdx) && board.hasRow(dstRow)) {
 			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage("g");
 			messageToOtherPlayers(getCurPlayerName() + " added a tile to row on the board");
 			println(board.printHelper());
 			return true;
-		}
-		noSuchTileExistErrorMessage();
+		} else if (board.hasRow(dstRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
 		return false;
 	}
 
@@ -502,7 +504,7 @@ public class Game {
 		for (int i=2; i<sArr.length; i++)
 			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
 		Arrays.sort(tilesIdx);
-		if (board.hasTiles(srcRow, tilesIdx)) {
+		if (board.hasTiles(srcRow, tilesIdx) && board.hasRow(srcRow) && board.hasRow(dstRow)) {
 			ArrayList<Integer> index = new ArrayList<>();
 			for(int num:tilesIdx){
 				index.add(num);
@@ -513,8 +515,10 @@ public class Game {
 			println(board.printHelper());
 
 			return true;
-		}
-		noSuchTileExistErrorMessage();
+		} else if(board.hasRow(srcRow) && board.hasRow(dstRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
 		return false;
 	}
 
@@ -523,11 +527,18 @@ public class Game {
 	private boolean splitRow(String[] sArr) {
 		int srcRow = Integer.parseInt(sArr[0])-1;
 		int splitIdx = Integer.parseInt(sArr[1]);
-		board.separateSet(srcRow,splitIdx);
-		commandReceivedMessage("s");
-		messageToOtherPlayers(getCurPlayerName() + " split a row on the board");
-		println(board.printHelper());
-		return true;
+		int[] tile = new int[]{splitIdx};
+		if(board.hasRow(srcRow) && board.hasTiles(srcRow,tile)) {
+			board.separateSet(srcRow, splitIdx);
+			commandReceivedMessage("s");
+			messageToOtherPlayers(getCurPlayerName() + " split a row on the board");
+			println(board.printHelper());
+			return true;
+		} else if (board.hasRow(srcRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
+		return false;
 	}
 
 	public void printCurPlayerHand() {
@@ -616,6 +627,9 @@ public class Game {
 
 	public void noSuchTileExistErrorMessage() {
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
+	}
+	public void noSuchRowExistErrorMessage() {
+		println("UNABLE TO EXECUTE COMMAND: no such row exists", getCurPlayerIdx());
 	}
 
 	public void messageToOtherPlayers(String message) {
