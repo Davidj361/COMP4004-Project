@@ -1,10 +1,10 @@
 package Rummikub;
 
 public class Tile{
-    public static enum Colors {BL, RE, YE, BK, JOKER};
+    public static enum Colors {BL, RE, YE, BK, JOKER}
+
     Colors color;
     private int value;
-    private String state = " ";
 
     public Tile(int value, Colors color) {
         this.value = value;
@@ -26,7 +26,8 @@ public class Tile{
     // Check all tiles colours and values
     @Override
     public String toString() {
-        return String.format(this.state+ "  " + this.value + "   " + this.color.name() + "}");
+        String state = " ";
+        return state + "  " + this.value + "   " + this.color.name() + "}";
     }
 
 }

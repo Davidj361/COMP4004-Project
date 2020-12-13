@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
     private int turn;
-    private String name;
+    private final String name;
     private int score; //score for current round
     private int totalScore;
     private boolean doneFirstPlacement = false; // Has player made their first placement?
@@ -42,7 +42,7 @@ public class Player {
         doneFirstPlacement = true;
     }
 
-    public int getTileNumber() {
+    public int handSize() {
         return hand.size();
     }
 

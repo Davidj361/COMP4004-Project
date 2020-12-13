@@ -292,7 +292,7 @@ public class StepDefinitions {
         tiles = new ArrayList<Tile>();
         Hand hand = new Hand(tiles);
         game.getPlayer(int1 -1 ).setHand(hand);
-        System.out.println(game.getPlayer(int1 - 1).getTileNumber());
+        System.out.println(game.getPlayer(int1 - 1).handSize());
     }
 
     // TODO DUPLICATED TEST FUNCTION

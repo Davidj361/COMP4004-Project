@@ -1,20 +1,20 @@
 package Rummikub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Board {
-	protected ArrayList<ArrayList<Tile>> board = new ArrayList<ArrayList<Tile>>();
+	protected ArrayList<ArrayList<Tile>> board = new ArrayList<>();
 
 	//Add a new set to the board
 	public void addSet(ArrayList<Tile> set) {
 		set = addJoker(set);
 		board.add(set);
-		Collections.sort(board.get(board.size()-1), new Comparator<Tile>() {
+		board.get(board.size() - 1).sort(new Comparator<>() {
 			@Override
-			public int compare(Tile tile1, Tile tile2) { return Integer.compare(tile1.getValue(), tile2.getValue()); }
+			public int compare(Tile tile1, Tile tile2) {
+				return Integer.compare(tile1.getValue(), tile2.getValue());
+			}
 		});
 	}
 
@@ -24,15 +24,17 @@ public class Board {
 		checkRow.addAll(tiles);
 		checkRow = addJoker(checkRow);
 		board.set(row,checkRow);
-		Collections.sort(board.get(row), new Comparator<Tile>() {
+		board.get(row).sort(new Comparator<>() {
 			@Override
-			public int compare(Tile tile1, Tile tile2) { return Integer.compare(tile1.getValue(), tile2.getValue()); }
+			public int compare(Tile tile1, Tile tile2) {
+				return Integer.compare(tile1.getValue(), tile2.getValue());
+			}
 		});
 	}
 
 	//Separates a current set on the board into two sets
 	public void separateSet(int row, int tileNum) {
-		ArrayList<Tile> newSet = new ArrayList<Tile>();
+		ArrayList<Tile> newSet = new ArrayList<>();
 		if (row < board.size() && board.get(row).size() > tileNum) {
 			for (int col = tileNum; col < board.get(row).size(); col++)
 				newSet.add(board.get(row).get(col));
@@ -45,9 +47,8 @@ public class Board {
 
 	//combine two sets that's are currently on the board
 	public void combineCurrent(int sourceRow, int destinationRow, ArrayList<Integer> tiles) {
-		ArrayList<Tile> moving = new ArrayList<Tile>();
-		for (int i = 0; i < tiles.size(); i++)
-			moving.add(board.get(sourceRow).get(tiles.get(i)-1));
+		ArrayList<Tile> moving = new ArrayList<>();
+		for (Integer tile : tiles) moving.add(board.get(sourceRow).get(tile - 1));
 		for (int i = 0; i < tiles.size(); i++)
 			board.get(sourceRow).remove(board.get(sourceRow).get(tiles.get(i) - i -1));
 		ArrayList<Tile> checkDestination = board.get(destinationRow);
@@ -58,8 +59,8 @@ public class Board {
 		if (board.get(sourceRow).size() == 0) {
 			board.remove(sourceRow);
 		}
-		for (int i = 0; i < board.size(); i++) {
-			Collections.sort(board.get(i), new Comparator<Tile>() {
+		for (ArrayList<Tile> tileArrayList : board) {
+			tileArrayList.sort(new Comparator<>() {
 				@Override
 				public int compare(Tile tile1, Tile tile2) {
 					return Integer.compare(tile1.getValue(), tile2.getValue());
@@ -73,9 +74,9 @@ public class Board {
 		int size = 0;
 		for (int i = 0; i < board.size(); i++) {
 			if (i < 9) {
-				printBoard.append("0").append(Integer.toString(i + 1)).append("|  ");
+				printBoard.append("0").append(i + 1).append("|  ");
 			}else {
-				printBoard.append(Integer.toString(i + 1)).append("|  ");
+				printBoard.append(i + 1).append("|  ");
 			}
 			size = getSize(size, i);
 			for (int j = 0; j < board.get(i).size(); j++) {
@@ -107,7 +108,7 @@ public class Board {
 			int type = 0;
 			int valueCorrect = 0;
 			Tile.Colors color = null;
-			ArrayList<Tile.Colors> colors = new ArrayList<Tile.Colors>();
+			ArrayList<Tile.Colors> colors = new ArrayList<>();
 			if (board.get(i).size() < 3)
 				return false;
 			for (int j = 0; j < board.get(i).size() - 1; j++) {
@@ -169,7 +170,7 @@ public class Board {
 					return row;
 				} else {
 					row.remove(i);
-					Collections.sort(row, new Comparator<Tile>() {
+					row.sort(new Comparator<>() {
 						@Override
 						public int compare(Tile tile1, Tile tile2) {
 							return Integer.compare(tile1.getValue(), tile2.getValue());

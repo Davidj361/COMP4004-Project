@@ -47,32 +47,6 @@ public class ServerTester extends MyTestCase {
         }
     }
 
-
-    // Wait for 2 players to connect, display they connect
-    @Test
-    public void test2PlayersConnect() throws IOException, InterruptedException {
-        try (Server server = new Server(true)) {
-            assertTrue(server.host());
-            server.start();
-            Client[] clients = new Client[2];
-            for (int i = 0; i < server.getMaxClients(); i++) {
-                clients[i] = new Client();
-                assertTrue(clients[i].connect());
-            }
-            while (server.getNumClients() != server.getMaxClients())
-                //noinspection BusyWait
-                Thread.sleep(10);
-            assertEquals(server.getNumClients(), server.getMaxClients());
-
-            // Are the server's client sockets still open/connected to server when stopped?
-            assertTrue(server.stopHost());
-            for (int i=0; i<server.getNumClients(); i++) {
-                assertFalse(server.clients.get(i).isConnected());
-                assertTrue(server.clients.get(i).isClosed());
-            }
-        }
-    }
-
     // Check command loop
     @Test
     public void testCommandLoop()  throws IOException, InterruptedException {
