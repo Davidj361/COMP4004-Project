@@ -89,7 +89,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g 14 2" with no out of bounds exception
+    Then Player sends the command "g 14 2" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -98,7 +98,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g 0 2" with no out of bounds exception
+    Then Player sends the command "g 0 2" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -107,7 +107,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g -1 2" with no out of bounds exception
+    Then Player sends the command "g -1 2" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -116,7 +116,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g asdf 2" with no number exception
+    Then Player sends the command "g asdf 2" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -125,7 +125,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g 1 asdf" with no number exception
+    Then Player sends the command "g 1 asdf" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -134,7 +134,7 @@ Feature: bugs that need to be tested against
     Given New game is started
     When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    Then Player sends the command "g asdf asdf" with no number exception
+    Then Player sends the command "g asdf asdf" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
 
@@ -147,7 +147,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 14 1 1" with no out of bounds exception
+    Then Player sends the command "m 14 1 1" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -160,7 +160,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m -1 1 1" with no out of bounds exception
+    Then Player sends the command "m -1 1 1" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -173,7 +173,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 0 1 1" with no out of bounds exception
+    Then Player sends the command "m 0 1 1" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -186,7 +186,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 1 -1" with no out of bounds exception
+    Then Player sends the command "m 1 1 -1" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -199,7 +199,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 2 0" with no out of bounds exception
+    Then Player sends the command "m 1 2 0" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -212,7 +212,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 1 0" with no out of bounds exception
+    Then Player sends the command "m 1 1 0" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -225,7 +225,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 1 999" with no out of bounds exception
+    Then Player sends the command "m 1 1 999" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -238,7 +238,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m asdf asdf asdf" with no number exception
+    Then Player sends the command "m asdf asdf asdf" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -251,7 +251,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m asdf 1 1" with no number exception
+    Then Player sends the command "m asdf 1 1" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -264,7 +264,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 asdf 1" with no number exception
+    Then Player sends the command "m 1 asdf 1" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -277,7 +277,7 @@ Feature: bugs that need to be tested against
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
     And Player has "(5 red),(7 red),(9 red)" in their hand
     And Board is valid
-    Then Player sends the command "m 1 1 asdf" with no number exception
+    Then Player sends the command "m 1 1 asdf" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -291,7 +291,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
     And Board is valid
-    Then Player sends the command "s -10 3" with no out of bounds exception
+    Then Player sends the command "s -10 3" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -304,7 +304,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
     And Board is valid
-    Then Player sends the command "s 1 -20" with no out of bounds exception
+    Then Player sends the command "s 1 -20" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -317,7 +317,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
     And Board is valid
-    Then Player sends the command "s 10 3" with no out of bounds exception
+    Then Player sends the command "s 10 3" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -330,7 +330,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
     And Board is valid
-    Then Player sends the command "s 1 20" with no out of bounds exception
+    Then Player sends the command "s 1 20" with no out of bounds exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -343,7 +343,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
     And Board is valid
-    Then Player sends the command "s bad 3" with no number exception
+    Then Player sends the command "s bad 3" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -356,7 +356,7 @@ Feature: bugs that need to be tested against
     And There are 1 total turns
     And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
     And Board is valid
-    Then Player sends the command "s 1 bad" with no number exception
+    Then Player sends the command "s 1 bad" with no number exception but fails
     And Player sends a command for ending current turn
     And Board is valid
     And There are 2 total turns
@@ -373,3 +373,21 @@ Feature: bugs that need to be tested against
     And Player sends a command for ending current turn
     Then Board is valid
     And There are 2 total turns
+
+  @Bug_Moving_Tiles_To_Lone_Joker
+  Scenario: Bug_Moving_Tiles_To_Lone_Joker - Add joker bug with 2 jokers being added
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    Then There already exists tiles of "(7 joker)" on board
+
+  @Bug_Moving_Tiles_To_Lone_Joker2
+  Scenario: Bug_Moving_Tiles_To_Lone_Joker2 - Out of bounds exception for moving tiles to a lone joker row
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(7 joker)" on board
+    And There already exists tiles of "(10 red),(11 red),(12 red),(13 red)" on board
+    Then Player sends the command "m 2 1 4" with no out of bounds exception

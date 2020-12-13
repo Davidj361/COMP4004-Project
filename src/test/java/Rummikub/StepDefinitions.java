@@ -612,8 +612,18 @@ public class StepDefinitions {
         assertFalse(game.command(0, command));
     }
 
-    @When("Player sends the command {string} with no out of bounds exception")
+    @Then("Player sends the command {string} with no out of bounds exception")
     public void playerSendsTheCommandWithNoOutOfBoundsException(String arg0) {
+        try {
+            String command = String.format(arg0);
+            assertTrue(game.command(0, command));
+        } catch (IndexOutOfBoundsException e) {
+            assertNull(e);
+        }
+    }
+
+    @Then("Player sends the command {string} with no out of bounds exception but fails")
+    public void playerSendsTheCommandWithNoOutOfBoundsExceptionButFails(String arg0) {
         try {
             String command = String.format(arg0);
             assertFalse(game.command(0, command));
@@ -622,8 +632,8 @@ public class StepDefinitions {
         }
     }
 
-    @Then("Player sends the command {string} with no number exception")
-    public void playerSendsTheCommandWithNoNumberException(String arg0) {
+    @Then("Player sends the command {string} with no number exception but fails")
+    public void playerSendsTheCommandWithNoNumberExceptionButfails(String arg0) {
         try {
             String command = String.format(arg0);
             assertFalse(game.command(0, command));
