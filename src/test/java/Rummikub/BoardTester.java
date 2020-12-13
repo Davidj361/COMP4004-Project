@@ -100,56 +100,6 @@ public class BoardTester extends MyTestCase {
     }
 
     @Test
-    public void combineCurrentTestSuccess()
-    {
-        int row1 = 0;
-        int row2 = 1;
-        ArrayList<Tile> hand = new ArrayList<Tile>();
-        hand.add( new Tile(4, Tile.Colors.BL));
-        hand.add( new Tile(5, Tile.Colors.BL));
-        hand.add( new Tile(6, Tile.Colors.BL));
-        ArrayList<Tile> hand2 = new ArrayList<Tile>();
-        hand2.add( new Tile(1, Tile.Colors.BL));
-        hand2.add( new Tile(2, Tile.Colors.BL));
-        hand2.add( new Tile(3, Tile.Colors.BL));
-        board.addSet(hand2);
-        board.addSet(hand);
-        System.out.println(board.printHelper());
-        assertTrue(board.checkBoard());
-        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
-
-        board.combineCurrent(row1,row2, index);
-        System.out.println(board.printHelper());
-        assertTrue(board.checkBoard());
-    }
-
-    @Test
-    public void combineCurrentJokerTestSuccess()
-    {
-        int row1 = 0;
-        int row2 = 1;
-        ArrayList<Tile> hand = new ArrayList<Tile>();
-        hand.add( new Tile(4, Tile.Colors.BL));
-        hand.add( new Tile(5, Tile.Colors.BL));
-        hand.add( new Tile(6, Tile.Colors.BL));
-        hand.add( new Tile(0, Tile.Colors.JOKER));
-
-        ArrayList<Tile> hand2 = new ArrayList<Tile>();
-        hand2.add( new Tile(7, Tile.Colors.BL));
-        hand2.add( new Tile(8, Tile.Colors.BL));
-        hand2.add( new Tile(9, Tile.Colors.BL));
-        board.addSet(hand2);
-        board.addSet(hand);
-        System.out.println(board.printHelper());
-        assertTrue(board.checkBoard());
-        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
-
-        board.combineCurrent(row1,row2, index);
-        assertTrue(board.checkBoard());
-        System.out.println(board.printHelper());
-    }
-
-    @Test
     public void addToCurrentTestSuccess()
     {
         int row1 = 0;
@@ -213,30 +163,6 @@ public class BoardTester extends MyTestCase {
         hand2.add( new Tile(9, Tile.Colors.BL));
         board.addToCurrent(hand2,0);
         assertTrue(board.checkBoard());
-        System.out.println(board.printHelper());
-    }
-
-    @Test
-    public void combineCurrentTestFailure()
-    {
-        int row1 = 0;
-        int row2 = 1;
-        ArrayList<Tile> hand = new ArrayList<Tile>();
-        hand.add( new Tile(4, Tile.Colors.BL));
-        hand.add( new Tile(4, Tile.Colors.BK));
-        hand.add( new Tile(4, Tile.Colors.RE));
-        ArrayList<Tile> hand2 = new ArrayList<Tile>();
-        hand2.add( new Tile(1, Tile.Colors.BL));
-        hand2.add( new Tile(2, Tile.Colors.BL));
-        hand2.add( new Tile(3, Tile.Colors.BL));
-        board.addSet(hand2);
-        board.addSet(hand);
-        System.out.println(board.printHelper());
-        assertTrue(board.checkBoard());
-        ArrayList<Integer> index = new ArrayList<>(Arrays.asList(0,1,2));
-
-        board.combineCurrent(row1,row2,index);
-        assertFalse(board.checkBoard());
         System.out.println(board.printHelper());
     }
 
