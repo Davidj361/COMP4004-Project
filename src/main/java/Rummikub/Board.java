@@ -233,8 +233,11 @@ public class Board {
 	// this is used for checking indices for moving tiles
 	public boolean hasTiles(int srcRow, int[] tilesIndex) {
 		for (int index: tilesIndex) {
-			if (board.size() < srcRow || board.get(srcRow).size() < index)
+			try {
+				board.get(srcRow).get(index);
+			} catch (IndexOutOfBoundsException e) {
 				return false;
+			}
 		}
 		return true;
 	}
