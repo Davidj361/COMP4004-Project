@@ -594,7 +594,7 @@ public class StepDefinitions {
     }
 
     @When("Player sends the command {string} which fails")
-    public void playerSendsTheCommand(String arg0) throws IOException {
+    public void playerSendsTheCommandWhichFails(String arg0) throws IOException {
         String command = String.format(arg0);
         assertFalse(game.command(0, command));
     }
@@ -603,5 +603,31 @@ public class StepDefinitions {
     public void playerSendsACommandForDisplayingHand(int arg0) throws IOException {
         String command = String.format("dh");
         assertTrue(game.command(arg0 -1, command));
+    }
+
+    @When("Player sends the command {string}")
+    public void playerSendsTheCommand(String arg0) {
+        String command = String.format(arg0);
+        assertTrue(game.command(0, command));
+    }
+
+    @When("Player sends the command {string} with no out of bounds exception")
+    public void playerSendsTheCommandWithNoOutOfBoundsException(String arg0) {
+        try {
+            String command = String.format(arg0);
+            assertFalse(game.command(0, command));
+        } catch (IndexOutOfBoundsException e) {
+            assertNull(e);
+        }
+    }
+
+    @Then("Player sends the command {string} with no number exception")
+    public void playerSendsTheCommandWithNoNumberException(String arg0) {
+        try {
+            String command = String.format(arg0);
+            assertFalse(game.command(0, command));
+        } catch (NumberFormatException e) {
+            assertNull(e);
+        }
     }
 }

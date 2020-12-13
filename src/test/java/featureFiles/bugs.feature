@@ -83,3 +83,28 @@ Feature: bugs that need to be tested against
     And Player sends a command for placing tiles of "(9 blue),(10 blue),(11 blue)" on board
     And Player sends a command for ending current turn
     Then Player has done First Placement
+
+  @bug7
+  Scenario: Bug - check for indexOutOFBoundException whe Player gives tile to row -1
+    Given New game is started
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    When Player sends the command "g -1 2" with no out of bounds exception
+    Then Player sends a command for ending current turn
+    Then Board is valid
+
+  Scenario: Bug - check for indexOutOFBoundException when Player gives tile to row 14 which does exist on board
+    Given New game is started
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    When Player sends the command "g 14 2" which no out of bounds exception
+    Then Player sends a command for ending current turn
+    Then Board is valid
+
+  Scenario: Bug - check for noNumberException when Player gives string instead of number in give command
+    Given New game is started
+    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    When Player sends the command "g asdf 2" with no number exception
+    Then Player sends a command for ending current turn
+    Then Board is valid
