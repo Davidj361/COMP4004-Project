@@ -59,3 +59,291 @@ Feature: bugs that need to be tested against
     And Board is valid
     And Player sends a command for ending current turn
     Then Board is valid
+
+  @bug5
+  Scenario: Bug - Player should be able to give joker to groups on board
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(9 blue),(10 blue),(11 blue)" on board
+    And There already exists tiles of "(12 blue),(12 yellow),(12 red)" on board
+    And There already exists tiles of "(4 red),(4 yellow),(4 blue)" on board
+    And There already exists tiles of "(7 blue),(7 red),(7 yellow)" on board
+    And There already exists tiles of "(5 blue),(5 red),(5 black)" on board
+    And Player has "(0 joker),(1 red),(5 black),(5 red),(5 blue),(6 black),(6 yellow),(8 red),(8 blue),(9 black),(9 blue),(10 red),(11 yellow),(13 blue)" in their hand
+    And Board is valid
+    When Player sends a command for displaying hand
+    And Player sends a command for giving tiles of "(0 joker)" to row 2
+    Then Board is valid
+
+  @bug6
+  Scenario: Bug - Player should be able to get first placement done with exactly 30 points
+    Given New game is started
+    And Player has "(2 blue),(3 red),(4 red),(5 yellow),(7 black),(7 blue),(8 black),(8 yellow),(9 red),(9 blue),(10 blue),(10 yellow),(11 blue),(12 black)" in their hand
+    When Player sends a command for displaying hand
+    And Player sends a command for placing tiles of "(9 blue),(10 blue),(11 blue)" on board
+    And Player sends a command for ending current turn
+    Then Player has done First Placement
+
+  @bug-giveOutOfBound1
+  Scenario: @bug-giveOutOfBound1 - check for indexOutOFBoundException when Player gives tile to row 14 which does exist on board
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g 14 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-giveOutOfBound2
+  Scenario: @bug-giveOutOfBound2 - check for indexOutOFBoundException when Player gives tile to row 0 which does exist on board
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g 0 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-giveOutOfBound3
+  Scenario: @bug-giveOutOfBound3 - check for indexOutOFBoundException whe Player gives tile to row -1
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g -1 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-giveNumberException1
+  Scenario: @bug-giveNumberException1 - Player types afk in 1st arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g asdf 2" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-giveNumberException2
+  Scenario: @bug-giveNumberException2 - Player types afk in 2nd arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g 1 asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-giveNumberException3
+  Scenario: @bug-giveNumberException3 - Player types afk in 2nd arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g asdf asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+
+  @bug-moveOutOfBound1
+  Scenario: @bug-moveOutOfBound1 - Player types out of bound row index above
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m 14 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound2
+  Scenario: @bug-moveOutOfBound2 - Player types out of bound row index below, -1
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m -1 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound3
+  Scenario: @bug-moveOutOfBound3 - Player types out of bound row index below, 0
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    When Player sends the command "m 0 1 1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    Then Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound4
+  Scenario: @bug-moveOutOfBound4 - Player types out of bound tile index below, -1
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 -1" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound5
+  Scenario: @bug-moveOutOfBound5 - Player types out of bound tile index below, 0
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 0" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveOutOfBound6
+  Scenario: @bug-moveOutOfBound6 - Player types out of bound tile index above
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 999" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException1
+  Scenario: @bug-moveNumberException1 - Player types asdf in all arguments of move
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m asdf asdf asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException2
+  Scenario: @bug-moveNumberException2 - Player types asdf in 1st arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m asdf 1 1" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException3
+  Scenario: @bug-moveNumberException3 - Player types asdf in 2nd arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 asdf 1" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @bug-moveNumberException4
+  Scenario: @bug-moveNumberException4 - Player types asdf in 3rd arg
+    Given New game is started
+    And Player's first placement is done
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
+    And Player has "(5 red),(7 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends the command "m 1 1 asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+
+  @Split_out_of_bounds_1
+  Scenario: Split_out_of_bounds_1 - player tries to enter a wrong command that splits tiles in negative row number
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black),(7 black),(8 black)" on board
+    And Board is valid
+    Then Player sends the command "s -10 3" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_2
+  Scenario: Split_out_of_bounds_2 - player tries to enter a wrong command that splits tiles at negative index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 -20" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_3
+  Scenario: Split_out_of_bounds_3 - player tries to enter a wrong command that splits tiles in row number that is greater than the last row number
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 10 3" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_4
+  Scenario: Split_out_of_bounds_4 - player tries to enter a wrong command that splits tiles at index that is greater than the last index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 20" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_5
+  Scenario: Split_out_of_bounds_5 - player tries to enter a wrong command that splits tiles with an non-integer row
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s bad 3" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns
+
+  @Split_out_of_bounds_6
+  Scenario: Split_out_of_bounds_6 - player tries to enter a wrong command that splits tiles with an non-integer index
+    Given New game is started
+    When It is player's turn
+    And Player's first placement is done
+    And There are 1 total turns
+    And There already exists tiles of "(3 black),(4 black),(5 black),(6 black)" on board
+    And Board is valid
+    Then Player sends the command "s 1 bad" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+    And There are 2 total turns

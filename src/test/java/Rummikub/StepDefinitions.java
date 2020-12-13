@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -593,15 +594,41 @@ public class StepDefinitions {
         assertTrue(game.command(0, command));
     }
 
-    @When("Player sends the command {string} which fails")
-    public void playerSendsTheCommand(String arg0) throws IOException {
-        String command = String.format(arg0);
-        assertFalse(game.command(0, command));
-    }
-
     @And("Player {int} sends a command for displaying hand")
     public void playerSendsACommandForDisplayingHand(int arg0) throws IOException {
         String command = String.format("dh");
         assertTrue(game.command(arg0 -1, command));
+    }
+
+    @When("Player sends the command {string}")
+    public void playerSendsTheCommand(String arg0) {
+        String command = String.format(arg0);
+        assertTrue(game.command(0, command));
+    }
+
+    @When("Player sends the command {string} which fails")
+    public void playerSendsTheCommandWhichFails(String arg0) throws IOException {
+        String command = String.format(arg0);
+        assertFalse(game.command(0, command));
+    }
+
+    @When("Player sends the command {string} with no out of bounds exception")
+    public void playerSendsTheCommandWithNoOutOfBoundsException(String arg0) {
+        try {
+            String command = String.format(arg0);
+            assertFalse(game.command(0, command));
+        } catch (IndexOutOfBoundsException e) {
+            assertNull(e);
+        }
+    }
+
+    @Then("Player sends the command {string} with no number exception")
+    public void playerSendsTheCommandWithNoNumberException(String arg0) {
+        try {
+            String command = String.format(arg0);
+            assertFalse(game.command(0, command));
+        } catch (NumberFormatException e) {
+            assertNull(e);
+        }
     }
 }

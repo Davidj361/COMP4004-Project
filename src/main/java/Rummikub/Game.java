@@ -386,7 +386,7 @@ public class Game {
 				}
 				println("There are currently: " + deck.getTiles().size() + " tiles left in the deck");
 			}
-			else if (!firstPlacement && sum > 30) {
+			else if (!firstPlacement) {
 				println("You have successfully completed your First placement", getCurPlayerIdx());
 				messageToOtherPlayers(getCurPlayerName() + " successfully completed First placement round");
 				player.setFirstPlacement();

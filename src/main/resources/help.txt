@@ -8,34 +8,34 @@ Example Display:
 Displays a list of runs and groups that are on the board with its index.
 
 Displaying your hand: dh
-Displays the player’s hand.
-“1Blk 2Blk 3Blk 4Blk”
+Displays the player's hand.
+"1Blk 2Blk 3Blk 4Blk"
 
 For ending turn: e
-Will try to finalize all changes made to the board, player’s hand, etc. If any changes are not valid, then an error will be outputted.
-“Unable to end turn”
+Will try to finalize all changes made to the board, player's hand, etc. If any changes are not valid, then an error will be outputted.
+"Unable to end turn"
 <prints what is invalid>
 Otherwise will draw a tile if no actions were taken.
 
 For resetting all the pending changes: u
-Displays: “The board and player’s hand has been reset.”
-Will reassign the board and player’s hand to the previous original copy.
+Displays: "The board and player's hand has been reset."
+Will reassign the board and player's hand to the previous original copy.
 
 For placing tiles from hand: p <index1> ..
 User sees their hand as:
-“1R 2Blk 2R 3R 8R 9R 4Blk”
+"1R 2Blk 2R 3R 8R 9R 4Blk"
 User types:
-“p 1 3 4 7”
+"p 1 3 4 7"
 Will place 1R 2R 3R 4Blk as a new row on the board.
 
 For giving tiles to a row on the board from hand: g <row index> <hand index1> ..
-Example: “g 1 2 3”
-Should give to row 1 (displayed in ‘db’ command) the tiles indexed as 2 and 3 from hand.
+Example: "g 1 2 3"
+Should give to row 1 (displayed in 'db' command) the tiles indexed as 2 and 3 from hand.
 
 For moving tiles from one row to another: m <source row index> <destination row index> <row tile index1> ..
-Example: “m 1 2 5 6”
-Will take tiles indexed as 5 and 6 from 1st row to the 2nd row (displayed in ‘db’ command).
+Example: "m 1 2 5 6"
+Will take tiles indexed as 5 and 6 from 1st row to the 2nd row (displayed in 'db' command).
 
 For splitting a row of tiles on board: s <row index> <row tile index>
-Example: “s 1 4”
-Should split the 1st run/group (displayed in ‘db’ command) into 2 rows, they are split at the 4th tile with 1st row going up to the 4th tile and the 2nd row going from 5th tile to end.
+Example: "s 1 4"
+Should split the 1st run/group (displayed in 'db' command) into 2 rows, they are split at the 4th tile with 1st row going up to the 4th tile and the 2nd row going from 5th tile to end.
