@@ -95,6 +95,5 @@ public class Player {
     public Hand getOrigHand () {
         return origHand;
     }
-
 }
 
