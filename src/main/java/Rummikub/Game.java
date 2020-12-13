@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Game {
 	private Server server;
@@ -254,16 +255,22 @@ public class Game {
 		String[] sArr = input.split(" ");
 		boolean invalidCmd = false;
 		if (sArr.length > 1) { // Commands with input arguments
-			String[] args = Arrays.copyOfRange(sArr, 1, sArr.length);
+			String[] argz = Arrays.copyOfRange(sArr, 1, sArr.length);
+			if(!checkInt(argz)){
+				invalidCommandMessage();
+				return false;
+			}
+			// Subtract all args by 1, so indexes are starting at 0 instead of 1
+			ArrayList<Integer> iArgs = parseArgs(argz);
 			switch(sArr[0]) {
 				case "p": // placing tiles from hand onto the board
-					return placeTiles(args, curPlayer);
+					return placeTiles(iArgs, curPlayer);
 				case "g": // giving tiles to a row on the board
-					return giveTiles(args, curPlayer);
+					return giveTiles(iArgs, curPlayer);
 				case "m": // moving tiles from one row to another on the board
-					return moveTiles(args);
+					return moveTiles(iArgs);
 				case "s": // splitting rows on the board
-					return splitRow(args);
+					return splitRow(iArgs);
 				default:
 					invalidCmd = true;
 					invalidCommandMessage();
@@ -300,7 +307,7 @@ public class Game {
 		}
 		return true;
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	// Functions used by command(..)
 
@@ -454,15 +461,10 @@ public class Game {
 
 	// Places tiles from active player's hand to the board
 	// “p 1 3 4 7”
-	public boolean placeTiles(String[] sArr, Player player) {
-
-		// Integer index of tiles on hand
-		int[] tilesIdx = new int[sArr.length];
-		for (int i=0; i<sArr.length; i++)
-			tilesIdx[i] = Integer.parseInt(sArr[i]);
-		Arrays.sort(tilesIdx);
-		if (player.hasTiles(tilesIdx)) {
-			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
+	public boolean placeTiles(ArrayList<Integer> args, Player player) {
+		Collections.sort(args);
+		if (player.hasTiles(args)) {
+			ArrayList<Tile> playerTiles = player.placeTiles(args);
 			board.addSet(playerTiles);
 			commandReceivedMessage("p");
 			messageToOtherPlayers(getCurPlayerName() + " placed tile(s)");
@@ -475,59 +477,72 @@ public class Game {
 
 	// Give tiles from your hand onto a row on the board
 	// “g 1 2 3”
-	private boolean giveTiles(String[] sArr, Player player) {
-		int dstRow = Integer.parseInt(sArr[0])-1;
-		int[] tilesIdx = new int[sArr.length-1];
-		for (int i=1; i<sArr.length; i++)
-			tilesIdx[i - 1] = Integer.parseInt(sArr[i]);
-		Arrays.sort(tilesIdx);
-		if (player.hasTiles(tilesIdx)) {
+	private boolean giveTiles(ArrayList<Integer> args, Player player) {
+		int dstRow = args.get(0);
+		ArrayList<Integer> tilesIdx = new ArrayList<>();
+				//= new int[sArr.length-1];
+		for (int i=1; i<args.size(); i++)
+			tilesIdx.add(args.get(i));
+
+		Collections.sort(tilesIdx);
+		if (player.hasTiles(tilesIdx) && board.hasRow(dstRow)) {
 			ArrayList<Tile> playerTiles = player.placeTiles(tilesIdx);
 			board.addToCurrent(playerTiles,dstRow);
 			commandReceivedMessage("g");
 			messageToOtherPlayers(getCurPlayerName() + " added a tile to row on the board");
 			println(board.printHelper());
 			return true;
-		}
-		noSuchTileExistErrorMessage();
+		} else if (board.hasRow(dstRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
 		return false;
 	}
 
 	// Move tiles from one row on the board to another row on the board
 	// “m 1 2 5 6”
-	private boolean moveTiles(String[] sArr) {
-		int srcRow = Integer.parseInt(sArr[0])-1;
-		int dstRow = Integer.parseInt(sArr[1])-1;
-		int[] tilesIdx = new int[sArr.length-2];
-		for (int i=2; i<sArr.length; i++)
-			tilesIdx[i-2] = Integer.parseInt(sArr[i]);
-		Arrays.sort(tilesIdx);
-		if (board.hasTiles(srcRow, tilesIdx)) {
+	private boolean moveTiles(ArrayList<Integer> args) {
+		int srcRow = args.get(0);
+		int dstRow = args.get(1);
+		ArrayList<Integer> tilesIdx = new ArrayList<>();
+		for (int i=2; i<args.size(); i++)
+			tilesIdx.add(args.get(i));
+		Collections.sort(tilesIdx, Collections.reverseOrder());
+		if (board.hasTiles(srcRow, tilesIdx) && board.hasRow(srcRow) && board.hasRow(dstRow)) {
 			ArrayList<Integer> index = new ArrayList<>();
-			for(int num:tilesIdx){
+			for (int num:tilesIdx)
 				index.add(num);
-			}
 			board.combineCurrent(srcRow,dstRow,index);
 			commandReceivedMessage("m");
 			messageToOtherPlayers(getCurPlayerName() + " moved a tile from one row to another on the board");
 			println(board.printHelper());
 
 			return true;
-		}
-		noSuchTileExistErrorMessage();
+		} else if(board.hasRow(srcRow) && board.hasRow(dstRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
 		return false;
 	}
 
 	// Split a row on the board into 2 rows
 	// “s 1 4”
-	private boolean splitRow(String[] sArr) {
-		int srcRow = Integer.parseInt(sArr[0])-1;
-		int splitIdx = Integer.parseInt(sArr[1]);
-		board.separateSet(srcRow,splitIdx);
-		commandReceivedMessage("s");
-		messageToOtherPlayers(getCurPlayerName() + " split a row on the board");
-		println(board.printHelper());
-		return true;
+	private boolean splitRow(ArrayList<Integer> args) {
+		int srcRow = args.get(0);
+		int splitIdx = args.get(1)+1;
+		ArrayList<Integer> tiles = new ArrayList<>();
+		tiles.add(splitIdx);
+		if(board.hasRow(srcRow) && board.hasTiles(srcRow,tiles)) {
+			board.separateSet(srcRow, splitIdx);
+			commandReceivedMessage("s");
+			messageToOtherPlayers(getCurPlayerName() + " split a row on the board");
+			println(board.printHelper());
+			return true;
+		} else if (board.hasRow(srcRow))
+			noSuchTileExistErrorMessage();
+		else
+			noSuchRowExistErrorMessage();
+		return false;
 	}
 
 	public void printCurPlayerHand() {
@@ -617,6 +632,9 @@ public class Game {
 	public void noSuchTileExistErrorMessage() {
 		println("UNABLE TO EXECUTE COMMAND: no such tiles exist", getCurPlayerIdx());
 	}
+	public void noSuchRowExistErrorMessage() {
+		println("UNABLE TO EXECUTE COMMAND: no such row exists", getCurPlayerIdx());
+	}
 
 	public void messageToOtherPlayers(String message) {
 		if (server == null)
@@ -653,5 +671,36 @@ public class Game {
 		if (numPlayers != players.size())
 			throw new RuntimeException("Game's numPlayers != players.size()");
 		return numPlayers;
+	}
+
+	private int parseIdx(String s) {
+		return Integer.parseInt(s)-1;
+	}
+
+	// Subtract args by 1
+	private ArrayList<Integer> parseArgs(String[] args) {
+		ArrayList<Integer> ret = new ArrayList<>();
+		for (String s: args)
+			ret.add(parseIdx(s));
+		return ret;
+	}
+
+	private boolean checkInt(String[] args) {
+		for (String integer : args){
+			if (!isInteger(integer)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		// only got here if we didn't return false
+		return true;
 	}
 }

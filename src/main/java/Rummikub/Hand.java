@@ -57,7 +57,13 @@ public class Hand{
     }
 
     public boolean hasTile(int index) {
-        return tiles.size() >= index && tiles.get(index - 1) != null;
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            tiles.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+        return true;
     }
 
     public boolean hasJoker () {
@@ -72,10 +78,10 @@ public class Hand{
         return tiles.remove(t);
     }
 
-    public ArrayList<Tile> placeTiles(int[] tilesIndex) {
+    public ArrayList<Tile> placeTiles(ArrayList<Integer> tilesIndex) {
         ArrayList<Tile> tileSet = new ArrayList<>();
-        for (int i=tilesIndex.length-1; i>=0; i--) {
-            tileSet.add(putTile(tilesIndex[i] - 1));
+        for (int i=tilesIndex.size()-1; i>=0; i--) {
+            tileSet.add(putTile( tilesIndex.get(i) ));
         }
         return tileSet;
     }
