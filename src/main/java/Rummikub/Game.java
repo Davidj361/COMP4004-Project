@@ -132,16 +132,6 @@ public class Game {
 			println("Winner: " + p.getName());
 			println("Score: " + p.getScore());
 			won = true;
-			if (server != null) {
-				try {
-					println("Server shutting down");
-					server.close();
-					server = null;
-				} catch (IOException e) {
-					System.out.println("Unable to close server in Game.getFinalWinner(..).");
-					e.printStackTrace();
-				}
-			}
 		}
 		return p;
 	}
@@ -155,8 +145,7 @@ public class Game {
 			output.append("=========CURRENT SCORES=========\n");
 		for (Player player : players)
 			output.append(player.getName()).append(": ").append(player.getTotalScore()).append("\n");
-		messageToOtherPlayers(output.toString());
-		println(output.toString(),getCurPlayerIdx());
+		println(output.toString());
 	}
 
 	public void scorePoints() {
@@ -173,8 +162,23 @@ public class Game {
 		}
 		Player finalWinner = getFinalWinner();
 		printTotalScores(finalWinner != null);
+		closeServer(finalWinner != null);
 	}
 
+	public void closeServer(boolean won){
+		if(won){
+			if (server != null) {
+				try {
+					println("Server shutting down");
+					server.close();
+					server = null;
+				} catch (IOException e) {
+					System.out.println("Unable to close server in Game.getFinalWinner(..).");
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	private int getScoreForWinner(Player winner, int scoreForWinner) {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
