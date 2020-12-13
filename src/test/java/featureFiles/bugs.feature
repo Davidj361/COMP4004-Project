@@ -84,27 +84,56 @@ Feature: bugs that need to be tested against
     And Player sends a command for ending current turn
     Then Player has done First Placement
 
-  @bug7
-  Scenario: Bug - check for indexOutOFBoundException whe Player gives tile to row -1
+  @bug-giveOutOfBound1
+  Scenario: @bug-giveOutOfBound1 - check for indexOutOFBoundException when Player gives tile to row 14 which does exist on board
     Given New game is started
-    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    When Player sends the command "g -1 2" with no out of bounds exception
-    Then Player sends a command for ending current turn
-    Then Board is valid
+    Then Player sends the command "g 14 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
 
-  Scenario: Bug - check for indexOutOFBoundException when Player gives tile to row 14 which does exist on board
+  @bug-giveOutOfBound2
+  Scenario: @bug-giveOutOfBound2 - check for indexOutOFBoundException when Player gives tile to row 0 which does exist on board
     Given New game is started
-    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    When Player sends the command "g 14 2" which no out of bounds exception
-    Then Player sends a command for ending current turn
-    Then Board is valid
+    Then Player sends the command "g 0 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
 
-  Scenario: Bug - check for noNumberException when Player gives string instead of number in give command
+  @bug-giveOutOfBound3
+  Scenario: @bug-giveOutOfBound3 - check for indexOutOFBoundException whe Player gives tile to row -1
     Given New game is started
-    And There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
     And Player has "(8 blue),(10 blue),(5 red)" in their hand
-    When Player sends the command "g asdf 2" with no number exception
-    Then Player sends a command for ending current turn
-    Then Board is valid
+    Then Player sends the command "g -1 2" with no out of bounds exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-moveNumberException1
+  Scenario: @bug-moveNumberException1 - Player types afk in 1st arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g asdf 2" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-moveNumberException2
+  Scenario: @bug-moveNumberException2 - Player types afk in 2nd arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g 1 asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
+
+  @bug-moveNumberException3
+  Scenario: @bug-moveNumberException3 - Player types afk in 2nd arg
+    Given New game is started
+    When There already exists tiles of "(7 blue),(8 blue),(9 blue)" on board
+    And Player has "(8 blue),(10 blue),(5 red)" in their hand
+    Then Player sends the command "g asdf asdf" with no number exception
+    And Player sends a command for ending current turn
+    And Board is valid
