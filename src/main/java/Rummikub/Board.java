@@ -170,9 +170,8 @@ public class Board {
 		for(int i = 0; i < row.size(); i++) {
 			if (row.get(i).isJoker()) {
 				// Joker by itself to a row
-				if (row.size() == 1) {
-					Tile tile = new Tile(1, Tile.Colors.JOKER);
-					row.add(tile);
+				if (row.size() < 3) {
+					row.set(i, new Tile(1, Tile.Colors.JOKER));
 					return row;
 				}
 				// Apparently you need four i== checks to check all colours
