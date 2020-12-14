@@ -3,7 +3,7 @@ Feature: startGameFeature, Players can host or connect to a host
                             the game starts when everyone is connected
 
   @startGame-1
-  Scenario: Players chooses a name, 1 player is a host and rest are clients, they enter the correct IP and connect and the game starts
+  Scenario: Players chooses a name, 1 player is a host and rest are clients, they enter the correct IP and they connect and the game starts
     Given 2 people startup Rummikub
     And Player 1 is named "HostPlayer"
     And Player 2 is named "Client1"
