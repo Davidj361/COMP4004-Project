@@ -88,13 +88,13 @@ public class Hand{
 
     // Good for debugging output
     public String toString() {
-            String string = "";
+        String string = "";
         for (int i = 0; i < tiles.size(); i++) {
-                string = getString(string, i);
+            string = getString(string, i);
         }
-            String ret = "";
-            ret += string;
-            return ret;
+        String ret = "";
+        ret += string;
+        return ret;
     }
 
     // Used by the game

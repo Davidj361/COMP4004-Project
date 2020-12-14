@@ -433,11 +433,6 @@ public class StepDefinitions {
         assertTrue(placeCommand(0, arg0));
     }
 
-    @When("Player sends a command for placing tiles of {string} on board but fails")
-    public void playerSendsACommandForPlacingTilesOfOnBoardButFails(String arg0) throws IOException {
-        assertFalse(placeCommand(0, arg0));
-    }
-
     @When("Player {int} sends a command for placing tiles of {string} on board")
     public void playerSendsACommandForPlacingARunOfOnBoard(int arg0, String str) throws IOException {
         assertTrue(placeCommand(arg0-1, str));

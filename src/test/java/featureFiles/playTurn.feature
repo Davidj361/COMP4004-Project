@@ -319,7 +319,8 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @playTurn25
-  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, player manipulates board again, places existing tiles and form a group or run, then finished turn
+  Scenario: PlayTurn - player manipulates board, places a tile that doesn't exist, player manipulates board again, places existing tiles and form a group or run,
+            then finished turn
     Given New game is started
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red),(6 red),(7 red),(8 red)" on board
@@ -341,17 +342,22 @@ Feature: playTurnFeature, playTurn use case test scenarios
     When It is player's turn
     And Player's first placement is done
     And There already exists tiles of "(3 red),(4 red),(5 red)" on board
-    And Player sends a command for splitting row 1 at index 2
+    And Player has "(5 red),(6 red),(9 red)" in their hand
+    And Board is valid
+    Then Player sends a command for giving tiles of index 4 to row 1 which doesn't exist
+    And There are 1 total turns
     And Player sends a command for ending current turn
-    Then There are 2 total turns
+    And There are 2 total turns
+    And Board is valid
 
   @playTurn_27
   Scenario: PlayTurn - player places, places an existing tile and form a group or run, player ends turn
     Given New game is started
     When It is player's turn
     And Player's first placement is done
-    And Player has "(5 red),(7 red),(9 red)" in their hand
-    And Player sends a command for placing tiles of "(5 red),(7 red),(9 red)" on board
+    And Player has "(6 red),(7 red),(8 red)" in their hand
+    And Player sends a command for placing tiles of "(6 red),(7 red),(8 red)" on board
+    And Board is valid
     Then It is player's turn
     And Player sends a command for ending current turn
     And There are 2 total turns
@@ -381,10 +387,10 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And Player sends a command for splitting row 1 at index 3
     And Player sends a command for placing tiles of "(3 red),(4 red),(5 red)" on board
     And Player sends a command for undoing the previous action
-    And Player sends a command for splitting row 1 at index 3
     And Player sends a command for placing tiles of "(3 red),(4 red),(5 red)" on board
-    And Player sends a command for ending current turn
     Then Board is valid
+    And Player sends a command for ending current turn
+    And Board is valid
     And There are 2 total turns
 
   @playTurn_30
@@ -399,8 +405,9 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And Player sends a command for undoing the previous action
     And Player sends a command for splitting row 1 at index 3
     And Player sends a command for giving tiles of "(10 red),(10 yellow)" to row 2
-    And Player sends a command for ending current turn
     Then Board is valid
+    And Player sends a command for ending current turn
+    And Board is valid
     And There are 2 total turns
 
 
@@ -548,7 +555,7 @@ Feature: playTurnFeature, playTurn use case test scenarios
     And There are 2 total turns
 
   @Recursive_Category_3-4
-  Scenario: PlayTurn - player places tiles on board, undoes the change, move tiles, places different tiles on board that form a group, then finishes turn
+  Scenario: PlayTurn - player places tiles on board, undoes the change, moves tiles, places different tiles on board that form a group, then finishes turn
     Given New game is started
     And It is player's turn
     And Player's first placement is done
